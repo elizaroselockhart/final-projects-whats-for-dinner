@@ -32,10 +32,6 @@ function setupRecipes() {
     const btnRecipes = document.getElementById("navRecipes");
     btnRecipes.addEventListener("click", function(){
         console.log("Recipe display link hooked up!");
-        
-        //api call
-        //api.getRequest( => {
-
-        //})
+       api.getRequest(CONSTANTS.)
     })
 }
