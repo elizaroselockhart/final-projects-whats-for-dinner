@@ -16,7 +16,7 @@ export function displayRecipes(recipes) {
             <li>
                 <h4>
                 <span class="recipeDetails">
-                ${recipe.title} 
+                ${recipe.name} 
                 </span>
                 
                 <input type="hidden" value='${recipe.id}'/>
@@ -40,9 +40,9 @@ export function setupRecipeLinks() {
             console.log("Recipe Id:" + recipeId);
 
             //API Call
-            //api.getRequest( => {
-               
-            //});
+            api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
+                CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(data);
+            });
         });
     });
 }
@@ -56,9 +56,19 @@ export function setupRecipeDeleteButton() {
             let recipeId = event.target.id;
 
 
-            //api.deleteRequest( => {
-            
-        //});
+            api.deleteRequest(CONSTANTS.RecipesAPIURL, recipeId, data => {
+                CONSTANTS.content.innerHTML = displayRecipes(data);
+                setupRecipeDeleteButton();
+                setupRecipeLinks();
+            });
         });
     });
 }
+
+ //public int Id { get; set; }
+        //public string Name { get; set; }
+        //[NotMapped]
+       // public virtual List<string> Ingredients { get; set; }
+        //public string Instructions { get; set; }
+        //public string Description { get; set; }
+       // public virtual List<RecipeTag> Tags { get; set; }
