@@ -1,6 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
+import recipes from "../components/recipes";
 
 export default {
     setupNavBar,
@@ -32,6 +33,9 @@ function setupRecipes() {
     const btnRecipes = document.getElementById("navRecipes");
     btnRecipes.addEventListener("click", function(){
         console.log("Recipe display link hooked up!");
-       api.getRequest(CONSTANTS.)
-    })
+        api.getRequest(CONSTANTS.RecipesAPIURL, data => {
+            CONSTANTS.content.innerHTML = recipes.displayRecipes(data);
+            recipes.SetupAddRecipeEventListeners();
+        });
+    });
 }

@@ -10,8 +10,7 @@ namespace Whats_For_Dinner.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        [NotMapped]
-        public virtual List<string> Ingredients { get; set; }
+        public string Ingredients { get; set; }
         public string Instructions { get; set; }
         public string Description { get; set; }
         public virtual List<RecipeTag> Tags { get; set; }
