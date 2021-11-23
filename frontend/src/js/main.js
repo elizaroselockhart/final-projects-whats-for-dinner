@@ -1,14 +1,15 @@
-import navbar from "./components/navbar";
+import navbarTabs from "../components/navbar";
+import * as CONSTANTS from "../components/constants";
 
-const loginElement = document.getElementById("loginBtn");
-
+const navbar = document.getElementById("navbar");
 
 export default() => {
-    setupLogin();
+    setupNavbar();
 }
 
-function setupLogin(){
+function setupNavbar() {
+    navbar.innerHTML = navbarTabs.setupNavBar();
+    navbarTabs.setupHome();
+    navbarTabs.setupRecipes();
 
-    navbar.setupLoginBtn();
-    
 }
