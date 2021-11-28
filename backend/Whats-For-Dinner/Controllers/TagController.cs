@@ -25,6 +25,7 @@ namespace Whats_For_Dinner.Controllers
             _db.Tags.Add(tag);
             _db.SaveChanges();
 
+
             return _db.Tags.ToList();
         }
 
