@@ -31,19 +31,6 @@ function postRequest(location, requestBody, callback){
     .catch(err => console.log(err));
 }
 
-function postRequestNoReturn(location, requestBody) {
-    console.log(location);
-    fetch(`${location}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestBody)
-    })
-    .then(response => response.json())
-    .catch(err => console.log(err));
-}
-
 function deleteRequest(location, id, callback){
     fetch(`${location} ${id}`, {
         method: "DELETE",

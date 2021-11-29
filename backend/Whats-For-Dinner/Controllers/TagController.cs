@@ -20,13 +20,12 @@ namespace Whats_For_Dinner.Controllers
 
         /* HTTPPost (Create) Method goes here! */
         [HttpPost]
-        public ActionResult<IEnumerable<Tag>> Post([FromBody] Tag tag)
+        public ActionResult<Tag> Post([FromBody] Tag tag)
         {
             _db.Tags.Add(tag);
             _db.SaveChanges();
 
-
-            return _db.Tags.ToList();
+            return tag;
         }
 
         /* HTTPGet (Read) Method goes here! We need two methods: one returns an individual recipe (by ID) and one that returns a list. */

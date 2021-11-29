@@ -9,10 +9,10 @@ export default {
 function DisplayRecipeDetails(recipe) {
 
     if(recipe.ingredients == null){
-       recipe.ingredients = [];
+       recipe.ingredients = "";
     }
 
-    let IngredientList = recipe.ingredients.Split(";")
+    let IngredientList = recipe.ingredients.split(";");
 
     CONSTANTS.title.innerText = "Recipe Details";
     
@@ -57,7 +57,7 @@ function DisplayRecipeDetails(recipe) {
 
 function EditRecipeForm(recipe) {
     CONSTANTS.title.innerText = "Edit Recipe";
-    let IngredientList = recipe.ingredients.Split(";");
+    let IngredientList = recipe.ingredients.split(";");
 
     return ``;
 }

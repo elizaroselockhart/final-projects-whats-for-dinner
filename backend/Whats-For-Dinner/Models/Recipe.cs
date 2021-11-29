@@ -8,6 +8,18 @@ namespace Whats_For_Dinner.Models
 {
     public class Recipe
     {
+        public Recipe()
+        {
+
+        }
+
+        public Recipe(string name, string ingredients, string instructions, string description)
+        {
+            this.Name = name;
+            this.Ingredients = ingredients;
+            this.Instructions = instructions;
+            this.Description = description;
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Ingredients { get; set; }

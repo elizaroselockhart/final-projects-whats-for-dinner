@@ -71,6 +71,7 @@ function SetupAddRecipeEventListeners() {
     btnNewRecipe.addEventListener('click', function() {
         SetupAddRecipeForm();
         SetupAddIngredient();
+        SetupAddTags();
         PopulateTagsDDL();
         SetupDynamicTagsList();
         SetupAddRecipeBtn();
@@ -103,18 +104,8 @@ function SetupAddRecipeForm() {
             <input type='text' id='ingredient' placeholder='Add ingredient.' />
             <button id='btnAddIngredient'>Add Ingredient</button>
         <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
-        <div id='tagSection'>
-            <ul id='tagList'></ul>
-            <select id='existingTagDDL'>
-                <option disabled selected>---Choose Tags---</option>
-            </select>
-            <button id='btnAddTagFromList'>Add Tag From List</button>
-            <h5>Can't find your tag? Add one here!</h5>
-            <input type='text' id='createdTag' placeholder='Type your tag here!' />
-            <button id='btnAddNewTag'>Add A New Tag</button>
-        </div>
-        <p>Dropdown list of tags goes here probably. I want to avoid dropdowns but hey, whatever works.</p>
-        <button id='btnAddRecipe'>Add Recipe</button>
+
+        <button id='btnNextPage'>Next</button>
     `;
 }
 
@@ -142,6 +133,45 @@ function SetupAddIngredient() {
     })
 }
 
+function SetupAddTags() {
+    let btnAddTags = document.getElementById('btnNextPage');
+    let ingredientElements = document.getElementsByClassName('addedIngredients');
+    let ingredients = "";
+
+    for (const element of ingredientElements) {
+        ingredients = ingredients + element.id + ";"
+    }
+
+    btnAddTags.addEventListener('click', function() {
+        const newRecipe = {
+            Name: document.getElementById('recipeName').value,
+            Description: document.getElementById('recipeDescription').value,
+            Ingredients: ingredients,
+            Instructions: document.getElementById('recipeInstructions').value,
+        }
+
+        api.postRequest(CONSTANTS.RecipesAPIURL, newRecipe, recipe => {
+            console.log("New recipe created!");
+            console.log(recipe);
+            CONSTANTS.content.innerHTML = `
+            <div id='tagSection'>
+            <input type='hidden' id= 'recipe_id' value=${recipe.id} />
+                <h5>Add tags for your recipe on this page.</h5>
+                <ul id='tagList'></ul>
+                <select id='existingTagDDL'>
+                    <option disabled selected>---Choose Tags---</option>
+                </select>
+                <button id='btnAddTagFromList'>Add Tag From List</button>
+                <h5>Can't find your tag? Add one here!</h5>
+                <input type='text' id='createdTag' placeholder='Type your tag here!' />
+                <button id='btnAddNewTag'>Add A New Tag</button>
+            </div>
+            `;
+        });
+
+    }); 
+}
+
 function SetupDynamicTagsList() {
     let btnAddTagFromList = document.getElementById('btnAddTagFromList');
     let selectList = document.getElementById('existingTagDDL');
@@ -150,7 +180,7 @@ function SetupDynamicTagsList() {
     btnAddTagFromList.addEventListener('click', function(){
         console.log("Added tags from the dropdown list!");
         let AddedTag = document.createElement('li');
-        AddedTag.setAttribute('id', selectList.text);
+        AddedTag.setAttribute('id', selectList.options[selectList.selectedIndex].value);
         AddedTag.classList.add('addedTag');
         let AddedTagText = selectList.options[selectList.selectedIndex].text;
         AddedTag.appendChild(document.createTextNode(AddedTagText));
@@ -159,7 +189,7 @@ function SetupDynamicTagsList() {
         removeTagbtn.innerText = "Remove Tag";
     
         removeTagbtn.addEventListener('click', function() {
-            let toRemove = document.getElementById(AddedTag.value);
+            let toRemove = document.getElementById(AddedTagText);
             TagList.removeChild(toRemove);
         });
 
@@ -180,21 +210,13 @@ function SetupDynamicTagsList() {
         removeTagbtn.innerText = "Remove Tag";
     
         removeTagbtn.addEventListener('click', function() {
-            let toRemove = document.getElementById(NewTag.value);
+            let toRemove = document.getElementById(createdTag.value);
             TagList.removeChild(toRemove);
-        });
-
-        let PostedTag = {
-            Name: document.getElementById(NewTag.id)
-        }
-
-        api.postRequest(CONSTANTS.TagsAPIURL, PostedTag, data => {
-            console.log(data);
         });
 
         NewTag.appendChild(removeTagbtn);
         TagList.appendChild(NewTag);
-    })
+    });
 }
 
 function PopulateTagsDDL(){
@@ -211,47 +233,44 @@ function PopulateTagsDDL(){
     }
 }
 
-function SetupAddRecipeBtn() {
-    let btnAddRecipe = document.getElementById('btnAddRecipe');
-    let ingredientElements = document.getElementsByClassName('addedIngredients');
-    let tagElements = document.getElementsByClassName('addedTag');
-    let ingredients = "";
-    let tags = [];
+function CheckTags() {
+    let TagList = document.getElementsByClassName('addedTags');
+    let exists = false;
+    let existingTags = [];
+    let recipe_id = document.getElementById('recipe_id');
+    let tag_id = 0;
 
-    for (const element of ingredientElements) {
-        ingredients = ingredients + element.id + ";"
-    }
-
-    for (const element of tagElements) {
-        tags += element.value;
-    }
-
-    btnAddRecipe.addEventListener('click', function() {
-        const newRecipe = {
-            Name: document.getElementById('recipeName'),
-            Description: document.getElementById('recipeDescription'),
-            Ingredients: ingredients,
-            Instructions: document.getElementById('recipeInstructions'),
-            Tags: tags
-        }
-    
-        api.postRequest(CONSTANTS.RecipesAPIURL, newRecipe, recipe => {
-            console.log("New recipe created!");
-            recipeDetails.DisplayRecipeDetails(recipe);
+    api.getRequest(CONSTANTS.TagsAPIURL, tags => {
+        tags.forEach(tag => {
+            existingTags += tag;
         });
+    });
+
+    TagList.forEach(addedTag => {
+        existingTags.forEach(existingTag => {
+            if (addedTag.name.toLowerCase() == existingTag.name.toLowerCase()) {
+                exists = true;
+                tag_id = existingTag.id;
+            }
+        });
+        if (exists != true) {
+            let newTag = {
+                Name: tag.name.toLowerCase()
+            }
+            api.postRequest(CONSTANTS.TagsAPIURL, newTag, tag => {
+                tag_id = tag.id;
+            });
+        }
     });
 }
 
 //ingredients = sepIngred.split(";"");
 
-//Tags Notes:
-//We need:
-//  1. Dynamic tag list.
-//  2. Dropdown list of existing tags
-//      2a. Add tag button that adds selected to the list of tags
-//  3. Type your own tag if you can't find it.
-//      3a. Add tag button creates a new tag and adds it to the list of tags.
-
 // Errors to fix: 
-// "Node.removeChild: Argument 1 is not an object." when trying to remove a tag from the dynamic list.
-// " recipe.ingredients.Split is not a function" when trying to add a recipe.
+// Bad request
+//need to pass a list of tagids and modify backend to accept them - 
+// Tags: [{Id: 7},{Id: 8}]
+
+// foreach(var tag in model.Tags){
+//  tag = db.Tags.Find(tag.id);
+//} 
