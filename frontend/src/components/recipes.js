@@ -1,18 +1,23 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
-import apiActions from "../api/api-actions";
 
 export default {
     displayRecipes,
     setupRecipeLinks,
     setupRecipeDeleteButton,
-    SetupAddRecipeEventListeners
+    SetupAddRecipeEventListeners,
+    setupSearchBar,
+    hideRecipeList
 }
 
 function displayRecipes(recipes) {
     return `
     <button id='btnNewRecipe'>Add a Recipe!</button>
+    <form id="search-recipes">
+    <input type="text" placeholder="Search recipes..."/>
+    </form>
+    <div id="recipeList">
     <ol>
         ${recipes.map(recipe => {
             return`
@@ -21,16 +26,17 @@ function displayRecipes(recipes) {
                 <span class="recipeDetails">
                     ${recipe.name} 
                 </span>
-                
                 <input type="hidden" value='${recipe.id}'/>
                 <button id="${recipe.id}" class="recipeDelete">Delete</button>
-                </h4>
-                      
+                </h4>          
             </li>
             `;
         }).join('')}
     </ol>
-    `
+    </div>
+    <input type="checkbox" id="hide"/>
+    <label for="hide">Hide all recipes</label>
+    `;
 }
 
 function setupRecipeLinks() {
@@ -43,9 +49,10 @@ function setupRecipeLinks() {
             console.log("Recipe Id:" + recipeId);
 
             //API Call
-            //api.getRequest( => {
-               
-            //});
+            api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
+                CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(data);
+                recipes.setupSearchBar();
+            });
         });
     });
 }
@@ -59,12 +66,34 @@ function setupRecipeDeleteButton() {
             let recipeId = event.target.id;
 
 
-            //api.deleteRequest( => {
-            
-        //});
+            api.deleteRequest(CONSTANTS.RecipesAPIURL, recipeId, data => {
+                CONSTANTS.content.innerHTML = displayRecipes(data);
+                setupRecipeDeleteButton();
+                setupRecipeLinks();
+                recipes.setupSearchBar();
+            });
         });
     });
 }
+
+export function setupSearchBar() {
+    let list = document.getElementById('recipeList');
+    const searchbar = document.querySelector('input');
+    searchbar.addEventListener('keyup', function(e){
+        console.log("Typing in search bar!");
+        const term = e.target.value.toLowerCase();
+        const recipes = list.querySelectorAll('li');
+        Array.from(recipes).forEach(function(recipe){
+            const name = recipe.firstElementChild.textContent;
+            if(name.toLowerCase().indexOf(term) != -1){
+                recipe.style.display = "block";
+            }else {
+                recipe.style.display = "none";
+            }
+        });
+    });
+}
+
 
 function SetupAddRecipeEventListeners() {
     let btnNewRecipe = document.getElementById('btnNewRecipe');
@@ -260,17 +289,19 @@ function CheckTags() {
             api.postRequest(CONSTANTS.TagsAPIURL, newTag, tag => {
                 tag_id = tag.id;
             });
+
+
+//Hide All Recipes Function
+export function hideRecipeList() {
+    let list = document.getElementById("recipeList");
+    const hideBox = document.getElementById("hide");
+    hideBox.addEventListener('change', function(e){
+        console.log("Hide recipes checkbox clicked");
+        if(hideBox.checked){
+            list.style.display = "none";
+        }else {
+            list.style.display = "initial";
+
         }
     });
 }
-
-//ingredients = sepIngred.split(";"");
-
-// Errors to fix: 
-// Bad request
-//need to pass a list of tagids and modify backend to accept them - 
-// Tags: [{Id: 7},{Id: 8}]
-
-// foreach(var tag in model.Tags){
-//  tag = db.Tags.Find(tag.id);
-//} 
