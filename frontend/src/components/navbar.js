@@ -30,7 +30,8 @@ export function setupPantry() {
             CONSTANTS.content.innerHTML = recipes.displayRecipes(data);
             recipes.setupRecipeLinks();
             recipes.setupSearchBar();
-            recipes.hideRecipeList();   
+            recipes.hideRecipeList();  
+            recipes.SetupAddRecipeEventListeners(); 
         });
     });
 }

@@ -18,7 +18,7 @@ function DisplayRecipeDetails(recipe) {
     
     return `
     <button id="btnEditRecipe">Edit Recipe</button>
-    <h2>Recipe Title: ${recipe.title}</h2>      
+    <h2>Recipe Title: ${recipe.name}</h2>      
    
     <ol>
         ${IngredientList.map(ingredient => {

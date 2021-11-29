@@ -101,9 +101,6 @@ function SetupAddRecipeEventListeners() {
         SetupAddRecipeForm();
         SetupAddIngredient();
         SetupAddTags();
-        PopulateTagsDDL();
-        SetupDynamicTagsList();
-        SetupAddRecipeBtn();
     });
 }
 
@@ -194,11 +191,19 @@ function SetupAddTags() {
                 <h5>Can't find your tag? Add one here!</h5>
                 <input type='text' id='createdTag' placeholder='Type your tag here!' />
                 <button id='btnAddNewTag'>Add A New Tag</button>
+                <button id='btnFinishRecipe'>Finished adding tags.</button>
             </div>
             `;
+            SetupDynamicTagsList();
+            PopulateTagsDDL();
+            FinishRecipeCreation();
         });
-
     }); 
+}
+
+function FinishRecipeCreation() {
+    let btnFinishRecipe = document.getElementById('btnFinishRecipe');
+    btnFinishRecipe.addEventListener('click', CheckTags);
 }
 
 function SetupDynamicTagsList() {
@@ -266,7 +271,7 @@ function CheckTags() {
     let TagList = document.getElementsByClassName('addedTags');
     let exists = false;
     let existingTags = [];
-    let recipe_id = document.getElementById('recipe_id');
+    let recipe_id = document.getElementById('recipe_id').value;
     let tag_id = 0;
 
     api.getRequest(CONSTANTS.TagsAPIURL, tags => {
@@ -275,22 +280,37 @@ function CheckTags() {
         });
     });
 
-    TagList.forEach(addedTag => {
+    for (const addedTag of TagList) {
         existingTags.forEach(existingTag => {
-            if (addedTag.name.toLowerCase() == existingTag.name.toLowerCase()) {
+            if (addedTag.id.toLowerCase() == existingTag.name.toLowerCase()) {
                 exists = true;
                 tag_id = existingTag.id;
             }
         });
+
         if (exists != true) {
             let newTag = {
-                Name: tag.name.toLowerCase()
+                Name: tag.id.toLowerCase()
             }
-            api.postRequest(CONSTANTS.TagsAPIURL, newTag, tag => {
-                tag_id = tag.id;
+           
+            api.postRequest(CONSTANTS.TagsAPIURL, newTag, newtag => {
+                tag_id = newtag.id;
             });
-
         }
+        let newRecipeTag = {
+            RecipeId: recipe_id,
+            TagId: tag_id
+        }
+
+        api.postRequest(CONSTANTS.RecipeTagsAPIURL, newRecipeTag, recipetag => {
+            console.log(recipetag);
+        });
+        
+    }
+
+    api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
+        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
     });
 }
 
