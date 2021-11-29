@@ -290,6 +290,10 @@ function CheckTags() {
                 tag_id = tag.id;
             });
 
+        }
+    });
+}
+
 
 //Hide All Recipes Function
 export function hideRecipeList() {
