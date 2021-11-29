@@ -310,7 +310,7 @@ function CheckTags() {
 
     api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
         CONSTANTS.title.innerText = "Recipe Details";
-        CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
+        CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(recipe);
     });
 }
 

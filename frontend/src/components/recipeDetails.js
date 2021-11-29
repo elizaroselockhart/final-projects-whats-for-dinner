@@ -6,7 +6,6 @@ import {
 
 
 export default {
-    DisplayRecipeDetails,
     recipeDetails
 }
 
