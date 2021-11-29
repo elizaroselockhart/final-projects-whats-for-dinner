@@ -1,38 +1,51 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
+import {
+    displayRecipes
+} from "./recipes";
 
 
 export default {
     DisplayRecipeDetails,
+    recipeDetails
 }
 
-function DisplayRecipeDetails(recipe) {
+function recipeDetails(recipe) {
+    console.log(recipe)
 
-    if(recipe.ingredients == null){
-       recipe.ingredients = "";
+    let parsedIngredients = [];
+    if (recipe.ingredients != null) {
+        parsedIngredients = recipe.ingredients.split(";")
     }
 
-    let IngredientList = recipe.ingredients.split(";");
+    //for editing/creating a recipe:
+    // remove any existing semicolon's from the user's input
+    // append semi colon to the end of each ingredient
+    // append all ingredients together
 
-    CONSTANTS.title.innerText = "Recipe Details";
-    
-    return `
-    <button id="btnEditRecipe">Edit Recipe</button>
-    <h2>Recipe Title: ${recipe.name}</h2>      
+    // for the reverese 
+    // split by semicolor (in a separate variable)
+    // treat like array
+
+    // to consider -> using a multicharacter separator (|;|)
+
+    return ` 
+        <h1>Recipe Details</h1>
+        <h2>Recipe Title: ${recipe.name}</h2>     
+        <input type="hidden" value='${recipe.id}'/> 
    
-    <ol>
-        ${IngredientList.map(ingredient => {
+    <ul>
+        ${parsedIngredients.map(ingredient => {
             return `
                 <li>
                     <h4>
                         <span class="ingredientName">${ingredient}</span>
-                        <input type='hidden' value='${recipe.id}' />
                     </h4>
                 </li>
                 
             `;
         }).join('')}
-    </ol>
+    </ul>
     
     `;
 }
