@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Whats_For_Dinner;
 
 namespace Whats_For_Dinner.Migrations
 {
     [DbContext(typeof(RecipeCollectionContext))]
-    partial class RecipeCollectionContextModelSnapshot : ModelSnapshot
+    [Migration("20211123210626_updated-recipe-model-and-seed-data")]
+    partial class updatedrecipemodelandseeddata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
