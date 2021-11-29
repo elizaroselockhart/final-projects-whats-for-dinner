@@ -7,6 +7,17 @@ namespace Whats_For_Dinner.Models
 {
     public class RecipeTag
     {
+        public RecipeTag()
+        {
+
+        }
+
+        public RecipeTag(int recipeid, int tagid)
+        {
+            this.RecipeId = recipeid;
+            this.TagId = tagid;
+        }
+
         public int Id { get; set; }
         public int RecipeId { get; set; }
         public int TagId { get; set; }

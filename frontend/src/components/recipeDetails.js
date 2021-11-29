@@ -3,27 +3,30 @@ import * as CONSTANTS from "../components/constants";
 
 
 export default {
-    recipeDetails,
+    DisplayRecipeDetails,
 }
 
-function recipeDetails(recipe) {
+function DisplayRecipeDetails(recipe) {
 
     if(recipe.ingredients == null){
-       recipe.ingredients = [];
+       recipe.ingredients = "";
     }
 
+    let IngredientList = recipe.ingredients.split(";");
 
-    return ` 
-        <h1>Recipe Details</h1>
-        <h2>Recipe Title: ${recipe.title}</h2>      
+    CONSTANTS.title.innerText = "Recipe Details";
+    
+    return `
+    <button id="btnEditRecipe">Edit Recipe</button>
+    <h2>Recipe Title: ${recipe.title}</h2>      
    
     <ol>
-        ${recipe.ingredients.map(song => {
+        ${IngredientList.map(ingredient => {
             return `
                 <li>
                     <h4>
-                        <span class="ingredientName">${ingredient.name}</span>
-                        <input type='hidden' value='${ingredient.recipeId}' />
+                        <span class="ingredientName">${ingredient}</span>
+                        <input type='hidden' value='${recipe.id}' />
                     </h4>
                 </li>
                 
@@ -32,4 +35,29 @@ function recipeDetails(recipe) {
     </ol>
     
     `;
+}
+
+//To Edit Recipe:
+//NOTE: Create another constructor for Recipe.
+
+//1. Setup HTML for editing recipe.
+//2. Setup HTML for adding ingredients (including button).
+//3. Pull ingredients into an array.
+//3. Add event listener for ingredient button that pushes the new ingredient input into that array.
+//4. Setup save button event listener.
+    //4a. Once in an array, we can feed the array of ingredient strings into the post method.
+//5. Call the above two functions.
+
+//Recipe Model has:
+//Id, Name, Ingredient List, Instructions, Description, Tag List
+//Name, Instructions, Description
+
+//Details -> Edit 
+//              -> Ingredients 
+
+function EditRecipeForm(recipe) {
+    CONSTANTS.title.innerText = "Edit Recipe";
+    let IngredientList = recipe.ingredients.split(";");
+
+    return ``;
 }

@@ -1,7 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
+import recipeDetails from "./recipeDetails";
 import recipes from "../components/recipes";
-//import recipeDetails from "./recipeDetails";
 
 export default {
     setupNavBar,
@@ -34,5 +34,3 @@ export function setupPantry() {
         });
     });
 }
-
-
