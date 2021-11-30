@@ -1,0 +1,173 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+  nav {
+    margin: 5px;
+    height: 10%;
+    width: 100%;
+    position: fixed;
+    text-align: center;
+    border: none;  
+  }
+
+#navPantry {
+    background-image: url(../img/pantry.png);
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-between; 
+    font-size: 18px;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    list-style: none;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+  }
+
+.searchBar {
+    border-radius: 10px;
+    width: 175px;
+    height: 24px;
+    padding: 2px;
+    background-image: url(../img/magnifying-glass.png);
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    cursor: pointer; 
+  }
+
+  input:focus {
+      outline: none;
+  }
+
+#contentSearchBar {
+      margin-top: 10px;
+      margin-bottom: 10px;
+  }
+
+#pageContent {
+      text-align: center;
+      padding: 48px;
+  }
+
+#pageTitle {
+    text-align: center;
+    padding-top: 100px; 
+  }
+
+#pageTitle {
+    font-size: 90px;
+    font-family: 'Titan One', sans-serif;
+}
+
+p {
+    font-size: 20px;
+    color: rgb(151, 146, 146);
+}
+
+#login {
+    padding-left: 570px;
+} 
+
+#username {
+    padding: 12px 20px;
+    margin: 40px 0 40px 0;
+    display: block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 275px;
+    height: 44px;
+    background-image: url(../img/user.png);
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    cursor: pointer;
+    text-align: center;
+}
+
+#password {
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 275px;
+    height: 44px;
+    background-image: url(../img/hidden.png);
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    cursor: pointer;
+    text-align: center;
+}
+
+#positionLoginBtn {
+    padding-left: 640px;
+}
+
+#loginBtn {
+    display: block;
+    box-sizing: border-box;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    width: 150px;
+    height: 40px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer; 
+}
+
+#registerLink {
+    display: block;
+    box-sizing: border-box;
+    padding-right: 5px;
+    padding-left: 19px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline; 
+    color: rgb(51, 164, 230);
+}
+
+#loginAvatar {
+    padding-left: 19px;
+}
+
+#registerBtn {
+    background-color: white;
+    border: none;
+}
+
+
+
+
+
+ 
+
+  

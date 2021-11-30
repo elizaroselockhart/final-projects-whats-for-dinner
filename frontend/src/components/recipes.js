@@ -8,15 +8,27 @@ export default {
     setupRecipeDeleteButton,
     SetupAddRecipeEventListeners,
     setupSearchBar,
+    displayTagCheckbox,
+    searchByTags,
     hideRecipeList
 }
 
 function displayRecipes(recipes) {
-    return `
+    return`
     <button id='btnNewRecipe'>Add a Recipe!</button>
+
     <form id="search-recipes">
-    <input type="text" placeholder="Search recipes..."/>
+    <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
     </form>
+
+    <input type="checkbox" id="searchByTags"/>
+    <label for="searchByTags">Search By Tags</label>
+
+    <div id="tagCheckboxes">
+    <input type="checkbox" id="searchTags"/>
+    <label for="searchTags">Tag Name</label>
+    </div>
+
     <div id="recipeList">
     <ol>
         ${recipes.map(recipe => {
@@ -34,6 +46,7 @@ function displayRecipes(recipes) {
         }).join('')}
     </ol>
     </div>
+ 
     <input type="checkbox" id="hide"/>
     <label for="hide">Hide all recipes</label>
     `;
@@ -50,7 +63,7 @@ function setupRecipeLinks() {
 
             //API Call
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
-                CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(data);
+                CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(data); // grab all of our tags, feed them into recipe.Details
                 recipes.setupSearchBar();
             });
         });
@@ -70,7 +83,8 @@ function setupRecipeDeleteButton() {
                 CONSTANTS.content.innerHTML = displayRecipes(data);
                 setupRecipeDeleteButton();
                 setupRecipeLinks();
-                recipes.setupSearchBar();
+                setupSearchBar();
+                searchByTags();
             });
         });
     });
@@ -78,7 +92,7 @@ function setupRecipeDeleteButton() {
 
 export function setupSearchBar() {
     let list = document.getElementById('recipeList');
-    const searchbar = document.querySelector('input');
+    const searchbar = document.getElementById('contentSearchBar');
     searchbar.addEventListener('keyup', function(e){
         console.log("Typing in search bar!");
         const term = e.target.value.toLowerCase();
@@ -94,6 +108,37 @@ export function setupSearchBar() {
     });
 }
 
+export function searchByTags() {
+    let searchTags = document.getElementById('tagCheckboxes');
+    const searchbar = document.querySelector('input');
+    searchbar.addEventListener('keyup', function(e){
+        console.log("Searching for tags!");
+        const term = e.target.value.toLowerCase();
+        const tags = searchTags.document.getElementById("searchTags");
+        tags.forEach(function(tag){
+            const name = tag.firstElementChild.textContent;
+            if(name.toLowerCase().indexOf(term) != -1){
+                tag.style.display = "block";
+            }else {
+                tag.style.display = "none";
+            }
+        });
+    });
+}
+
+export function displayTagCheckbox() {
+    let searchTags = document.getElementById('tagCheckboxes');
+    const tagCheckbox = document.getElementById("searchByTags");
+    tagCheckbox.addEventListener('change', function(e){
+        console.log("search by tags");
+        if(tagCheckbox.checked){
+            searchTags.style.display = "none";
+        }else {
+            searchTags.style.display = "initial";
+
+        }
+    });
+}
 
 function SetupAddRecipeEventListeners() {
     let btnNewRecipe = document.getElementById('btnNewRecipe');
