@@ -32,14 +32,13 @@ function displayRecipes(recipes) {
 
     <div id="tagList">
     <ul>
-         ${recipes.tags.map(recipe => {
-           return`
-           <li>
-                   ${recipe.tags.tag.name}                      
-           </li>
-           `;
-       }).join('')}
-   </ul>
+        
+        ${recipe.tags.map( tag => {
+              return`
+             <li>${tag.tag.name}</li>
+             `;
+         }).join('')}
+     </ul>
    </div>
 
     <div id="recipeList">
