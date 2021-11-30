@@ -1,41 +1,85 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
+import recipes, {displayRecipes} from "./recipes";
+import tags from "./tags";
 
 
 export default {
-    DisplayRecipeDetails,
+    recipeDetails
 }
 
-function DisplayRecipeDetails(recipe) {
+function recipeDetails(recipe) {
+    
+    //console.log(recipe)
 
-    if(recipe.ingredients == null){
-       recipe.ingredients = "";
+    let parsedIngredients = [];
+    if (recipe.ingredients != null) {
+        parsedIngredients = recipe.ingredients.split(";")
     }
 
-    let IngredientList = recipe.ingredients.split(";");
+    //for editing/creating a recipe:
+    // remove any existing semicolon's from the user's input
+    // append semi colon to the end of each ingredient
+    // append all ingredients together
 
-    CONSTANTS.title.innerText = "Recipe Details";
-    
-    return `
-    <button id="btnEditRecipe">Edit Recipe</button>
-    <h2>Recipe Title: ${recipe.title}</h2>      
-   
-    <ol>
-        ${IngredientList.map(ingredient => {
+    // for the reverese 
+    // split by semicolor (in a separate variable)
+    // treat like array
+
+    // to consider -> using a multicharacter separator (|;|)
+
+    return ` 
+        <h1>Recipe Details</h1>
+        <h2>${recipe.name}</h2>     
+        <input type="hidden" value='${recipe.id}'/> 
+        <section> 
+        <h4> Description: </h4> <p>${recipe.description}</p>
+            
+
+    <h3> Ingredients: </h3>      
+    <ul>
+        ${parsedIngredients.map(ingredient => {
             return `
                 <li>
                     <h4>
                         <span class="ingredientName">${ingredient}</span>
-                        <input type='hidden' value='${recipe.id}' />
                     </h4>
                 </li>
                 
             `;
         }).join('')}
-    </ol>
+    </ul>
+
+     <h3> Instructions: </h3> <p>${recipe.instructions}</p>
+
+     <h5>Tags:</h5>
+       <ul>
+        
+        ${recipe.tags.map( tag => {
+              return`
+             <li>${tag.tag.name}</li>
+             `;
+         }).join('')}
+     </ul>
+
+
+
+
+
+
     
+    </section>
     `;
 }
+
+    //<h5>Tags: </h5>
+    //  <ul>
+    //     ${recipeTag.map(tag=> {
+    //         return`
+    //         <li>${tag.name}</li>
+    //         `;
+    //     }).join('')}
+    // </ul>
 
 //To Edit Recipe:
 //NOTE: Create another constructor for Recipe.
