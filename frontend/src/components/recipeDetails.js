@@ -1,8 +1,7 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
-import {
-    displayRecipes
-} from "./recipes";
+import recipes, {displayRecipes} from "./recipes";
+import tags from "./tags";
 
 
 export default {
@@ -10,7 +9,8 @@ export default {
 }
 
 function recipeDetails(recipe) {
-    console.log(recipe)
+    
+    //console.log(recipe)
 
     let parsedIngredients = [];
     if (recipe.ingredients != null) {
@@ -30,9 +30,13 @@ function recipeDetails(recipe) {
 
     return ` 
         <h1>Recipe Details</h1>
-        <h2>Recipe Title: ${recipe.name}</h2>     
+        <h2>${recipe.name}</h2>     
         <input type="hidden" value='${recipe.id}'/> 
-   
+        <section> 
+        <h4> Description: </h4> <p>${recipe.description}</p>
+            
+
+    <h3> Ingredients: </h3>      
     <ul>
         ${parsedIngredients.map(ingredient => {
             return `
@@ -45,9 +49,37 @@ function recipeDetails(recipe) {
             `;
         }).join('')}
     </ul>
+
+     <h3> Instructions: </h3> <p>${recipe.instructions}</p>
+
+     <h5>Tags:</h5>
+       <ul>
+        
+        ${recipe.tags.map( tag => {
+              return`
+             <li>${tag.tag.name}</li>
+             `;
+         }).join('')}
+     </ul>
+
+
+
+
+
+
     
+    </section>
     `;
 }
+
+    //<h5>Tags: </h5>
+    //  <ul>
+    //     ${recipeTag.map(tag=> {
+    //         return`
+    //         <li>${tag.name}</li>
+    //         `;
+    //     }).join('')}
+    // </ul>
 
 //To Edit Recipe:
 //NOTE: Create another constructor for Recipe.
