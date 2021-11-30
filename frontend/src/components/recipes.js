@@ -1,6 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
+import tags from "./tags";
 
 export default {
     displayRecipes,
@@ -8,13 +9,13 @@ export default {
     setupRecipeDeleteButton,
     SetupAddRecipeEventListeners,
     setupSearchBar,
-    setupSearchByTagsCheckBox,
+    setupSearchBy,
     displaySearchByTagCheckbox,
     displayIndividualTagCheckbox,
     hideRecipeList
 }
 
-function displayRecipes(recipes) {
+function displayRecipes(recipes, tags) {
     return`
     <button id='btnNewRecipe'>Add a Recipe!</button>
 
@@ -25,17 +26,18 @@ function displayRecipes(recipes) {
     <input type="checkbox" id="searchByTags"/>
     <label for="searchByTags">Search By Tags</label>
 
-    <div id="tagCheckboxes">
-    <input type="checkbox" id="searchTags"/>
-    <label for="searchTags">Tag Name</label>
-    </div>
-
     <div id="tagList">
     <ul>
         
-        ${recipe.tags.map( tag => {
+        ${tags.map(tag => {
               return`
-             <li>${tag.tag.name}</li>
+             <li class="tag">
+             <span class="tagDetails">
+             ${tag.name} 
+            </span>
+             <input type="checkbox" id="tag-${tag.id}" class="tagCheckbox"/>
+             </li>
+             
              `;
          }).join('')}
      </ul>
@@ -45,16 +47,17 @@ function displayRecipes(recipes) {
     <ol>
         ${recipes.map(recipe => {
             return`
-            <li>
+            <li class="recipe">
                 <h4>
                 <span class="recipeDetails">
                     ${recipe.name} 
                 </span>
                 <input type="hidden" value='${recipe.id}'/>
-                <button id="${recipe.id}" class="recipeDelete">Delete</button>
+                <input type="hidden" value='${recipe.tags}'/>
+                <button id="${recipe.id}" class="recipeDelete">Delete</button>                
                 </h4>          
             </li>
-            `;
+            `; // add some way to interact with recipe tags here
         }).join('')}
     </ol>
     </div>
@@ -110,7 +113,7 @@ export function setupSearchBar() {
     searchbar.addEventListener('keyup', function(e){
         console.log("Typing in search bar!");
         const term = e.target.value.toLowerCase();
-        const recipes = list.querySelectorAll('li');
+        const recipes = list.getElementsByClassName("recipe");
         Array.from(recipes).forEach(function(recipe){
             const name = recipe.firstElementChild.textContent;
             if(name.toLowerCase().indexOf(term) != -1){
@@ -122,13 +125,13 @@ export function setupSearchBar() {
     });
 }
 
-export function setupSearchByTagsCheckBox() {
-    let searchByTags = document.getElementById('searchByTags');
+// tags
+export function setupSearchBy() {
     const searchbar = document.getElementById('contentSearchBar');
     searchbar.addEventListener('keyup', function(e){
         console.log("Searching for tags!");
         const term = e.target.value.toLowerCase();
-        const tags = document.getElementById("tagList");
+        const tags = Array.from(document.getElementsByClassName("tag"));
         tags.forEach(function(tag){
             const name = tag.firstElementChild.textContent;
             if(name.toLowerCase().indexOf(term) != -1){
@@ -141,21 +144,31 @@ export function setupSearchByTagsCheckBox() {
 }
 
 export function displayIndividualTagCheckbox() {
-    const individualTagCheckbox = document.getElementById("searchTags");
-    individualTagCheckbox.addEventListener('change', function(e){
-        console.log("display individual tag checkboxes");
-        if(individualTagCheckbox.checked){
-            setupSearchByTagsCheckBox();
-        }
+    let list = document.getElementById('recipeList');
+    const checkBoxes = Array.from(document.getElementsByClassName("tagCheckbox"));
+    checkBoxes.forEach(element => {
+        element.addEventListener('change', function(e){
+            const recipes = Array.from(list.getElementsByClassName("recipe"));
+            console.log(recipes);
+            //trying to access tags property of a recipe, but what we're grabbing isn't the recipe, its the HTML element corresponding to that recipe
+            recipes.forEach(recipe => {
+                let recipeTags = recipe.tags.map(tag => "tag-"+tag.id)
+                if(recipeTags.includes(element.id)){
+                    recipe.style.display = "block";
+                }else {
+                    recipe.style.display = "none";
+                }
+            });
+        });
     });
 }
 
 export function displaySearchByTagCheckbox() {
-    const tagCheckbox = document.getElementById("searchByTags");
-    tagCheckbox.addEventListener('change', function(e){
+    const searchByTagCheckbox = document.getElementById("searchByTags");
+    searchByTagCheckbox.addEventListener('change', function(e){
         console.log("search by tags");
         if(tagCheckbox.checked){
-            setupSearchByTagsCheckBox();
+            setupSearchBy();
         }
     });
 }

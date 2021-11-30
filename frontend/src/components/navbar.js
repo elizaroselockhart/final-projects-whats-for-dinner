@@ -54,7 +54,8 @@ export function setupPantry() {
             CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags); // this is just all of the recipes
             recipes.setupRecipeLinks();
             recipes.setupSearchBar();
-            recipes.setupSearchByTagsCheckBox();
+            recipes.setupSearchBy();
+            recipes.displayIndividualTagCheckbox()
             recipes.hideRecipeList();   
         });
     });
