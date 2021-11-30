@@ -47,13 +47,14 @@ export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
-        api.getRequest(CONSTANTS.RecipesAPIURL, data => {
+        api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
             CONSTANTS.title.innerText = "";
             CONSTANTS.tabTitle.innerText = "All Recipes";
-            CONSTANTS.content.innerHTML = recipes.displayRecipes(data);
+            console.log(data);
+            CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags); // this is just all of the recipes
             recipes.setupRecipeLinks();
             recipes.setupSearchBar();
-            recipes.searchByTags();
+            recipes.setupSearchByTagsCheckBox();
             recipes.hideRecipeList();   
         });
     });

@@ -8,8 +8,9 @@ export default {
     setupRecipeDeleteButton,
     SetupAddRecipeEventListeners,
     setupSearchBar,
-    displayTagCheckbox,
-    searchByTags,
+    setupSearchByTagsCheckBox,
+    displaySearchByTagCheckbox,
+    displayIndividualTagCheckbox,
     hideRecipeList
 }
 
@@ -28,6 +29,18 @@ function displayRecipes(recipes) {
     <input type="checkbox" id="searchTags"/>
     <label for="searchTags">Tag Name</label>
     </div>
+
+    <div id="tagList">
+    <ul>
+         ${recipes.tags.map(recipe => {
+           return`
+           <li>
+                   ${recipe.tags.tag.name}                      
+           </li>
+           `;
+       }).join('')}
+   </ul>
+   </div>
 
     <div id="recipeList">
     <ol>
@@ -51,6 +64,8 @@ function displayRecipes(recipes) {
     <label for="hide">Hide all recipes</label>
     `;
 }
+
+
 
 function setupRecipeLinks() {
     let recipeLinks = document.querySelectorAll(".recipeDetails");
@@ -108,13 +123,13 @@ export function setupSearchBar() {
     });
 }
 
-export function searchByTags() {
-    let searchTags = document.getElementById('tagCheckboxes');
-    const searchbar = document.querySelector('input');
+export function setupSearchByTagsCheckBox() {
+    let searchByTags = document.getElementById('searchByTags');
+    const searchbar = document.getElementById('contentSearchBar');
     searchbar.addEventListener('keyup', function(e){
         console.log("Searching for tags!");
         const term = e.target.value.toLowerCase();
-        const tags = searchTags.document.getElementById("searchTags");
+        const tags = document.getElementById("tagList");
         tags.forEach(function(tag){
             const name = tag.firstElementChild.textContent;
             if(name.toLowerCase().indexOf(term) != -1){
@@ -126,16 +141,22 @@ export function searchByTags() {
     });
 }
 
-export function displayTagCheckbox() {
-    let searchTags = document.getElementById('tagCheckboxes');
+export function displayIndividualTagCheckbox() {
+    const individualTagCheckbox = document.getElementById("searchTags");
+    individualTagCheckbox.addEventListener('change', function(e){
+        console.log("display individual tag checkboxes");
+        if(individualTagCheckbox.checked){
+            setupSearchByTagsCheckBox();
+        }
+    });
+}
+
+export function displaySearchByTagCheckbox() {
     const tagCheckbox = document.getElementById("searchByTags");
     tagCheckbox.addEventListener('change', function(e){
         console.log("search by tags");
         if(tagCheckbox.checked){
-            searchTags.style.display = "none";
-        }else {
-            searchTags.style.display = "initial";
-
+            setupSearchByTagsCheckBox();
         }
     });
 }
@@ -151,22 +172,6 @@ function SetupAddRecipeEventListeners() {
         SetupAddRecipeBtn();
     });
 }
-
-//To Add Recipe:
-//1. Setup HTML for addrecipe.
-//2. Setup HTML for addingredient button.
-//3. Setup event listener for add recipe button and call API.
-//4. Create a function that calls those three buttons.
-//NOTE: Create another constructor for Recipe.
-
-//Function Names:
-//SetupAddRecipeForm
-    //->What elements do we need in this form?
-    //--Name: Name Input
-    //Description: Description Input
-    //Ingredients: Dynamically updating function
-    //Instructions: Instructions input
-    //Tags: Dynamically updating function
 
 function SetupAddRecipeForm() {
     CONSTANTS.title.innerText = "Add Recipe";
