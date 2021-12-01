@@ -129,7 +129,7 @@ function SetupAddRecipeForm() {
             <h4>Description:</h4><input type='text' id='recipeDescription' placeholder='Describe your recipe!' />
             <h4>Ingredient List</h4>
             <ul id='recipeIngredients'></ul>
-                <input type='text' id='ingredient' value='Add ingredient.' placeholder='Add ingredient.' />
+                <input type='text' id='ingredient' placeholder='Add ingredient.' />
                 <button id='btnAddIngredient'>Add Ingredient</button>
             <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
 
@@ -223,6 +223,7 @@ function SetupDynamicTagsList() {
         AddedTag.setAttribute('id', selectList.options[selectList.selectedIndex].value);
         AddedTag.classList.add('addedTag');
         let AddedTagText = selectList.options[selectList.selectedIndex].text;
+        AddedTag.setAttribute('data-existingtagname', AddedTagText);
         AddedTag.appendChild(document.createTextNode(AddedTagText));
 
         let removeTagbtn = document.createElement('button');
@@ -275,6 +276,7 @@ function PopulateTagsDDL(){
 }
 
 function UpdateRecipeTags() {
+    let recipe_id = document.getElementById('recipe_id').value;
     let btnFinishAddingTags = document.getElementById('btnFinishRecipe');
 
     let Tag = {
@@ -282,22 +284,25 @@ function UpdateRecipeTags() {
         Name: 0
     }
 
+    let tag_id = 0;
+    let tag_name = "anyString";
+
     btnFinishAddingTags.addEventListener('click', function() {
-        let AddedTags = Array.from(document.getElementsByClassName('addedTags'));
+        let ListofAddedTags = document.getElementById('tagList');
+        let AddedTags = ListofAddedTags.getElementsByTagName('li');
         let TagsToAddToRecipe = [];
         console.log("AddedTags");
         console.log(AddedTags);
-        AddedTags.forEach(tag => {
+        for (const tag of AddedTags) {
 
-            if (tag.classList.contains(newTag)) {
+            if (tag.classList.contains('newTag')) {
                 tag_id = 0;
                 tag_name = tag.id;
             }
 
             else {
                 tag_id = tag.id;
-                tag_name = tag.value;
-
+                tag_name = tag.getAttribute('data-existingtagname');
             }
 
             Tag = {
@@ -307,7 +312,7 @@ function UpdateRecipeTags() {
             console.log("Tag object:");
             console.log(Tag);
             TagsToAddToRecipe.push(Tag);
-        });
+        }
         console.log("Tags to add to recipe");
         console.log(TagsToAddToRecipe);
         
