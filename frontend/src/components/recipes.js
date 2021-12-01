@@ -9,9 +9,10 @@ export default {
     setupRecipeDeleteButton,
     SetupAddRecipeEventListeners,
     setupSearchBar,
-    setupSearchBy,
+    setupSearchByTag,
     displaySearchByTagCheckbox,
     displayIndividualTagCheckbox,
+    searchWord,
     hideRecipeList
 }
 
@@ -33,9 +34,10 @@ function displayRecipes(recipes, tags) {
               return`
              <li class="tag">
              <span class="tagDetails">
+             <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
              ${tag.name} 
             </span>
-             <input type="checkbox" id="tag-${tag.id}" class="tagCheckbox"/>
+             
              </li>
              
              `;
@@ -107,26 +109,28 @@ function setupRecipeDeleteButton() {
     });
 }
 
-export function setupSearchBar() {
+function searchWord(word){
     let list = document.getElementById('recipeList');
-    const searchbar = document.getElementById('contentSearchBar');
-    searchbar.addEventListener('keyup', function(e){
-        console.log("Typing in search bar!");
-        const term = e.target.value.toLowerCase();
-        const recipes = list.getElementsByClassName("recipe");
-        Array.from(recipes).forEach(function(recipe){
-            const name = recipe.firstElementChild.textContent;
-            if(name.toLowerCase().indexOf(term) != -1){
-                recipe.style.display = "block";
-            }else {
-                recipe.style.display = "none";
-            }
-        });
+    const recipes = list.getElementsByClassName("recipe");
+    Array.from(recipes).forEach(function(recipe){
+        const name = recipe.firstElementChild.textContent;
+        if(name.toLowerCase().indexOf(word) != -1){
+            recipe.style.display = "block";
+        }else {
+            recipe.style.display = "none";
+        }
     });
 }
 
-// tags
-export function setupSearchBy() {
+export function setupSearchBar() {
+    const searchbar = document.getElementById('contentSearchBar');
+    searchbar.addEventListener('keyup', function(e){
+        console.log("Typing in search bar!");
+        searchWord(e.target.value.toLowerCase());
+    });
+}
+
+export function setupSearchByTag() {
     const searchbar = document.getElementById('contentSearchBar');
     searchbar.addEventListener('keyup', function(e){
         console.log("Searching for tags!");
@@ -149,16 +153,8 @@ export function displayIndividualTagCheckbox() {
     checkBoxes.forEach(element => {
         element.addEventListener('change', function(e){
             const recipes = Array.from(list.getElementsByClassName("recipe"));
-            console.log(recipes);
-            //trying to access tags property of a recipe, but what we're grabbing isn't the recipe, its the HTML element corresponding to that recipe
-            recipes.forEach(recipe => {
-                let recipeTags = recipe.tags.map(tag => "tag-"+tag.id)
-                if(recipeTags.includes(element.id)){
-                    recipe.style.display = "block";
-                }else {
-                    recipe.style.display = "none";
-                }
-            });
+            console.log("tags checked");
+            searchWord(element.id);           
         });
     });
 }
@@ -167,8 +163,8 @@ export function displaySearchByTagCheckbox() {
     const searchByTagCheckbox = document.getElementById("searchByTags");
     searchByTagCheckbox.addEventListener('change', function(e){
         console.log("search by tags");
-        if(tagCheckbox.checked){
-            setupSearchBy();
+        if(searchByTagCheckbox.checked){
+            setupSearchByTag();
         }
     });
 }
