@@ -24,11 +24,11 @@ export function hideNavSearchBarDisplayRecipes() {
                 CONSTANTS.title.innerText = "";
                 CONSTANTS.tabTitle.innerText = "All Recipes";
                 console.log(data);
-                CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes);
+                CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
                 recipes.setupSearchBar();
                 recipes.setupRecipeLinks();
-                recipes.setupSearchByTagCheckbox(data.allTags);
-                recipes.setupIndividualTagCheckbox();
+                recipes.setupSearchByTagCheckbox();
+                recipes.setupCheckboxFilter();
                 recipes.hideRecipeList();   
         });
     });
