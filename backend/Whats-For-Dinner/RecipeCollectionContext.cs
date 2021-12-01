@@ -11,12 +11,12 @@ namespace Whats_For_Dinner
     {
         //Add DBsets here! :)
         public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<RecipeTag> RecipeTags { get; set; }
+       // public DbSet<RecipeTag> RecipeTag { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            var ConnectionString = "Server=(localdb)\\mssqllocaldb; Database=RecipeCollectionDB; Trusted_Connection=True";
+            var ConnectionString = "Server=(localdb)\\mssqllocaldb; Database=RecipeCollectionDB2; Trusted_Connection=True";
 
             builder.UseSqlServer(ConnectionString).UseLazyLoadingProxies();
             base.OnConfiguring(builder);
@@ -69,21 +69,21 @@ namespace Whats_For_Dinner
                 new Tag() { Id = 11, Name = "Italian" }
                 );
 
-            builder.Entity<RecipeTag>().HasData(
-                //new RecipeTag() { Id = , RecipeId = , TagId = }
-                new RecipeTag() { Id = 1, RecipeId = 1, TagId = 1 },
-                new RecipeTag() { Id = 2, RecipeId = 1, TagId = 2 }, 
-                new RecipeTag() { Id = 3, RecipeId = 1, TagId = 3 },
-                new RecipeTag() { Id = 4, RecipeId = 1, TagId = 4 },
-                new RecipeTag() { Id = 5, RecipeId = 2, TagId = 5 },
-                new RecipeTag() { Id = 6, RecipeId = 2, TagId = 6 },
-                new RecipeTag() { Id = 7, RecipeId = 2, TagId = 7 },
-                new RecipeTag() { Id = 8, RecipeId = 3, TagId = 5 },
-                new RecipeTag() { Id = 9, RecipeId = 3, TagId = 8 },
-                new RecipeTag() { Id = 10, RecipeId = 3, TagId = 9 },
-                new RecipeTag() { Id = 11, RecipeId = 3, TagId = 10 },
-                new RecipeTag() { Id = 12, RecipeId = 3, TagId = 11 }
-                );
+            //builder.Entity<RecipeTag>().HasData(
+            //    //new RecipeTag() { Id = , RecipeId = , TagId = }
+            //    new RecipeTag() { Id = 1, RecipesId = 1, TagsId = 1 },
+            //    new RecipeTag() { Id = 2, RecipesId = 1, TagsId = 2 }, 
+            //    new RecipeTag() { Id = 3, RecipesId = 1, TagsId = 3 },
+            //    new RecipeTag() { Id = 4, RecipesId = 1, TagsId = 4 },
+            //    new RecipeTag() { Id = 5, RecipesId = 2, TagsId = 5 },
+            //    new RecipeTag() { Id = 6, RecipesId = 2, TagsId = 6 },
+            //    new RecipeTag() { Id = 7, RecipesId = 2, TagsId = 7 },
+            //    new RecipeTag() { Id = 8, RecipesId = 3, TagsId = 5 },
+            //    new RecipeTag() { Id = 9, RecipesId = 3, TagsId = 8 },
+            //    new RecipeTag() { Id = 10, RecipesId = 3, TagsId = 9 },
+            //    new RecipeTag() { Id = 11, RecipesId = 3, TagsId = 10 },
+            //    new RecipeTag() { Id = 12, RecipesId = 3, TagsId = 11 }
+            //    );
 
 
             base.OnModelCreating(builder);

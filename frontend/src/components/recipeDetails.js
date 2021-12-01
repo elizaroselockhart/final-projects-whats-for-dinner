@@ -1,8 +1,5 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
-import {
-    displayRecipes
-} from "./recipes";
 
 
 export default {
@@ -71,5 +68,17 @@ function EditRecipeForm(recipe) {
     CONSTANTS.title.innerText = "Edit Recipe";
     let IngredientList = recipe.ingredients.split(";");
 
-    return ``;
+    return `
+    <div id='AddRecipeForm'>
+        <h4>Name:</h4><input type='text' id='recipeName' placeholder='Enter the recipe name.'/>
+        <h4>Description:</h4><input type='text' id='recipeDescription' placeholder='Describe your recipe!' />
+        <h4>Ingredient List</h4>
+        <ul id='recipeIngredients'></ul>
+            <input type='text' id='ingredient' value='Add ingredient.' placeholder='Add ingredient.' />
+            <button id='btnAddIngredient'>Add Ingredient</button>
+        <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
+
+        <button id='btnNextPage'>Next</button>
+    </div>
+    `;
 }

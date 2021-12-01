@@ -1,12 +1,10 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
-import recipeDetails from "./recipeDetails";
 import recipes from "../components/recipes";
 
 export default {
     setupNavBar,
     setupPantry
-
 }
 
 export function setupNavBar(){
@@ -29,6 +27,7 @@ export function setupPantry() {
             CONSTANTS.tabTitle.innerText = "All Recipes";
             CONSTANTS.content.innerHTML = recipes.displayRecipes(data);
             recipes.setupRecipeLinks();
+            recipes.setupRecipeDeleteButton();
             recipes.setupSearchBar();
             recipes.hideRecipeList();  
             recipes.SetupAddRecipeEventListeners(); 

@@ -51,7 +51,7 @@ function setupRecipeLinks() {
             //API Call
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
                 CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(data);
-                recipes.setupSearchBar();
+                setupSearchBar();
             });
         });
     });
@@ -65,12 +65,13 @@ function setupRecipeDeleteButton() {
             console.log("delete button clicked");
             let recipeId = event.target.id;
 
-
             api.deleteRequest(CONSTANTS.RecipesAPIURL, recipeId, data => {
                 CONSTANTS.content.innerHTML = displayRecipes(data);
                 setupRecipeDeleteButton();
                 setupRecipeLinks();
-                recipes.setupSearchBar();
+                setupSearchBar();
+                hideRecipeList();  
+                SetupAddRecipeEventListeners(); 
             });
         });
     });
@@ -123,15 +124,17 @@ function SetupAddRecipeEventListeners() {
 function SetupAddRecipeForm() {
     CONSTANTS.title.innerText = "Add Recipe";
     CONSTANTS.content.innerHTML = `
-        <h4>Name:</h4><input type='text' id='recipeName' placeholder='Enter the recipe name.'/>
-        <h4>Description:</h4><input type='text' id='recipeDescription' placeholder='Describe your recipe!' />
-        <h4>Ingredient List</h4>
-        <ul id='recipeIngredients'></ul>
-            <input type='text' id='ingredient' placeholder='Add ingredient.' />
-            <button id='btnAddIngredient'>Add Ingredient</button>
-        <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
+        <div id='AddRecipeForm'>
+            <h4>Name:</h4><input type='text' id='recipeName' placeholder='Enter the recipe name.'/>
+            <h4>Description:</h4><input type='text' id='recipeDescription' placeholder='Describe your recipe!' />
+            <h4>Ingredient List</h4>
+            <ul id='recipeIngredients'></ul>
+                <input type='text' id='ingredient' value='Add ingredient.' placeholder='Add ingredient.' />
+                <button id='btnAddIngredient'>Add Ingredient</button>
+            <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
 
-        <button id='btnNextPage'>Next</button>
+            <button id='btnNextPage'>Next</button>
+        </div>
     `;
 }
 
@@ -155,7 +158,7 @@ function SetupAddIngredient() {
 
         NewIngredient.appendChild(removebtn);
         IngredientList.appendChild(NewIngredient);
-        ingredient.setAttribute('placeholder', 'Add a new ingredient');
+        ingredient.setAttribute('value', '');
     })
 }
 
@@ -164,46 +167,48 @@ function SetupAddTags() {
     let ingredientElements = document.getElementsByClassName('addedIngredients');
     let ingredients = "";
 
-    for (const element of ingredientElements) {
-        ingredients = ingredients + element.id + ";"
-    }
-
     btnAddTags.addEventListener('click', function() {
+
+        for (const element of ingredientElements) {
+            ingredients = ingredients + element.id + ";"
+        }
+        console.log(ingredients);
+
         const newRecipe = {
             Name: document.getElementById('recipeName').value,
             Description: document.getElementById('recipeDescription').value,
             Ingredients: ingredients,
-            Instructions: document.getElementById('recipeInstructions').value,
+            Instructions: document.getElementById('recipeInstructions').value
         }
 
         api.postRequest(CONSTANTS.RecipesAPIURL, newRecipe, recipe => {
             console.log("New recipe created!");
             console.log(recipe);
             CONSTANTS.content.innerHTML = `
-            <div id='tagSection'>
-            <input type='hidden' id= 'recipe_id' value=${recipe.id} />
-                <h5>Add tags for your recipe on this page.</h5>
-                <ul id='tagList'></ul>
-                <select id='existingTagDDL'>
-                    <option disabled selected>---Choose Tags---</option>
-                </select>
-                <button id='btnAddTagFromList'>Add Tag From List</button>
-                <h5>Can't find your tag? Add one here!</h5>
-                <input type='text' id='createdTag' placeholder='Type your tag here!' />
-                <button id='btnAddNewTag'>Add A New Tag</button>
-                <button id='btnFinishRecipe'>Finished adding tags.</button>
-            </div>
+                <input type='hidden' id='recipe_id' value=${recipe.id} />
+                <input type='hidden' id='recipe_name' value=${recipe.name} />
+                <input type='hidden' id='recipe_description' value=${recipe.description} />
+                <input type='hidden' id='recipe_ingredients' value=${recipe.ingredients} />
+                <input type='hidden' id='recipe_instructions' value=${recipe.instructions} />
+
+                <div id='tagSection'>
+                    <h5>Add tags for your recipe on this page.</h5>
+                    <ul id='tagList'></ul>
+                    <select id='existingTagDDL'>
+                        <option disabled selected>---Choose Tags---</option>
+                    </select>
+                    <button id='btnAddTagFromList'>Add Tag From List</button>
+                    <h5>Can't find your tag? Add one here!</h5>
+                    <input type='text' id='createdTag' placeholder='Type your tag here!' />
+                    <button id='btnAddNewTag'>Add A New Tag</button>
+                    <button id='btnFinishRecipe'>Finished adding tags.</button>
+                </div>
             `;
             SetupDynamicTagsList();
             PopulateTagsDDL();
-            FinishRecipeCreation();
+            UpdateRecipeTags();
         });
-    }); 
-}
-
-function FinishRecipeCreation() {
-    let btnFinishRecipe = document.getElementById('btnFinishRecipe');
-    btnFinishRecipe.addEventListener('click', CheckTags);
+    });
 }
 
 function SetupDynamicTagsList() {
@@ -213,6 +218,7 @@ function SetupDynamicTagsList() {
 
     btnAddTagFromList.addEventListener('click', function(){
         console.log("Added tags from the dropdown list!");
+       
         let AddedTag = document.createElement('li');
         AddedTag.setAttribute('id', selectList.options[selectList.selectedIndex].value);
         AddedTag.classList.add('addedTag');
@@ -238,6 +244,7 @@ function SetupDynamicTagsList() {
         let NewTag = document.createElement('li');
         NewTag.setAttribute('id', createdTag.value);
         NewTag.classList.add('addedTag');
+        NewTag.classList.add('newTag');
         NewTag.appendChild(document.createTextNode(createdTag.value));
 
         let removeTagbtn = document.createElement('button');
@@ -267,50 +274,58 @@ function PopulateTagsDDL(){
     }
 }
 
-function CheckTags() {
-    let TagList = document.getElementsByClassName('addedTags');
-    let exists = false;
-    let existingTags = [];
-    let recipe_id = document.getElementById('recipe_id').value;
-    let tag_id = 0;
+function UpdateRecipeTags() {
+    let btnFinishAddingTags = document.getElementById('btnFinishRecipe');
 
-    api.getRequest(CONSTANTS.TagsAPIURL, tags => {
-        tags.forEach(tag => {
-            existingTags += tag;
-        });
-    });
-
-    for (const addedTag of TagList) {
-        existingTags.forEach(existingTag => {
-            if (addedTag.id.toLowerCase() == existingTag.name.toLowerCase()) {
-                exists = true;
-                tag_id = existingTag.id;
-            }
-        });
-
-        if (exists != true) {
-            let newTag = {
-                Name: tag.id.toLowerCase()
-            }
-           
-            api.postRequest(CONSTANTS.TagsAPIURL, newTag, newtag => {
-                tag_id = newtag.id;
-            });
-        }
-        let newRecipeTag = {
-            RecipeId: recipe_id,
-            TagId: tag_id
-        }
-
-        api.postRequest(CONSTANTS.RecipeTagsAPIURL, newRecipeTag, recipetag => {
-            console.log(recipetag);
-        });
-        
+    let Tag = {
+        Id: 0,
+        Name: 0
     }
 
-    api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
-        CONSTANTS.title.innerText = "Recipe Details";
-        CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(recipe);
+    btnFinishAddingTags.addEventListener('click', function() {
+        let AddedTags = Array.from(document.getElementsByClassName('addedTags'));
+        let TagsToAddToRecipe = [];
+        console.log("AddedTags");
+        console.log(AddedTags);
+        AddedTags.forEach(tag => {
+
+            if (tag.classList.contains(newTag)) {
+                tag_id = 0;
+                tag_name = tag.id;
+            }
+
+            else {
+                tag_id = tag.id;
+                tag_name = tag.value;
+
+            }
+
+            Tag = {
+                Id: tag_id,
+                Name: tag_name
+            }
+            console.log("Tag object:");
+            console.log(Tag);
+            TagsToAddToRecipe.push(Tag);
+        });
+        console.log("Tags to add to recipe");
+        console.log(TagsToAddToRecipe);
+        
+        let editedRecipe = {
+            Id: document.getElementById('recipe_id').value,
+            Name: document.getElementById('recipe_name').value,
+            Description: document.getElementById('recipe_description').value,
+            Ingredients: document.getElementById('recipe_ingredients').value,
+            Instructions: document.getElementById('recipe_instructions').value,
+            Tags: TagsToAddToRecipe
+        }
+
+        api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
+            console.log(recipe);
+            CONSTANTS.title.innerText = "Recipe Details";
+            CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(recipe);
+
+        })
     });
 }
 
