@@ -39,12 +39,15 @@ function displayRecipes(recipes, tags) {
             `;
         }).join('')}
     </ol>
+    </div>
+
     <form id="search-recipes">
     <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
     </form>
 
     <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
     <label for="searchByTagsCheckBox">View Tag List</label>
+    
     <div id="tagList">
     <ul>
         
@@ -60,7 +63,6 @@ function displayRecipes(recipes, tags) {
             `;
         }).join('')}
     </ul>
-</div>
     </div>
  
     <input type="checkbox" id="hide"/>
@@ -111,10 +113,10 @@ export function setupSearchBar() {
     searchbar.addEventListener('keyup', function(e){
         let word = e.target.value.toLowerCase()
         if(searchByTagCheckbox.checked){
-            console.log("Searching for tags!");
+            //console.log("Searching for tags!");
             filterList(word, Array.from(document.getElementsByClassName("tag")));
         } else {
-            console.log("Searching!");
+            //console.log("Searching!");
             filterList(word, returnFilteredRecipesByTags());
         }
     });

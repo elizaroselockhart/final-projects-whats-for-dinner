@@ -7,7 +7,8 @@ export default {
 }
 
 function DisplayRecipeDetails(recipe) {
-
+    const searchbar = document.getElementById('searchRecipes');
+    searchbar.style.display = "block";
     if(recipe.ingredients == null){
        recipe.ingredients = "";
     }
