@@ -29,6 +29,10 @@
     cursor: pointer;
   }
 
+  li {
+      list-style: none;
+  }
+
 .searchBar {
     border-radius: 10px;
     width: 175px;

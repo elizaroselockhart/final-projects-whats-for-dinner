@@ -9,14 +9,15 @@ export default {
     setupRecipeDeleteButton,
     SetupAddRecipeEventListeners,
     setupSearchBar,
-    setupSearchByTag,
-    displaySearchByTagCheckbox,
-    displayIndividualTagCheckbox,
     searchWord,
+    setupSearchByTagCheckbox,
+    displayTags,
+    setupIndividualTagCheckbox,
+    searchWordTags,
     hideRecipeList
 }
 
-function displayRecipes(recipes, tags) {
+function displayRecipes(recipes) {
     return`
     <button id='btnNewRecipe'>Add a Recipe!</button>
 
@@ -24,26 +25,8 @@ function displayRecipes(recipes, tags) {
     <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
     </form>
 
-    <input type="checkbox" id="searchByTags"/>
-    <label for="searchByTags">Search By Tags</label>
-
-    <div id="tagList">
-    <ul>
-        
-        ${tags.map(tag => {
-              return`
-             <li class="tag">
-             <span class="tagDetails">
-             <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
-             ${tag.name} 
-            </span>
-             
-             </li>
-             
-             `;
-         }).join('')}
-     </ul>
-   </div>
+    <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
+    <label for="searchByTagsCheckBox">Search By Tags</label>
 
     <div id="recipeList">
     <ol>
@@ -59,7 +42,7 @@ function displayRecipes(recipes, tags) {
                 <button id="${recipe.id}" class="recipeDelete">Delete</button>                
                 </h4>          
             </li>
-            `; // add some way to interact with recipe tags here
+            `;
         }).join('')}
     </ol>
     </div>
@@ -69,7 +52,27 @@ function displayRecipes(recipes, tags) {
     `;
 }
 
-
+function displayTags(tags) {
+    return`
+        <div id="tagList">
+            <ul>
+                
+                ${tags.map(tag => {
+                    return`
+                    <li class="tag">
+                    <span class="tagDetails">
+                    <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
+                    ${tag.name} 
+                    </span>
+                    
+                    </li>
+                    
+                    `;
+                }).join('')}
+            </ul>
+        </div>
+   `;
+}
 
 function setupRecipeLinks() {
     let recipeLinks = document.querySelectorAll(".recipeDetails");
@@ -82,7 +85,7 @@ function setupRecipeLinks() {
 
             //API Call
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
-                CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(data); // grab all of our tags, feed them into recipe.Details
+                CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data); // grab all of our tags, feed them into recipe.Details
                 recipes.setupSearchBar();
             });
         });
@@ -103,8 +106,52 @@ function setupRecipeDeleteButton() {
                 setupRecipeDeleteButton();
                 setupRecipeLinks();
                 setupSearchBar();
-                searchByTags();
             });
+        });
+    });
+}
+
+export function setupSearchBar() {
+    const searchbar = document.getElementById('contentSearchBar');
+    searchbar.addEventListener('keyup', function(e){
+        console.log("Searching!");
+        searchWord(e.target.value.toLowerCase());
+    });
+}
+//Error: addEventListener not a function
+export function setupSearchByTagCheckbox() {
+    const searchByTagCheckbox = document.getElementsByClassName("searchByTagsCheckBox");
+    searchByTagCheckbox.addEventListener('change', function(e){
+            console.log("search by tags");
+            searchWordTags(e.target.value.toLowerCase());
+    });
+}
+
+function searchWordTags(word){
+    const searchbar = document.getElementById('contentSearchBar');
+    searchbar.addEventListener('keyup', function(){
+        console.log("Searching for tags!");
+        let list = document.getElementById('tagList');
+        const tags = list.getElementsByClassName("tag");
+        Array.from(tags).forEach(function(tag){
+            const name = tag.firstElementChild.textContent;
+            if(name.toLowerCase().indexOf(word) != -1){
+                tag.style.display = "block";
+            }else {
+                tag.style.display = "none";
+            }
+        });      
+    });
+}
+
+export function setupIndividualTagCheckbox() {
+    let list = document.getElementById('recipeList');
+    const checkBoxes = Array.from(document.getElementsByClassName("tagCheckbox"));
+    checkBoxes.forEach(element => {
+        element.addEventListener('change', function(e){
+            const recipes = Array.from(list.getElementsByClassName("recipe"));
+            console.log("tags checked");
+            searchWord(recipes);           
         });
     });
 }
@@ -118,53 +165,6 @@ function searchWord(word){
             recipe.style.display = "block";
         }else {
             recipe.style.display = "none";
-        }
-    });
-}
-
-export function setupSearchBar() {
-    const searchbar = document.getElementById('contentSearchBar');
-    searchbar.addEventListener('keyup', function(e){
-        console.log("Typing in search bar!");
-        searchWord(e.target.value.toLowerCase());
-    });
-}
-
-export function setupSearchByTag() {
-    const searchbar = document.getElementById('contentSearchBar');
-    searchbar.addEventListener('keyup', function(e){
-        console.log("Searching for tags!");
-        const term = e.target.value.toLowerCase();
-        const tags = Array.from(document.getElementsByClassName("tag"));
-        tags.forEach(function(tag){
-            const name = tag.firstElementChild.textContent;
-            if(name.toLowerCase().indexOf(term) != -1){
-                tag.style.display = "block";
-            }else {
-                tag.style.display = "none";
-            }
-        });
-    });
-}
-
-export function displayIndividualTagCheckbox() {
-    let list = document.getElementById('recipeList');
-    const checkBoxes = Array.from(document.getElementsByClassName("tagCheckbox"));
-    checkBoxes.forEach(element => {
-        element.addEventListener('change', function(e){
-            const recipes = Array.from(list.getElementsByClassName("recipe"));
-            console.log("tags checked");
-            searchWord(element.id);           
-        });
-    });
-}
-
-export function displaySearchByTagCheckbox() {
-    const searchByTagCheckbox = document.getElementById("searchByTags");
-    searchByTagCheckbox.addEventListener('change', function(e){
-        console.log("search by tags");
-        if(searchByTagCheckbox.checked){
-            setupSearchByTag();
         }
     });
 }
@@ -351,7 +351,6 @@ function CheckTags() {
         }
     });
 }
-
 
 //Hide All Recipes Function
 export function hideRecipeList() {

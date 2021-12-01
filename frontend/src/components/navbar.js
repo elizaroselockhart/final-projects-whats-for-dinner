@@ -20,12 +20,18 @@ export function hideNavSearchBarDisplayRecipes() {
     hideSearch.addEventListener("click", function(){
         console.log("Hide nav search, display recipes");
             hideSearch.style.display = "none";
-            api.getRequest(CONSTANTS.RecipesAPIURL, data => {
-                CONSTANTS.content.innerHTML =  recipes.displayRecipes(data);
+            api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
+                CONSTANTS.title.innerText = "";
+                CONSTANTS.tabTitle.innerText = "All Recipes";
+                console.log(data);
+                CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes);
                 recipes.setupSearchBar();
- 
-            });
-        
+                recipes.setupRecipeLinks();
+                recipes.setupSearchByTagCheckbox();
+                recipes.displayTags(data.allTags);
+                recipes.setupIndividualTagCheckbox();
+                recipes.hideRecipeList();   
+        });
     });
 }
 
@@ -47,18 +53,6 @@ export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
-        api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
-            CONSTANTS.title.innerText = "";
-            CONSTANTS.tabTitle.innerText = "All Recipes";
-            console.log(data);
-            CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags); // this is just all of the recipes
-            recipes.setupRecipeLinks();
-            recipes.setupSearchBar();
-            recipes.setupSearchByTag();
-            recipes.displayIndividualTagCheckbox();
-            recipes.displaySearchByTagCheckbox();
-            recipes.hideRecipeList();   
-        });
     });
 }
 
