@@ -38,7 +38,9 @@ function displayRecipes(recipes) {
                     ${recipe.name} 
                 </span>
                 <input type="hidden" value='${recipe.id}'/>
-                <input type="hidden" value='${recipe.tags}'/>
+                <div type="hidden" id='tagString-${recipe.id}'>${recipe.tags.map(tag => {           
+                    return tag.tag.name               
+                }).join('')}</div>
                 <button id="${recipe.id}" class="recipeDelete">Delete</button>                
                 </h4>          
             </li>
@@ -113,46 +115,87 @@ function setupRecipeDeleteButton() {
 
 export function setupSearchBar() {
     const searchbar = document.getElementById('contentSearchBar');
+    const searchByTagCheckbox = document.getElementById("searchByTags");
     searchbar.addEventListener('keyup', function(e){
-        console.log("Searching!");
-        searchWord(e.target.value.toLowerCase());
+        if(searchByTagCheckbox.checked){
+            console.log("Searching for tags!");
+            let list = document.getElementById('tagList');
+            const tags = list.getElementsByClassName("tag");
+            Array.from(tags).forEach(function(tag){
+                const name = tag.firstElementChild.textContent;
+                if(name.toLowerCase().indexOf(e.target.value.toLowerCase()) != -1){
+                    tag.style.display = "block";
+                }else {
+                    tag.style.display = "none";
+                }
+            });  
+        } else {
+            console.log("Searching!");
+            searchWord(e.target.value.toLowerCase());
+        }
     });
 }
+let currentTags = [];
 //Error: addEventListener not a function
-export function setupSearchByTagCheckbox() {
-    const searchByTagCheckbox = document.getElementsByClassName("searchByTagsCheckBox");
+export function setupSearchByTagCheckbox(data) {
+    const searchByTagCheckbox = document.getElementById("searchByTags");
     searchByTagCheckbox.addEventListener('change', function(e){
             console.log("search by tags");
-            searchWordTags(e.target.value.toLowerCase());
+            if(searchByTagCheckbox.checked){
+                CONSTANTS.pageTabs.innerHTML = displayTags(data);
+                setupIndividualTagCheckbox()
+            } else {
+                CONSTANTS.pageTabs.innerHTML = ''
+                    currentTags = [];
+                    toggleTags();
+                // add the old event listener here
+            }
     });
 }
 
-function searchWordTags(word){
+function searchWordTags(){
     const searchbar = document.getElementById('contentSearchBar');
+    // we're adding another event listner, the old one still exists
     searchbar.addEventListener('keyup', function(){
-        console.log("Searching for tags!");
-        let list = document.getElementById('tagList');
-        const tags = list.getElementsByClassName("tag");
-        Array.from(tags).forEach(function(tag){
-            const name = tag.firstElementChild.textContent;
-            if(name.toLowerCase().indexOf(word) != -1){
-                tag.style.display = "block";
-            }else {
-                tag.style.display = "none";
-            }
-        });      
+            
     });
 }
+
 
 export function setupIndividualTagCheckbox() {
     let list = document.getElementById('recipeList');
     const checkBoxes = Array.from(document.getElementsByClassName("tagCheckbox"));
     checkBoxes.forEach(element => {
         element.addEventListener('change', function(e){
-            const recipes = Array.from(list.getElementsByClassName("recipe"));
             console.log("tags checked");
-            searchWord(recipes);           
+            handleCheck(element);
+            toggleTags();        
         });
+    });
+}
+
+function handleCheck(tag){
+    if(currentTags.includes(tag)){
+        let indx = currentTags.indexOf(tag)
+        currentTags.splice(indx, 1);
+    } else {
+        currentTags.push(tag);
+    }
+}
+
+function toggleTags(){
+    let list = document.getElementById('recipeList');
+    const recipes = Array.from(list.getElementsByClassName("recipe"));
+    recipes.forEach(recipe => {
+        let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText
+        let hidden = false;
+        currentTags.forEach(tag => {
+            if(!recipeTagString.includes(tag.id)){
+                recipe.style.display = "none";
+                hidden = true;
+            }
+        });
+        if(!hidden){recipe.style.display = "block"}
     });
 }
 

@@ -27,8 +27,7 @@ export function hideNavSearchBarDisplayRecipes() {
                 CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes);
                 recipes.setupSearchBar();
                 recipes.setupRecipeLinks();
-                recipes.setupSearchByTagCheckbox();
-                recipes.displayTags(data.allTags);
+                recipes.setupSearchByTagCheckbox(data.allTags);
                 recipes.setupIndividualTagCheckbox();
                 recipes.hideRecipeList();   
         });
