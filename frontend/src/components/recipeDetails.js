@@ -8,14 +8,19 @@ export default {
     recipeDetails
 }
 
-function recipeDetails(recipe) {
+
+function DisplayRecipeDetails(recipe) {
+    const searchbar = document.getElementById('searchRecipes');
+    searchbar.style.display = "block";
+    if(recipe.ingredients == null){
+       recipe.ingredients = "";
+
     
     //console.log(recipe)
 
-    let parsedIngredients = [];
-    if (recipe.ingredients != null) {
-        parsedIngredients = recipe.ingredients.split(";")
-    }
+    //let parsedIngredients = [];
+    //if (recipe.ingredients != null) {
+    //parsedIngredients = recipe.ingredients.split(";")
 
     //for editing/creating a recipe:
     // remove any existing semicolon's from the user's input
