@@ -28,7 +28,7 @@ function displayRecipes(recipes, tags) {
                     ${recipe.name} 
                 </span>
                 <input type="hidden" value='${recipe.id}'/>
-                <div type="hidden" id='tagString-${recipe.id}'>
+                <div display="none" class="tagString" id='tagString-${recipe.id}'>
                     ${recipe.tags.map(tag => {           
                     return tag.tag.name               
                     }).join('')}
@@ -124,7 +124,7 @@ export function setupSearchBar() {
 
 function filterList(str, targets){
     Array.from(targets).forEach(function(element){
-        const name = element.firstElementChild.textContent;
+        const name = element.querySelectorAll("span")[0].textContent;
         if(name.toLowerCase().indexOf(str) != -1){
             element.style.display = "block";
         }else {
