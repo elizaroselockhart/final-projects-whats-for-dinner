@@ -52,16 +52,6 @@ export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
-
-        api.getRequest(CONSTANTS.RecipesAPIURL, data => {
-            CONSTANTS.title.innerText = "All Recipes";
-            CONSTANTS.tabTitle.innerText = "All Recipes";
-            CONSTANTS.content.innerHTML = recipes.displayRecipes(data);
-            recipes.setupRecipeLinks();
-            recipes.setupSearchBar();
-            recipes.hideRecipeList();  
-            recipes.SetupAddRecipeEventListeners(); 
-        });
     });
 }
 

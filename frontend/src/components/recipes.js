@@ -14,6 +14,8 @@ export default {
     hideRecipeList
 }
 
+let currentTags = [];
+
 function displayRecipes(recipes, tags) {
     return`
     <button id='btnNewRecipe'>Add a Recipe!</button>
@@ -81,8 +83,9 @@ function setupRecipeLinks() {
 
             //API Call
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
+                console.log(data);
                 CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data); // grab all of our tags, feed them into recipe.Details
-                recipes.setupSearchBar();
+                setupSearchBar();
             });
         });
     });
@@ -108,8 +111,8 @@ function setupRecipeDeleteButton() {
 }
 
 export function setupSearchBar() {
-    const searchbar = document.getElementById('contentSearchBar');
-    const searchByTagCheckbox = document.getElementById("searchByTags");
+    let searchbar = document.getElementById('contentSearchBar');
+    let searchByTagCheckbox = document.getElementById("searchByTags");
     searchbar.addEventListener('keyup', function(e){
         let word = e.target.value.toLowerCase()
         if(searchByTagCheckbox.checked){
@@ -133,7 +136,6 @@ function filterList(str, targets){
     });
 }
 
-let currentTags = [];
 //Error: addEventListener not a function
 export function setupSearchByTagCheckbox() {
     const searchByTagCheckbox = document.getElementById("searchByTags");
@@ -141,8 +143,7 @@ export function setupSearchByTagCheckbox() {
     let tags = Array.from(document.getElementsByClassName("tag"));
     let recipes = Array.from(document.getElementsByClassName("recipe"));
     searchByTagCheckbox.addEventListener('click', function(e){
-            //console.log("search by tags");
-            //console.log(data);
+            console.log("search by tags");
             searchbar.value = "";
             if(searchByTagCheckbox.checked){
                 searchbar.placeholder = "Search tags..."
@@ -155,7 +156,7 @@ export function setupSearchByTagCheckbox() {
                 searchbar.placeholder = "Search recipes..."
                 filterList(searchbar.value, tags)
                 tags.forEach(tag => {
-                    //console.log(tag);
+                    console.log(tag);
                     if(tag.firstElementChild.firstElementChild.checked) // might be a better way to grab the input element from our tag
                         tag.style.display = "block";
                     else {

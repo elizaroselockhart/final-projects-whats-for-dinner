@@ -5,35 +5,22 @@ import tags from "./tags";
 
 
 export default {
-    recipeDetails
+    DisplayRecipeDetails
 }
 
 
 function DisplayRecipeDetails(recipe) {
-    const searchbar = document.getElementById('searchRecipes');
+    let searchbar = document.getElementById('searchRecipes');
     searchbar.style.display = "block";
-    if(recipe.ingredients == null){
+    let parsedIngredients = [];
+    if(recipe.ingredients == null) {
        recipe.ingredients = "";
-
-    
-    //console.log(recipe)
-
-    //let parsedIngredients = [];
-    //if (recipe.ingredients != null) {
-    //parsedIngredients = recipe.ingredients.split(";")
-
-    //for editing/creating a recipe:
-    // remove any existing semicolon's from the user's input
-    // append semi colon to the end of each ingredient
-    // append all ingredients together
-
-    // for the reverese 
-    // split by semicolor (in a separate variable)
-    // treat like array
-
-    // to consider -> using a multicharacter separator (|;|)
-
+    }else{
+        parsedIngredients = recipe.ingredients.split(";");
+    }
     return ` 
+        
+
         <h1>Recipe Details</h1>
         <h2>${recipe.name}</h2>     
         <input type="hidden" value='${recipe.id}'/> 
@@ -66,15 +53,9 @@ function DisplayRecipeDetails(recipe) {
              `;
          }).join('')}
      </ul>
-
-
-
-
-
-
-    
     </section>
     `;
+  
 }
 
     //<h5>Tags: </h5>
