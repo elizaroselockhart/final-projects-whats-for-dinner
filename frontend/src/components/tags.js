@@ -10,7 +10,7 @@ function DisplayAllTags(tags) {
         <ol> 
             ${tags.map(tag => {
                 return `
-                    <li>
+                    <li class='addedTags'>
                         <h5>
                             <span>
                                 ${tag.name}

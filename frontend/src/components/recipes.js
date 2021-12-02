@@ -8,7 +8,11 @@ export default {
     setupRecipeDeleteButton,
     SetupAddRecipeEventListeners,
     setupSearchBar,
-    hideRecipeList
+    hideRecipeList,
+    SetupAddIngredient,
+    SetupAddTags,
+    SetupDynamicTagsList,
+    PopulateTagsDDL
 }
 
 function displayRecipes(recipes) {
@@ -50,8 +54,9 @@ function setupRecipeLinks() {
 
             //API Call
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
-                CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(data);
+                CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);
                 setupSearchBar();
+                recipeDetails.SetupEditRecipeEventListeners();
             });
         });
     });
@@ -185,11 +190,11 @@ function SetupAddTags() {
             console.log("New recipe created!");
             console.log(recipe);
             CONSTANTS.content.innerHTML = `
-                <input type='hidden' id='recipe_id' value=${recipe.id} />
-                <input type='hidden' id='recipe_name' value=${recipe.name} />
-                <input type='hidden' id='recipe_description' value=${recipe.description} />
-                <input type='hidden' id='recipe_ingredients' value=${recipe.ingredients} />
-                <input type='hidden' id='recipe_instructions' value=${recipe.instructions} />
+                <input type='text' id='recipe_id' value=${recipe.id} />
+                <input type='text' id='recipe_name' value=${recipe.name} />
+                <input type='text' id='recipe_description' value=${recipe.description} />
+                <input type='text' id='recipe_ingredients' value=${recipe.ingredients} />
+                <input type='text' id='recipe_instructions' value=${recipe.instructions} />
 
                 <div id='tagSection'>
                     <h5>Add tags for your recipe on this page.</h5>
@@ -285,7 +290,7 @@ function UpdateRecipeTags() {
     }
 
     let tag_id = 0;
-    let tag_name = "anyString";
+    let tag_name = "ifYouSeeThisSomethingHasGoneWrong";
 
     btnFinishAddingTags.addEventListener('click', function() {
         let ListofAddedTags = document.getElementById('tagList');
@@ -328,8 +333,9 @@ function UpdateRecipeTags() {
         api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
             console.log(recipe);
             CONSTANTS.title.innerText = "Recipe Details";
-            CONSTANTS.content.innerHTML = recipeDetails.recipeDetails(recipe);
-
+            CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
+            setupSearchBar();
+            recipeDetails.SetupEditRecipeEventListeners();
         })
     });
 }
@@ -345,15 +351,6 @@ export function hideRecipeList() {
             list.style.display = "none";
         } else {
             list.style.display = "initial";
-
         }
     });
 }
-
-//public int Id { get; set; }
-//public string Name { get; set; }
-//[NotMapped]
-// public virtual List<string> Ingredients { get; set; }
-//public string Instructions { get; set; }
-//public string Description { get; set; }
-// public virtual List<RecipeTag> Tags { get; set; }
