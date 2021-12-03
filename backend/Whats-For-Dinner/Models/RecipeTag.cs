@@ -14,13 +14,13 @@ namespace Whats_For_Dinner.Models
 
         public RecipeTag(int recipeid, int tagid)
         {
-            this.RecipesId = recipeid;
-            this.TagsId = tagid;
+            this.RecipeId = recipeid;
+            this.TagId = tagid;
         }
 
-        //public int Id { get; set; }
-        public int RecipesId { get; set; }
-        public int TagsId { get; set; }
+        public int Id { get; set; }
+        public int RecipeId { get; set; }
+        public int TagId { get; set; }
         public virtual Recipe Recipe { get; set; }
         public virtual Tag Tag { get; set; }
     }

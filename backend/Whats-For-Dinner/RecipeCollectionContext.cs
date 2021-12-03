@@ -11,7 +11,7 @@ namespace Whats_For_Dinner
     {
         //Add DBsets here! :)
         public DbSet<Recipe> Recipes { get; set; }
-       // public DbSet<RecipeTag> RecipeTag { get; set; }
+        public DbSet<RecipeTag> RecipeTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)

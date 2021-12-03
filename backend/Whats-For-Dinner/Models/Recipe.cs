@@ -25,7 +25,7 @@ namespace Whats_For_Dinner.Models
         public string Ingredients { get; set; }
         public string Instructions { get; set; }
         public string Description { get; set; }
-        public virtual List<Tag> Tags { get; set; }
+        public virtual List<RecipeTag> Tags { get; set; }
 
         //public virtual User CreatedBy {get; set;}
 

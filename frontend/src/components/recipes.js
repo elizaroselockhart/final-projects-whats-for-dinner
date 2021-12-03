@@ -293,50 +293,85 @@ function UpdateRecipeTags() {
     let tag_name = "ifYouSeeThisSomethingHasGoneWrong";
 
     btnFinishAddingTags.addEventListener('click', function() {
-        let ListofAddedTags = document.getElementById('tagList');
-        let AddedTags = ListofAddedTags.getElementsByTagName('li');
-        let TagsToAddToRecipe = [];
-        console.log("AddedTags");
-        console.log(AddedTags);
-        for (const tag of AddedTags) {
 
-            if (tag.classList.contains('newTag')) {
-                tag_id = 0;
-                tag_name = tag.id;
-            }
+        //update recipe
+        //do a delete request for our recipe's recipeTag
+        // create our new recipe tags
+        // do a put request for each addedTag
+        // do a put request for each reciptTag
 
-            else {
-                tag_id = tag.id;
-                tag_name = tag.getAttribute('data-existingtagname');
-            }
-
-            Tag = {
-                Id: tag_id,
-                Name: tag_name
-            }
-            console.log("Tag object:");
-            console.log(Tag);
-            TagsToAddToRecipe.push(Tag);
-        }
-        console.log("Tags to add to recipe");
-        console.log(TagsToAddToRecipe);
-        
         let editedRecipe = {
             Id: document.getElementById('recipe_id').value,
             Name: document.getElementById('recipe_name').value,
             Description: document.getElementById('recipe_description').value,
             Ingredients: document.getElementById('recipe_ingredients').value,
             Instructions: document.getElementById('recipe_instructions').value,
-            Tags: TagsToAddToRecipe
         }
 
         api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
+            console.log("Updated recipe: ");
             console.log(recipe);
-            CONSTANTS.title.innerText = "Recipe Details";
-            CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
-            setupSearchBar();
-            recipeDetails.SetupEditRecipeEventListeners();
         })
+
+        // delete request
+        api.deleteRequest(CONSTANTS.RecipeTagsAPIURL, recipe_id, rt => {
+            console.log("Deleted all tags for recipe: " + recipe_id);
+        });
+
+        // create our list of tags
+        let ListofAddedTags = document.getElementById('tagList');
+        let AddedTags = ListofAddedTags.getElementsByTagName('li');
+        let TagsToAddToRecipe = [];
+        for (let tag of AddedTags) {
+
+            if (tag.classList.contains('newTag')) {
+                tag_id = 0;
+                tag_name = tag.id;
+            }
+            else {
+                tag_name = tag.getAttribute('data-existingtagname');
+                tag_id = tag.id;
+            }
+
+            Tag = {
+                Id: tag_id,
+                Name: tag_name
+            }
+            TagsToAddToRecipe.push(Tag);
+        }
+        console.log("Created a list of tags from our document");
+
+        // do a put request for each addedTag (change backend to only add to DB if if doesn't exist)
+        for (let tag of TagsToAddToRecipe){
+            api.putRequest(CONSTANTS.TagsAPIURL, tag.Id, tag, tag => {
+                console.log("Updating the following tag:")
+                console.log(tag);
+            })
+        }
+        // do a put request for each reciptTag
+        for (let tag of TagsToAddToRecipe){
+            let newId = 1; // if this were able to be updated, this should work. 
+            api.postRequest(CONSTANTS.TagsAPIURL, rt => {
+                console.log(rt);
+                rt.forEach(t => {
+                    if(t.Name == tag.Name){
+                        newId = t.Id; //this line doesn't actually update newId...
+                    }
+                });
+            });
+            let RecipeTag = {
+                Id: 0,
+                RecipeId: recipe_id,
+                TagId: newId
+            }
+            api.postRequest(CONSTANTS.RecipeTagsAPIURL, RecipeTag, rt => {
+                console.log("Creating a recipe tag for our recipe:")
+                console.log(rt);
+            })
+        }
+
+        CONSTANTS.content.innerHTML = `Did it work?
+            `;
     });
 }
 

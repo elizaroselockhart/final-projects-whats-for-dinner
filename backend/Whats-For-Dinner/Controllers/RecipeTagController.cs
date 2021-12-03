@@ -17,16 +17,28 @@ namespace Whats_For_Dinner.Controllers
         {
             _db = db;
         }
-        //[HttpPost]
-        //public ActionResult<RecipeTag> Post([FromBody] RecipeTag recipetag, int recipeId, int tagId)
-        //{
-        //    _db.RecipeTags.Add(recipetag);
-        //    recipetag.Recipe = _db.Recipes.Find(recipeId);
-        //    recipetag.Tag = _db.Tags.Find(tagId);
-        //    _db.SaveChanges();
 
-        //    return recipetag;
-        //}
+        /* Deletes all RecipeTagsByRecipeID */
+        [HttpDelete("{id}")]
+        public ActionResult<List<RecipeTag>> Delete(int id)
+        {
+            var recipeTags = _db.RecipeTags.Where(rt => rt.RecipeId == id);
+            foreach(RecipeTag recipeTag in recipeTags)
+            {
+                _db.RecipeTags.Remove(recipeTag);
+                _db.SaveChanges();
+            }
+            return _db.RecipeTags.ToList();
+        }
+
+        [HttpPost]
+        public ActionResult<RecipeTag> Post([FromBody] RecipeTag rt)
+        {
+            _db.RecipeTags.Add(rt);
+            _db.SaveChanges();
+
+            return rt;
+        }
 
 
         //[HttpGet]

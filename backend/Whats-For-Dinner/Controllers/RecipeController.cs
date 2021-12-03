@@ -47,33 +47,6 @@ namespace Whats_For_Dinner.Controllers
         [HttpPut("{id}")]
         public ActionResult<Recipe> Put(int id, [FromBody] Recipe recipe)
         {
-            for(int i =0; i < recipe.Tags.Count; i++)
-            {
-                if(recipe.Tags[i].Id == 0)
-                {
-                    //Check to see if tag exists
-                    var existingTag = _db.Tags.Where(t => t.Name == recipe.Tags[i].Name).FirstOrDefault();
-
-                    //If tag 
-                    if(existingTag == null)
-                    {
-                        //Add Tag
-                        existingTag = new Tag(recipe.Tags[i].Name);
-                        _db.Tags.Add(existingTag);
-                        _db.SaveChanges();
-                        
-                    }
-
-                    recipe.Tags[i] = existingTag;
-                    //If it does exist, let tag = db.Find(tagId)
-                }
-                else
-                {
-                    recipe.Tags[i] = _db.Tags.Find(recipe.Tags[i].Id);
-                }
-            }
-            
-
             if (recipe.Id == id)
             {
                 _db.Recipes.Update(recipe);
