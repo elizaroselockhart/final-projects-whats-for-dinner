@@ -47,6 +47,8 @@ namespace Whats_For_Dinner.Controllers
         [HttpPut("{id}")]
         public ActionResult<Recipe> Put(int id, [FromBody] Recipe recipe)
         {
+            //1. 
+
             for(int i =0; i < recipe.Tags.Count; i++)
             {
                 if(recipe.Tags[i].Id == 0)
@@ -71,6 +73,12 @@ namespace Whats_For_Dinner.Controllers
                 {
                     recipe.Tags[i] = _db.Tags.Find(recipe.Tags[i].Id);
                 }
+            }
+            foreach(Tag tag in recipe.Tags)
+            {
+                // check to see if recipe tag with recipe.id and tag.id exists
+                // if not , create it and add to database
+                //if it does, who cares
             }
             
 
