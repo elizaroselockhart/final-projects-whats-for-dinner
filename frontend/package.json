@@ -25,5 +25,8 @@
   "directories": {
     "doc": "docs"
   },
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "cookie-manager": "^0.0.19"
+  }
 }

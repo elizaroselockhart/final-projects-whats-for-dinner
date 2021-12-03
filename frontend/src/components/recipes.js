@@ -17,58 +17,60 @@ export default {
 let currentTags = [];
 
 function displayRecipes(recipes, tags) {
-    return`
-    <button id='btnNewRecipe'>Add a Recipe!</button>
+    CONSTANTS.pageTags.innerHTML = 
+    `<form id="search-recipes">
+        <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
+     </form>
 
-    <div id="recipeList">
-    <ol>
-        ${recipes.map(recipe => {
-            return`
-            <li class="recipe">
-                <h4>
-                <span class="recipeDetails">
-                    ${recipe.name} 
-                </span>
-                <input type="hidden" value='${recipe.id}'/>
-                <div display="none" class="tagString" id='tagString-${recipe.id}'>
-                    ${recipe.tags.map(tag => {           
-                    return tag.tag.name               
-                    }).join('')}
-                </div>
-                <button id="${recipe.id}" class="recipeDelete">Delete</button>                
-                </h4>          
-            </li>
-            `;
-        }).join('')}
-    </ol>
-    </div>
-
-    <form id="search-recipes">
-    <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
-    </form>
-
-    <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
-    <label for="searchByTagsCheckBox">View Tag List</label>
-    
-    <div id="tagList">
-    <ul>
+        <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
+        <label for="searchByTagsCheckBox">View Tag List</label>
         
-        ${tags.map(tag => {
-            return`
-            <li class="tag" style="display:none">
-                <span class="tagDetails">
-                    <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
-                    ${tag.name} 
-                </span>
-            </li>
+        <div id="tagList">
+        <ul>
             
-            `;
-        }).join('')}
-    </ul>
-    </div>
- 
-    <input type="checkbox" id="hide"/>
-    <label for="hide">Hide all recipes</label>
+            ${tags.map(tag => {
+                return`
+                <li class="tag" style="display:none">
+                    <span class="tagDetails">
+                        <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
+                        ${tag.name} 
+                    </span>
+                </li>
+                
+                `;
+            }).join('')}
+        </ul>
+        </div>
+    
+        <input type="checkbox" id="hide"/>
+        <label for="hide">Hide all recipes</label>
+    `;
+    CONSTANTS.recipeName.innerHTML = 
+    
+    `<button id='btnNewRecipe'>Add a Recipe!</button>
+
+        <div id="recipeList">
+        <ol>
+            ${recipes.map(recipe => {
+                return`
+                <li class="recipe">
+                    <h4>
+                    <span class="recipeDetails">
+                        ${recipe.name} 
+                    </span>
+                    <input type="hidden" value='${recipe.id}'/>
+                    <div display="none" class="tagString" id='tagString-${recipe.id}'>
+                        ${recipe.tags.map(tag => {           
+                        return tag.tag.name               
+                        }).join('')}
+                    </div>
+                    <button id="${recipe.id}" class="recipeDelete">Delete</button>                
+                    </h4>          
+                </li>
+                `;
+            }).join('')}
+        </ol>
+        </div>
     `;
 }
 

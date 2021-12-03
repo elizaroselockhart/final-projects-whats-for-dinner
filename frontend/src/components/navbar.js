@@ -7,10 +7,8 @@ export default {
     setupNavBar,
     setupPantry,
     setupHome,
-    setupLogin,
     setupRegisterBtn,
     setupRegisterDisplay,
-    setupLoginDisplay,
     hideNavSearchBarDisplayRecipes
 
 }
@@ -53,35 +51,6 @@ export function setupPantry() {
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
     });
-}
-
-
-export function setupLogin() {
-    const btnLogin = document.getElementById("navLogin");
-    btnLogin.addEventListener("click", function(){
-        console.log("Login display hooked up!");
-        setupLoginDisplay();
-    });
-}
-
-export function setupLoginDisplay(){
-    CONSTANTS.tabTitle.innerText="Login";
-    CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.content.innerHTML =
-    //call random recipe button here to display in the corner of the page
-    `
-        <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30px">
-        <form id="login">
-        <input type="text" class="username" id="username" placeholder="Username"/>
-        <input type="password" class="password" id="password" placeholder="Password"/>
-        </form>
-        <div id="positionLoginBtn">
-        <button id='loginBtn'>Login</button>
-        </div>
-        <div id="registerLink">
-        <button id="registerBtn">Register</button>
-        </div>
-    `;
 }
 
 export function setupRegisterBtn() {
