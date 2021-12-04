@@ -1,6 +1,6 @@
 import cookies from "../components/cookies";
 import * as CONSTANTS from "../components/constants";
-import api from "../api/api-actions"; 
+
 
 const UserUrl = "https://localhost:44387/api/recipe/" + "?username={0}&password={1}";
 
