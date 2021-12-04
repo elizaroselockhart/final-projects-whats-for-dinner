@@ -1,3 +1,4 @@
+import login from "../components/login";
 import navbarTabs from "../components/navbar";
 // import * as CONSTANTS from "../components/constants";
 // import recipes from "../components/recipes";
@@ -12,6 +13,7 @@ export default() => {
 function setupNavbar() {
     navbar.innerHTML = navbarTabs.setupNavBar();
     navbarTabs.setupPantry(); navbarTabs.setupHome();
+    login.setupLogin();
     navbarTabs.hideNavSearchBarDisplayRecipes();
 }
 
