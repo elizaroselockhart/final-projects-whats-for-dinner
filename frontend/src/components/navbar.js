@@ -1,6 +1,5 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
-import recipeDetails from "./recipeDetails";
 import recipes from "../components/recipes";
 import cookies from "../components/cookies";
 
@@ -8,8 +7,6 @@ export default {
     setupNavBar,
     setupPantry,
     setupHome,
-    setupRegisterBtn,
-    setupRegisterDisplay,
     hideNavSearchBarDisplayRecipes
 
 }
@@ -69,43 +66,15 @@ export function setupPantry() {
     });
 }
 
-export function setupRegisterBtn() {
-    const registerBtn = document.getElementById("registerBtn");
-    registerBtn.addEventListener("click", function(){
-        console.log("Register display button hooked up!");
-        setupRegisterDisplay();
-    });
-}
-
-export function setupRegisterDisplay() {
-    CONSTANTS.tabTitle.innerText="Register";
-    CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.content.innerHTML =
-    //call random recipe button here to display in the corner of the page
-    `
-        <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30pz">
-        <form id="login">
-        <input type="text" class="username" id="username" placeholder="Username"/>
-        <input type="password" class="password" id="password" placeholder="Password"/>
-        <input type="text" class="email" id="email" placeholder="Email"/>
-        </form>
-        <div id="positionRegisterBtn">
-        <button id='registerBtn'>Register</button>
-        </div>
-        <div id="loginLink">
-        <button id="loginLinkBtn">Login</button>
-        </div>
-    `;
-}
-
 function setupHome() {
     CONSTANTS.tabTitle.innerText="Home";
     CONSTANTS.title.innerText="What's For Dinner";
+    CONSTANTS.navbar.innerHTML =  setupNavBar();
     CONSTANTS.content.innerHTML =
     //call random recipe button here the image is just a placeholder
     `
         <img src="../img/shuffle.png" alt="Shuffle recipes button" width="400" height="400" style = "padding-bottom: 16px;">
         <p>Click for random recipe</p>
     `;
-
+    
 }

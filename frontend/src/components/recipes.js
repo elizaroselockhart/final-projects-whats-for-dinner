@@ -1,7 +1,6 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
-import tags from "./tags";
 
 export default {
     displayRecipes,

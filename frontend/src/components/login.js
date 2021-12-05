@@ -38,20 +38,10 @@ export function setupLoginDisplay(){
         <button value="submit" id='loginBtn'>Login</button>
         </div>
         <div id="registerLink">
-        <button id="registerBtn">Register</button>
+        <button id="registerLinkBtn">Register</button>
         </div>
     `;
 }
-
-// function welcomeUser(){
-//   const ul = document.getElementById("navbarLi");
-//   const username = `${user.username};`
-//   const h2 = document.createElement("h2");
-//   h2.setAttribute('id',username.value);
-//   h2.appendChild(document.createTextNode(username.value));
-//   ul.appendChild(h2);
-// }
-
 
 export function login(){
     const loginBtn = document.getElementById("loginBtn");
@@ -66,7 +56,6 @@ export function login(){
             cookies.setCookie("userId",user.id,7)
             console.log(cookies.getCookie("userId"));
             navbarTabs.setupHome();
-            CONSTANTS.navbar.innerHTML = navbarTabs.setupNavBar();
             logout();
         });
     })
