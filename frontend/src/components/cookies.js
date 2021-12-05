@@ -7,6 +7,7 @@ export default {
 
 export function getCookie(name){
     var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    console.log(v);
     return v ? v[2] : null;
 }
 

@@ -7,13 +7,13 @@ const navbar = document.getElementById("navbar");
 // const pageContent = document.getElementById("pageContent");
 
 export default() => {
-    setupNavbar();
+    setupMain();
 }
 
-function setupNavbar() {
+function setupMain() {
     navbar.innerHTML = navbarTabs.setupNavBar();
     navbarTabs.setupPantry(); navbarTabs.setupHome();
-    login.setupLogin();
+    login.setupLogin(); //login.logout();
     navbarTabs.hideNavSearchBarDisplayRecipes();
 }
 

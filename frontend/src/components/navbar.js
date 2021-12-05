@@ -2,6 +2,7 @@ import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
 import recipes from "../components/recipes";
+import cookies from "../components/cookies";
 
 export default {
     setupNavBar,
@@ -33,15 +34,30 @@ export function hideNavSearchBarDisplayRecipes() {
 }
 
 export function setupNavBar(){
+    let username = cookies.getCookie("username"); 
+    let userId = cookies.getCookie("userId");
+    let loginUser;
+    let welcomeUser;
+    console.log("UserId");
+    console.log(userId);
+    if(userId === "undefined" || userId === null)
+    {
+        loginUser = `<li id="navLogin">Login</li>`
+        welcomeUser = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>`
+    } else {
+        console.log("Logout displays in nav");
+        loginUser = `<li id="navLogout">Logout</li>`
+        welcomeUser = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry <br> Welcome ${username}</li>`
+    }
     return `
-    <ul>
-        <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>
+    <ul id="navbarLi">
+        ${welcomeUser}
         <li id="navSearch">
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
         </form>
         </li>
-        <li id="navLogin">Login</li>       
+       ${loginUser}
     </ul>
     `;
 }

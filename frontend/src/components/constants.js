@@ -13,5 +13,6 @@ export const RecipesAPIURL = "https://localhost:44387/api/recipe/";
 export const TagsAPIURL = "https://localhost:44387/api/tag/";
 export const SearchDataAPIURL = "https://localhost:44387/api/searchData/";
 export const RecipeTagsAPIURL = "https://localhost:44387/api/recipetag/";
+export const UserAPIURL = "https://localhost:44387/api/user/";
 
 
