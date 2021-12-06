@@ -18,7 +18,7 @@ namespace Whats_For_Dinner.Models
             this.Name = name;
             this.Ingredients = ingredients;
             this.Instructions = instructions;
-            this.Description = description;
+            this.Description = description; 
         }
         public int Id { get; set; }
         public string Name { get; set; }

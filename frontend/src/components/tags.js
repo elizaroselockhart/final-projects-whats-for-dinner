@@ -2,7 +2,8 @@ import api from "../api/api-actions";
 import * as CONSTANTS from "./constants";
 
 export default {
-
+    DisplayAllTags,
+    SetupTagDeleteBtn
 }
 
 function DisplayAllTags(tags) {
@@ -30,7 +31,10 @@ function SetupTagDeleteBtn() {
         btnDeleteTag.addEventListener('click', function(evt) {
             console.log("Delete tag button clicked!");
             let tagId = evt.target.id;
-            api.deleteRequest(CONSTANTS.TagsAPIURL, tagId, )
+            api.deleteRequest(CONSTANTS.TagsAPIURL, tagId, tags => {
+                DisplayAllTags(tags);
+                SetupTagDeleteBtn();
+            })
         })
     })
 }

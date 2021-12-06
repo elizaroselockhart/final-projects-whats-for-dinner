@@ -73,14 +73,14 @@ function EditRecipeForm(recipe) {
             <ul id='recipeIngredients'>
                 ${IngredientList.map(ingredient => {
                     return `
-                        <li id='addedIngredient'>
+                        <li class='addedIngredient' id='${ingredient}'>
                             ${ingredient}
+                            <button class='removeIngredientbtn'>Remove</button>
                         </li>
-                        <button id='removebtn'>Remove</button>
                     `;
                 }).join('')}
             </ul>
-            <input type='text' id='ingredient' placeholder='Add ingredient.' />
+            <input type='text' id='ingredientInput' placeholder='Add ingredient.' />
             <button id='btnAddIngredient'>Add Ingredient</button>
             <h4>Instructions:</h4>
             <input type='text' id='recipeInstructions' value='${recipe.instructions}' placeholder='Enter the recipe instructions.'/>
@@ -91,8 +91,9 @@ function EditRecipeForm(recipe) {
             <ul id='tagList'>
                 ${recipe.tags.map(tag => {
                     return `
-                        <li class='addedTag'>
+                        <li class='addedTag' id='${tag.id}' data-existingtagname='${tag.name}'>
                             ${tag.name}
+                            <button class='removeTagbtn'>Remove Tag</button>
                         </li>
                     `;
                 }).join('')}
@@ -119,25 +120,53 @@ function SetupEditRecipeEventListeners() {
             recipes.SetupAddIngredient();
             recipes.SetupDynamicTagsList();
             recipes.PopulateTagsDDL();
+            SetupExistingItemDeleteBtns();
             SubmitEditedRecipe();
+        });
+    });
+}
+
+function SetupExistingItemDeleteBtns() {
+    let removeIngredientbtns = document.querySelectorAll('.removeIngredientbtn');
+    let ingredientList = document.getElementById('recipeIngredients');
+    let removeTagbtns = document.querySelectorAll('.removeTagbtn');
+    let tagList = document.getElementById('tagList');
+
+    removeIngredientbtns.forEach(removeIngredientbtn => {
+        removeIngredientbtn.addEventListener('click', function() {
+            let toRemove = this.parentElement;
+            ingredientList.removeChild(toRemove);
+        });
+    });
+
+    removeTagbtns.forEach(removeTagbtn => {
+        removeTagbtn.addEventListener('click', function() {
+            console.log("Remove tag btn clicked!");
+            let toRemove = this.parentElement;
+            tagList.removeChild(toRemove);
         });
     });
 }
 
 function SubmitEditedRecipe() {
     let recipe_id = document.getElementById('recipe_id').value;
-    let ingredientElements = document.getElementsByClassName("addedIngredients");
-    let ingredients = "";
+    let ListofIngredients = document.getElementById('recipeIngredients');
+    let indivIngredients = ListofIngredients.getElementsByTagName('li');
+    let joinedIngredients = "";
+
+
     let ListofAddedTags = document.getElementById('tagList');
     let AddedTags = ListofAddedTags.getElementsByTagName('li');
     let TagsToAddToRecipe = [];
 
     let btnFinishEditing = document.getElementById('btnFinishEditing');
     btnFinishEditing.addEventListener('click', function() {
-       
-        for (const element of ingredientElements) {
-            ingredients = ingredients + element.id + ";"
+        
+        for (let i = 0; i < (indivIngredients.length - 1); i++) {
+            joinedIngredients = joinedIngredients + indivIngredients[i].id + ";"
         }
+
+        joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
 
         let Tag = {
             Id: 0,
@@ -157,6 +186,9 @@ function SubmitEditedRecipe() {
             else {
                 tag_id = tag.id;
                 tag_name = tag.getAttribute('data-existingtagname');
+                console.log("Before tag object created, tag_id; tag_name; tag HTML object");
+                console.log(tag_id + tag_name);
+                console.log(tag);
             }
 
             Tag = {
@@ -172,7 +204,7 @@ function SubmitEditedRecipe() {
             Id: document.getElementById('recipe_id').value,
             Name: document.getElementById('recipeName').value,
             Description: document.getElementById('recipeDescription').value,
-            Ingredients: ingredients,
+            Ingredients: joinedIngredients,
             Instructions: document.getElementById('recipeInstructions').value,
             Tags: TagsToAddToRecipe
         }

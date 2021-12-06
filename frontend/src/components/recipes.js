@@ -134,7 +134,7 @@ function SetupAddRecipeForm() {
             <h4>Description:</h4><input type='text' id='recipeDescription' placeholder='Describe your recipe!' />
             <h4>Ingredient List</h4>
             <ul id='recipeIngredients'></ul>
-                <input type='text' id='ingredient' placeholder='Add ingredient.' />
+                <input type='text' id='ingredientInput' placeholder='Add ingredient.' />
                 <button id='btnAddIngredient'>Add Ingredient</button>
             <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
 
@@ -145,44 +145,57 @@ function SetupAddRecipeForm() {
 
 function SetupAddIngredient() {
     let btnAddIngredient = document.getElementById('btnAddIngredient');
+    let ingredientInput = document.getElementById('ingredientInput');
+
     btnAddIngredient.addEventListener('click', function() {
         console.log("Add Ingredients Button Clicked!");
         let IngredientList = document.getElementById('recipeIngredients');
+        
         let NewIngredient = document.createElement('li');
-        NewIngredient.setAttribute('id', ingredient.value);
+        NewIngredient.setAttribute('id', ingredientInput.value)
         NewIngredient.classList.add('addedIngredients');
         
-        NewIngredient.appendChild(document.createTextNode(ingredient.value));
-        let removebtn = document.createElement('button');
-        removebtn.innerText = "Remove Ingredient";
+        NewIngredient.appendChild(document.createTextNode(ingredientInput.value));
 
-        removebtn.addEventListener('click', function() {
-            let toRemove = document.getElementById(ingredient.value);
-            IngredientList.removeChild(toRemove);
-        });
+        let removebtn = document.createElement('button');
+        removebtn.setAttribute('id', 'removebtn');
+        removebtn.innerText = "Remove Ingredient";
 
         NewIngredient.appendChild(removebtn);
         IngredientList.appendChild(NewIngredient);
-        ingredient.setAttribute('value', '');
+
+        removebtn.addEventListener('click', function() {
+            let toRemove = this.parentNode;
+            IngredientList.removeChild(toRemove);
+        });
+
+        ingredientInput.setAttribute('value', '');
     })
 }
 
 function SetupAddTags() {
     let btnAddTags = document.getElementById('btnNextPage');
-    let ingredientElements = document.getElementsByClassName('addedIngredients');
-    let ingredients = "";
+    let ListofIngredients = document.getElementById('recipeIngredients');
+    let indivIngredients = ListofIngredients.getElementsByTagName('li');
+    let joinedIngredients = "";
 
     btnAddTags.addEventListener('click', function() {
+        console.log("IngredientElement string before joining:")
+        console.log(indivIngredients.length);
 
-        for (const element of ingredientElements) {
-            ingredients = ingredients + element.id + ";"
+        for (let i = 0; i < (indivIngredients.length - 1); i++) {
+            joinedIngredients = joinedIngredients + indivIngredients[i].id + ";"
         }
-        console.log(ingredients);
+
+        joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
+
+        console.log('IngredientElements after joining:');
+        console.log(joinedIngredients);
 
         const newRecipe = {
             Name: document.getElementById('recipeName').value,
             Description: document.getElementById('recipeDescription').value,
-            Ingredients: ingredients,
+            Ingredients: joinedIngredients,
             Instructions: document.getElementById('recipeInstructions').value
         }
 
@@ -190,11 +203,11 @@ function SetupAddTags() {
             console.log("New recipe created!");
             console.log(recipe);
             CONSTANTS.content.innerHTML = `
-                <input type='text' id='recipe_id' value=${recipe.id} />
-                <input type='text' id='recipe_name' value=${recipe.name} />
-                <input type='text' id='recipe_description' value=${recipe.description} />
-                <input type='text' id='recipe_ingredients' value=${recipe.ingredients} />
-                <input type='text' id='recipe_instructions' value=${recipe.instructions} />
+                <input type='hidden' id='recipe_id' value='${recipe.id}' />
+                <input type='hidden' id='recipe_name' value='${recipe.name}' />
+                <input type='hidden' id='recipe_description' value='${recipe.description}' />
+                <input type='hidden' id='recipe_ingredients' value='${recipe.ingredients}' />
+                <input type='hidden' id='recipe_instructions' value='${recipe.instructions}' />
 
                 <div id='tagSection'>
                     <h5>Add tags for your recipe on this page.</h5>
@@ -225,17 +238,18 @@ function SetupDynamicTagsList() {
         console.log("Added tags from the dropdown list!");
        
         let AddedTag = document.createElement('li');
-        AddedTag.setAttribute('id', selectList.options[selectList.selectedIndex].value);
+        AddedTag.setAttribute('id', selectList.children[selectList.selectedIndex].value);
         AddedTag.classList.add('addedTag');
-        let AddedTagText = selectList.options[selectList.selectedIndex].text;
+        let AddedTagText = selectList.children[selectList.selectedIndex].text;
         AddedTag.setAttribute('data-existingtagname', AddedTagText);
         AddedTag.appendChild(document.createTextNode(AddedTagText));
 
         let removeTagbtn = document.createElement('button');
+        removeTagbtn.setAttribute('id', 'removeTagbtn');
         removeTagbtn.innerText = "Remove Tag";
-    
-        removeTagbtn.addEventListener('click', function(event) {
-            let toRemove = removeTagbtn.ParentNode;
+
+        removeTagbtn.addEventListener('click', function() {
+            let toRemove = this.parentNode;
             TagList.removeChild(toRemove);
         });
 
@@ -257,7 +271,7 @@ function SetupDynamicTagsList() {
         removeTagbtn.innerText = "Remove Tag";
     
         removeTagbtn.addEventListener('click', function() {
-            let toRemove = document.getElementById(createdTag.value);
+            let toRemove = this.parentNode;
             TagList.removeChild(toRemove);
         });
 
@@ -294,6 +308,7 @@ function CheckRecipeTags() {
 
     let tag_id = 0;
     let tag_name = "if_you_see_this_something_has_gone_wrong";
+    let exists = false;
 
     btnFinishAddingTags.addEventListener('click', function() {
         for (const tagtocheck of TagsToCheck) {
@@ -314,18 +329,30 @@ function CheckRecipeTags() {
         }
     
         let ListofTagIds = [];
-        console.log(FormattedTags);
+        let SentTag = {
+            Name: "if_you_see_this_something_has_gone_wrong"
+        }
     
         api.getRequest(CONSTANTS.TagsAPIURL, tags => {
             FormattedTags.forEach(FormattedTag => {
+                exists = false;
                 tags.forEach(tag => {
-                    if (FormattedTag.name.toLowerCase() == tag.name.toLowerCase()) {
-                        ListofTagIds.push(tag.id);
+                    if (FormattedTag.Name.toLowerCase() == tag.name.toLowerCase()) {
+                        exists = true;
+                        tag_id = tag.id;
                     }
-                    else api.postRequest(CONSTANTS.TagsAPIURL, FormattedTag, NewTag => {
-                        ListofTagIds.push(NewTag.id);
-                    });
                 });
+
+                if (exists == false) {
+                    SentTag = {
+                        Name: FormattedTag.Name
+                    }
+                    api.postRequest(CONSTANTS.TagsAPIURL, SentTag, NewTag => {
+                        tag_id = NewTag.id;
+                        console.log("New tag created!")
+                    });
+                }
+                ListofTagIds.push(tag_id);
             });
         });
     
@@ -336,20 +363,30 @@ function CheckRecipeTags() {
             TagId: "if_you_see_this_something_has_gone_wrong"
         }
 
-        ListofTagIds.forEach(tagId => {
+        console.log("List of tagIds");
+        console.log(ListofTagIds);
+
+        if (ListofTagIds.length == 0) {
+            console.log("shit's fucked, empty list");
+        }
+
+        ListofTagIds.forEach(aatagId => {
+            console.log(aatagId);
 
             RecipeTag = {
                 RecipeId: recipe_id,
-                TagId: tagId
+                TagId: aatagId
             }
             
             api.postRequest(CONSTANTS.RecipeTagsAPIURL, RecipeTag, recipetag => {
                 console.log(recipetag);
                 AssociatedRecipeTags.push(recipetag);
+                console.log("New recipetags created!");
             });
         });
-    
-        console.log("New recipetags created!");
+
+        console.log("AssociatedRecipeTags:")
+        console.log(AssociatedRecipeTags);
     
         let editedRecipe = {
             Id: recipe_id,
@@ -359,8 +396,12 @@ function CheckRecipeTags() {
             Instructions: document.getElementById('recipe_instructions').value,
             Tags: AssociatedRecipeTags
         }    
+
+        console.log("Edited Recipe before sending!");
+        console.log(editedRecipe);
     
         api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
+            console.log("New Recipe:");
             console.log(recipe);
             CONSTANTS.title.innerText = "Recipe Details";
             CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
