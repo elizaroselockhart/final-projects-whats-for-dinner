@@ -1,7 +1,9 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
-import recipes from "../components/recipes";
+import recipes, { GetRandomRec } from "../components/recipes";
+import { randomRecBtn } from "./randomRecipes";
+import { getRandomBtn } from "./randomRecipes";
 
 export default {
     setupNavBar,
@@ -116,11 +118,18 @@ export function setupRegisterDisplay() {
 function setupHome() {
     CONSTANTS.tabTitle.innerText="Home";
     CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.content.innerHTML =
+    CONSTANTS.content.innerHTML = 
     //call random recipe button here the image is just a placeholder
     `
         <img src="../img/shuffle.png" alt="Shuffle recipes button" width="400" height="400" style = "padding-bottom: 16px;">
         <p>Click for random recipe</p>
+        <button id="clickMe">Click Me</button>
+        
     `;
+
+
+    // GetRandomRec();
+    // console.log(GetRandomRec(randomRec));
+    //getRandomBtn(randomRecBtn)
 
 }
