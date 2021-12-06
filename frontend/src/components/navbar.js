@@ -1,9 +1,8 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
+import recipes from "../components/recipes";
 import recipeDetails from "./recipeDetails";
-import recipes, { GetRandomRec } from "../components/recipes";
-import { randomRecBtn } from "./randomRecipes";
-import { getRandomBtn } from "./randomRecipes";
+import randomRecipes from "../components/randomRecipes";
 
 export default {
     setupNavBar,
@@ -121,15 +120,9 @@ function setupHome() {
     CONSTANTS.content.innerHTML = 
     //call random recipe button here the image is just a placeholder
     `
-        <img src="../img/shuffle.png" alt="Shuffle recipes button" width="400" height="400" style = "padding-bottom: 16px;">
-        <p>Click for random recipe</p>
-        <button id="clickMe">Click Me</button>
-        
+        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="400" height="400" style = "padding-bottom: 16px;">
+        <p>Click for random recipe</p>      
     `;
-
-
-    // GetRandomRec();
-    // console.log(GetRandomRec(randomRec));
-    //getRandomBtn(randomRecBtn)
-
 }
+
+{/* <input type="hidden" value='${recipe.id}' id="hiddenRandomRecipe"/> */}
