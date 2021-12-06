@@ -3,7 +3,7 @@ import api from "../api/api-actions";
 import recipeDetails from "../components/recipeDetails";
 import recipes from "../components/recipes";
 
-let recipe = [1,2,3];
+let recipe =[1, 2, 3]
 
 export default {
     getRandomRecipe,
@@ -19,16 +19,17 @@ export function getRandomRecipe(min, max) {
     return result;
 }
 
+
 export function setupRandomBtn() {
     let btnRandom = document.getElementById("clickMe");
     btnRandom.addEventListener('click', function() {
         console.log("random btn clicked!");
-        let index = getRandomRecipe(0, recipe.length-1);
-        CONSTANTS.content.innerText = recipe[index];
-        api.getRequest(CONSTANTS.RecipesAPIURL + index, data => {
+        let index = getRandomRecipe(1, recipe.length-1);
+       // CONSTANTS.content.innerText = recipe[index];
+        api.getRequest(CONSTANTS.RecipesAPIURL + recipe[index], data => {
             console.log(data);
-            // CONSTANTS.title.innerText= "RecipeDetails"
-            // CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data); 
+             CONSTANTS.title.innerText= "RecipeDetails"
+             CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data); 
             // recipes.setupSearchBar();                     
         });
     });
@@ -83,17 +84,11 @@ export function setupRandomBtn() {
 //                 <div display="none" class="tagString" id='tagString-${recipe.id}'>
 //                     ${recipe.tags.map(tag => {           
 //                     return tag.tag.name               
-//                     }).join('')}
-//                 </div>
-//                 <button id="${recipe.id}" class="recipeDelete">Delete</button>                
-//                 </h4>          
+//                     })        
 //             </li>
 //             `;
-//         }).join('')}
-//     </ol>
-//     </div>
 
-//     `;
+    
 // }
 
 // function getRandom(recipes){
@@ -103,4 +98,3 @@ export function setupRandomBtn() {
 //     let getRandomRec = (Math.floor(Math.random() * (max - min + 1)) + min);
     
 //     return getRandomRec
-// }
