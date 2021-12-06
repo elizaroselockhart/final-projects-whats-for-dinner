@@ -11,12 +11,12 @@ namespace Whats_For_Dinner
     {
         //Add DBsets here! :)
         public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<RecipeTag> RecipeTag { get; set; }
+        public DbSet<RecipeTag> RecipeTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            var ConnectionString = "Server=(localdb)\\mssqllocaldb; Database=RecipeCollectionDB2; Trusted_Connection=True";
+            var ConnectionString = "Server=(localdb)\\mssqllocaldb; Database=based_database_420; Trusted_Connection=True";
 
             builder.UseSqlServer(ConnectionString).UseLazyLoadingProxies();
             base.OnConfiguring(builder);

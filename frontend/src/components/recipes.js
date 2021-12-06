@@ -211,7 +211,7 @@ function SetupAddTags() {
             `;
             SetupDynamicTagsList();
             PopulateTagsDDL();
-            UpdateRecipeTags();
+            CheckRecipeTags();
         });
     });
 }
@@ -234,8 +234,8 @@ function SetupDynamicTagsList() {
         let removeTagbtn = document.createElement('button');
         removeTagbtn.innerText = "Remove Tag";
     
-        removeTagbtn.addEventListener('click', function() {
-            let toRemove = document.getElementById(AddedTagText);
+        removeTagbtn.addEventListener('click', function(event) {
+            let toRemove = removeTagbtn.ParentNode;
             TagList.removeChild(toRemove);
         });
 
@@ -280,66 +280,95 @@ function PopulateTagsDDL(){
     }
 }
 
-function UpdateRecipeTags() {
+function CheckRecipeTags() {
+    let ListofTags = document.getElementById('tagList');
+    let TagsToCheck = ListofTags.getElementsByTagName('li');
+    let FormattedTags = [];
     let recipe_id = document.getElementById('recipe_id').value;
     let btnFinishAddingTags = document.getElementById('btnFinishRecipe');
 
     let Tag = {
         Id: 0,
-        Name: 0
+        Name: "if_you_see_this_something_has_gone_wrong"
     }
 
     let tag_id = 0;
-    let tag_name = "ifYouSeeThisSomethingHasGoneWrong";
+    let tag_name = "if_you_see_this_something_has_gone_wrong";
 
     btnFinishAddingTags.addEventListener('click', function() {
-        let ListofAddedTags = document.getElementById('tagList');
-        let AddedTags = ListofAddedTags.getElementsByTagName('li');
-        let TagsToAddToRecipe = [];
-        console.log("AddedTags");
-        console.log(AddedTags);
-        for (const tag of AddedTags) {
-
-            if (tag.classList.contains('newTag')) {
+        for (const tagtocheck of TagsToCheck) {
+            if (tagtocheck.classList.contains('newTag')) {
                 tag_id = 0;
-                tag_name = tag.id;
+                tag_name = tagtocheck.id;
             }
-
             else {
-                tag_id = tag.id;
-                tag_name = tag.getAttribute('data-existingtagname');
+                tag_id = tagtocheck.id;
+                tag_name = tagtocheck.getAttribute('data-existingtagname');
             }
-
             Tag = {
                 Id: tag_id,
                 Name: tag_name
             }
-            console.log("Tag object:");
-            console.log(Tag);
-            TagsToAddToRecipe.push(Tag);
+    
+            FormattedTags.push(Tag);
         }
-        console.log("Tags to add to recipe");
-        console.log(TagsToAddToRecipe);
+    
+        let ListofTagIds = [];
+        console.log(FormattedTags);
+    
+        api.getRequest(CONSTANTS.TagsAPIURL, tags => {
+            FormattedTags.forEach(FormattedTag => {
+                tags.forEach(tag => {
+                    if (FormattedTag.name.toLowerCase() == tag.name.toLowerCase()) {
+                        ListofTagIds.push(tag.id);
+                    }
+                    else api.postRequest(CONSTANTS.TagsAPIURL, FormattedTag, NewTag => {
+                        ListofTagIds.push(NewTag.id);
+                    });
+                });
+            });
+        });
+    
+        let AssociatedRecipeTags = [];
         
+        let RecipeTag = {
+            RecipeId: "if_you_see_this_something_has_gone_wrong",
+            TagId: "if_you_see_this_something_has_gone_wrong"
+        }
+
+        ListofTagIds.forEach(tagId => {
+
+            RecipeTag = {
+                RecipeId: recipe_id,
+                TagId: tagId
+            }
+            
+            api.postRequest(CONSTANTS.RecipeTagsAPIURL, RecipeTag, recipetag => {
+                console.log(recipetag);
+                AssociatedRecipeTags.push(recipetag);
+            });
+        });
+    
+        console.log("New recipetags created!");
+    
         let editedRecipe = {
-            Id: document.getElementById('recipe_id').value,
+            Id: recipe_id,
             Name: document.getElementById('recipe_name').value,
             Description: document.getElementById('recipe_description').value,
             Ingredients: document.getElementById('recipe_ingredients').value,
             Instructions: document.getElementById('recipe_instructions').value,
-            Tags: TagsToAddToRecipe
-        }
-
+            Tags: AssociatedRecipeTags
+        }    
+    
         api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
             console.log(recipe);
             CONSTANTS.title.innerText = "Recipe Details";
             CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
             setupSearchBar();
             recipeDetails.SetupEditRecipeEventListeners();
-        })
+        });
     });
 }
-
 
 //Hide All Recipes Function
 export function hideRecipeList() {

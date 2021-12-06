@@ -9,8 +9,8 @@ using Whats_For_Dinner;
 namespace Whats_For_Dinner.Migrations
 {
     [DbContext(typeof(RecipeCollectionContext))]
-    [Migration("20211203184204_inital")]
-    partial class inital
+    [Migration("20211206160328_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,21 +19,6 @@ namespace Whats_For_Dinner.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("RecipeTag", b =>
-                {
-                    b.Property<int>("RecipesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RecipesId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("RecipeTag");
-                });
 
             modelBuilder.Entity("Whats_For_Dinner.Models.Recipe", b =>
                 {
@@ -82,6 +67,102 @@ namespace Whats_For_Dinner.Migrations
                             Ingredients = "3 tablespoons Chipotle Olive Oil;3 tablespoons Black Currant Balsamic Vinegar, divided;1 medium or large acorn, delicata or small butternut squash;½ teaspoon kosher salt;¼ teaspoon freshly ground black pepper;6 oz spicy Italian sausage, bulk or with casings removed(turkey, or chicken sausage as work well);3 green onions, sliced;2 clove garlic, minced;2 cups tightly packed baby kale or torn kale leaves;3 tablespoons chicken stock;¼ cup pine nuts or pepitas;2 tablespoons grated fresh Parmesan;2 tablespoons panko breadcrumbs;½ tablespoon Pumpkin Seed Oil (optional)",
                             Instructions = "1. Preheat oven to 375°. 2. Optional step to make cutting the squash easier: using a fork, poke each squash 5 - 6 times so steam can escape.Put in microwave on high for 2 minutes.Remove carefully and let cool a couple of minutes. 3. Halve the squash down the middle, and remove the seeds.Cut a thin slice off the round bottom side of each squash half to create a stable base for when filling and broiling the squash.Score the inside of the squash with a sharp knife and brush each half with 1 / 2 tablespoon of oil and 1 / 2 tablespoon of vinegar.Allow to sit upright for 5 minutes for the oil and vinegar to penetrate the scoring.Sprinkle squash with salt and pepper. 4. Coat a foil - lined baking sheet with cooking spray, place squash flesh side down and bake until golden and tender, 30 - 40 minutes. Remove from oven; flip squash and set aside. 5. While the squash is cooking: Heat 1 tablespoon olive oil in a large nonstick skillet over medium heat. Cook the sausage through, breaking into pieces(about 6 minutes), and transfer to a paper towel-lined dish to drain. 6. Add final tablespoon of olive oil to the same pan and cook the onions until soft, about 3 minutes.Add the garlic and cook until fragrant, about 30 seconds.Add kale and combine. Add the chicken stock and 1 tablespoon balsamic vinegar.Cook until kale is tender, about 5 minutes, Stir in sausage and remove from heat. 7. When the filling is cooked and the squash is done roasting, divide the filling between the squash \"bowls.\" 8. Combine the nuts, Parmesan, panko breadcrumbs, and the nut oil of choice in a small bowl.Sprinkle evenly over squash. 9. Place in oven and roast 5 minutes. 10. Leave squash in the oven and turn oven to broil, and broil the squash an additional 2 - 3 minutes until the topping is golden brown, about 2 minutes. 11. Let cool 5 minutes and drizzle remaining Black Currant Balsamic Vinegar over the finished squash before serving. If serving 4, cut each half into half again at the table.",
                             Name = "Hearty Stuffed Autumn Squash"
+                        });
+                });
+
+            modelBuilder.Entity("Whats_For_Dinner.Models.RecipeTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("RecipeTags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RecipeId = 1,
+                            TagId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RecipeId = 1,
+                            TagId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RecipeId = 1,
+                            TagId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RecipeId = 1,
+                            TagId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            RecipeId = 2,
+                            TagId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            RecipeId = 2,
+                            TagId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            RecipeId = 2,
+                            TagId = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            RecipeId = 3,
+                            TagId = 5
+                        },
+                        new
+                        {
+                            Id = 9,
+                            RecipeId = 3,
+                            TagId = 8
+                        },
+                        new
+                        {
+                            Id = 10,
+                            RecipeId = 3,
+                            TagId = 9
+                        },
+                        new
+                        {
+                            Id = 11,
+                            RecipeId = 3,
+                            TagId = 10
+                        },
+                        new
+                        {
+                            Id = 12,
+                            RecipeId = 3,
+                            TagId = 11
                         });
                 });
 
@@ -157,19 +238,33 @@ namespace Whats_For_Dinner.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RecipeTag", b =>
+            modelBuilder.Entity("Whats_For_Dinner.Models.RecipeTag", b =>
                 {
-                    b.HasOne("Whats_For_Dinner.Models.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesId")
+                    b.HasOne("Whats_For_Dinner.Models.Recipe", "Recipe")
+                        .WithMany("Tags")
+                        .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Whats_For_Dinner.Models.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
+                    b.HasOne("Whats_For_Dinner.Models.Tag", "Tag")
+                        .WithMany("Recipes")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Whats_For_Dinner.Models.Recipe", b =>
+                {
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("Whats_For_Dinner.Models.Tag", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }
