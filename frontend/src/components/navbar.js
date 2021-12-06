@@ -1,11 +1,12 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipes from "../components/recipes";
-import tags from "../components/tags";
+import tagList from "../components/tags";
 
 export default {
     setupNavBar,
-    setupPantry
+    setupPantry,
+    SetupTags
 }
 
 export function setupNavBar(){
@@ -43,8 +44,8 @@ export function SetupTags() {
         console.log("Tags display link hooked up!");
         api.getRequest(CONSTANTS.TagsAPIURL, tags => {
             CONSTANTS.title.innerText = "All Tags";
-            CONSTANTS.content.innerHTML = tags.DisplayAllTags(tags);
-            tags.SetupTagDeleteBtn();
+            CONSTANTS.content.innerHTML = tagList.DisplayAllTags(tags);
+            tagList.SetupTagDeleteBtn();
         });
     });
 }

@@ -11,6 +11,7 @@ export default() => {
 function setupNavbar() {
     navbar.innerHTML = navbarTabs.setupNavBar();
     navbarTabs.setupPantry();
+    navbarTabs.SetupTags();
 }
 
 

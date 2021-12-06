@@ -15,7 +15,7 @@ function DisplayAllTags(tags) {
                         <h5>
                             <span>
                                 ${tag.name}
-                                <button id='${tag.id}' class='btnDeleteTag'>Delete</button>
+                                <button value='${tag.id}' class='btnDeleteTag'>Delete</button>
                             </span>
                         </h5>
                     </li>
@@ -25,16 +25,18 @@ function DisplayAllTags(tags) {
     `;
 }
 
-function SetupTagDeleteBtn() {
+function SetupTagDeleteBtn(){
     let btnDeleteTags = document.querySelectorAll('btnDeleteTag');
+
     btnDeleteTags.forEach(btnDeleteTag => {
         btnDeleteTag.addEventListener('click', function(evt) {
             console.log("Delete tag button clicked!");
-            let tagId = evt.target.id;
+            let tagId = evt.target.value;
+
             api.deleteRequest(CONSTANTS.TagsAPIURL, tagId, tags => {
                 DisplayAllTags(tags);
                 SetupTagDeleteBtn();
-            })
-        })
-    })
+            });
+        });
+    });
 }
