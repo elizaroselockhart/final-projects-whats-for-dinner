@@ -14,6 +14,8 @@ namespace Whats_For_Dinner
         public DbSet<RecipeTag> RecipeTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             var ConnectionString = "Server=(localdb)\\mssqllocaldb; Database=RecipeCollectionDB; Trusted_Connection=True";
@@ -83,6 +85,10 @@ namespace Whats_For_Dinner
                 new RecipeTag() { Id = 10, RecipeId = 3, TagId = 9 },
                 new RecipeTag() { Id = 11, RecipeId = 3, TagId = 10 },
                 new RecipeTag() { Id = 12, RecipeId = 3, TagId = 11 }
+                );
+
+            builder.Entity<User>().HasData(
+                new User() { Id = 1, Name = "Ziyah", Username = "Ziyah123", Password = "12345" }               
                 );
 
 

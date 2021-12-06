@@ -137,7 +137,6 @@ function filterList(str, targets){
     });
 }
 
-//Error: addEventListener not a function
 export function setupSearchByTagCheckbox() {
     const searchByTagCheckbox = document.getElementById("searchByTags");
     const searchbar = document.getElementById('contentSearchBar');
@@ -164,10 +163,6 @@ export function setupSearchByTagCheckbox() {
                         tag.style.display = "none"; 
                     }
                 })
-                //CONSTANTS.pageTabs.innerHTML = ''
-                    //currentTags = [];
-                    //toggleTags();
-                // add the old event listener here
             }
     });
 }
@@ -442,11 +437,3 @@ export function hideRecipeList() {
         }
     });
 }
-
-//public int Id { get; set; }
-//public string Name { get; set; }
-//[NotMapped]
-// public virtual List<string> Ingredients { get; set; }
-//public string Instructions { get; set; }
-//public string Description { get; set; }
-// public virtual List<RecipeTag> Tags { get; set; }

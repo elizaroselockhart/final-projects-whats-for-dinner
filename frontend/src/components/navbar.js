@@ -7,7 +7,10 @@ export default {
     setupNavBar,
     setupPantry,
     setupHome,
-    hideNavSearchBarDisplayRecipes
+    hideNavSearchBarDisplayRecipes,
+    pantryOverlayDisplay,
+    openNav,
+    closeNav
 
 }
 
@@ -31,24 +34,24 @@ export function hideNavSearchBarDisplayRecipes() {
 }
 
 export function setupNavBar(){
-    let username = cookies.getCookie("username"); 
+    let username = cookies.getCookie("username");
+    // let hidePantry = document.getElementById("navPantry"); 
     let userId = cookies.getCookie("userId");
     let loginUser;
-    let welcomeUser;
     console.log("UserId");
     console.log(userId);
     if(userId === "undefined" || userId === null)
     {
         loginUser = `<li id="navLogin">Login</li>`
-        welcomeUser = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>`
+        // hidePantry.style.display = "none";
     } else {
         console.log("Logout displays in nav");
         loginUser = `<li id="navLogout">Logout</li>`
-        welcomeUser = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry <br> Welcome ${username}</li>`
+        // hidePantry.style.display = "initial";
     }
     return `
     <ul id="navbarLi">
-        ${welcomeUser}
+        <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30px"><br>@Home <br> Welcome ${username}</li>
         <li id="navSearch">
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
@@ -63,18 +66,42 @@ export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
+        openNav();
+        pantryOverlayDisplay();
     });
+}
+
+export function pantryOverlayDisplay() { 
+        return`
+        <div id="myNav" class="overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> 
+            <div class="overlay-content">
+              <div class="container"><h1>Saved</h1></div>
+              <div class="container"><h2>Categories</h2></div>
+            </div>
+        </div>  
+        `;
+}
+
+function openNav() {
+    document.getElementById("myNav").style.height = "100%";
+}
+  
+  /* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+    document.getElementById("myNav").style.height = "0%";
 }
 
 function setupHome() {
     CONSTANTS.tabTitle.innerText="Home";
     CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.navbar.innerHTML =  setupNavBar();
+    CONSTANTS.navbar.innerHTML =  setupNavBar(); setupPantry();
     CONSTANTS.content.innerHTML =
     //call random recipe button here the image is just a placeholder
     `
-        <img src="../img/shuffle.png" alt="Shuffle recipes button" width="400" height="400" style = "padding-bottom: 16px;">
+        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="shuffleBtn" width="400" height="400" style = "padding-bottom: 16px;">
         <p>Click for random recipe</p>
     `;
     
 }
+
