@@ -50,7 +50,6 @@ function setupRecipeLinks() {
         recipeLink.addEventListener("click", function (evt) {
 
             let recipeId = this.nextElementSibling.value;
-            console.log("Recipe Id:" + recipeId);
 
             //API Call
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
@@ -180,17 +179,12 @@ function SetupAddTags() {
     let joinedIngredients = "";
 
     btnAddTags.addEventListener('click', function() {
-        console.log("IngredientElement string before joining:")
-        console.log(indivIngredients.length);
 
         for (let i = 0; i < (indivIngredients.length - 1); i++) {
             joinedIngredients = joinedIngredients + indivIngredients[i].id + ";"
         }
 
         joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
-
-        console.log('IngredientElements after joining:');
-        console.log(joinedIngredients);
 
         const newRecipe = {
             Name: document.getElementById('recipeName').value,
@@ -200,14 +194,8 @@ function SetupAddTags() {
         }
 
         api.postRequest(CONSTANTS.RecipesAPIURL, newRecipe, recipe => {
-            console.log("New recipe created!");
-            console.log(recipe);
             CONSTANTS.content.innerHTML = `
                 <input type='hidden' id='recipe_id' value='${recipe.id}' />
-                <input type='hidden' id='recipe_name' value='${recipe.name}' />
-                <input type='hidden' id='recipe_description' value='${recipe.description}' />
-                <input type='hidden' id='recipe_ingredients' value='${recipe.ingredients}' />
-                <input type='hidden' id='recipe_instructions' value='${recipe.instructions}' />
 
                 <div id='tagSection'>
                     <h5>Add tags for your recipe on this page.</h5>
@@ -235,7 +223,6 @@ function SetupDynamicTagsList() {
     let TagList = document.getElementById('tagList');
 
     btnAddTagFromList.addEventListener('click', function(){
-        console.log("Added tags from the dropdown list!");
        
         let AddedTag = document.createElement('li');
         AddedTag.setAttribute('id', selectList.children[selectList.selectedIndex].value);
@@ -260,7 +247,6 @@ function SetupDynamicTagsList() {
     let btnAddNewTag = document.getElementById('btnAddNewTag');
     let createdTag = document.getElementById('createdTag');
     btnAddNewTag.addEventListener('click', function(){
-        console.log("Added new tag!");
         let NewTag = document.createElement('li');
         NewTag.setAttribute('id', createdTag.value);
         NewTag.classList.add('addedTag');
@@ -327,8 +313,6 @@ function CheckRecipeTags() {
     
             FormattedTags.push(Tag);
         }
-
-        console.log(FormattedTags);
     
         let ListofTagIds = [];
         let SentTag = {
@@ -336,9 +320,6 @@ function CheckRecipeTags() {
         }
     
         let tags = await api.SyncGetRequest(CONSTANTS.TagsAPIURL);
-
-        console.log("Tags from synced get request:");
-        console.log(tags);
 
         FormattedTags.forEach(async function(FormattedTag) {
             recipetag_tagid = FormattedTag.Id;
@@ -360,16 +341,8 @@ function CheckRecipeTags() {
         });
     
         let AssociatedRecipeTags = [];
-    
-        console.log("List of tagIds");
-        console.log(ListofTagIds);
-
-        if (ListofTagIds.length == 0) {
-            console.log("shit's fucked, empty list");
-        }
 
         ListofTagIds.forEach(aatagId => {
-            console.log(aatagId);
 
             let RecipeTag = {
                 Id: 0,
@@ -378,14 +351,10 @@ function CheckRecipeTags() {
             }
             
             api.postRequest(CONSTANTS.RecipeTagsAPIURL, RecipeTag, recipetag => {
-                console.log(recipetag);
                 AssociatedRecipeTags.push(recipetag);
                 console.log("New recipetags created!");
             });
         });
-
-        console.log("AssociatedRecipeTags:")
-        console.log(AssociatedRecipeTags);
     });
 }
 
@@ -394,7 +363,6 @@ export function hideRecipeList() {
     let list = document.getElementById("recipeList");
     const hideBox = document.getElementById("hide");
     hideBox.addEventListener('change', function (e) {
-        console.log("Hide recipes checkbox clicked");
         if (hideBox.checked) {
             list.style.display = "none";
         } else {

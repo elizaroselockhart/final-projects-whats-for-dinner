@@ -59,10 +59,22 @@ function DisplayRecipeDetails(recipe) {
     //4a. Once in an array, we can feed the array of ingredient strings into the post method.
 //5. Call the above two functions.
 
+//To display tags associated with the recipe:
+//Get tagid from recipetag.
+//Display the tag with the given id.
+
 
 function EditRecipeForm(recipe) {
     CONSTANTS.title.innerText = "Edit Recipe";
     let IngredientList = recipe.ingredients.split(";");
+
+    let recipetags = recipe.tags;
+    let LinkedTags = [];
+
+    recipetags.forEach(recipetag => {
+        let LinkedTag = api.SyncGetRequest(CONSTANTS.TagsAPIURL + recipetag.tagId);
+        LinkedTags.push(LinkedTag);
+    });
 
     CONSTANTS.content.innerHTML = `
         <div id='EditRecipeForm'>
@@ -87,28 +99,28 @@ function EditRecipeForm(recipe) {
         </div>
 
         <div id='tagSection'>
-            <h5>Tags</h5>
-            <ul id='tagList'>
-                ${recipe.tags.map(tag => {
-                    return `
-                        <li class='addedTag' id='${tag.id}' data-existingtagname='${tag.name}'>
-                            ${tag.name}
-                            <button class='removeTagbtn'>Remove Tag</button>
-                        </li>
-                    `;
-                }).join('')}
-            </ul>
-            <select id='existingTagDDL'>
-                <option disabled selected>---Choose Tags---</option>
-            </select>
-            <button id='btnAddTagFromList'>Add Tag From List</button>
-            <h5>Can't find your tag? Add one here!</h5>
-            <input type='text' id='createdTag' placeholder='Type your tag here!' />
-            <button id='btnAddNewTag'>Add A New Tag</button>
-        </div>
+        <h5>Tags</h5>
+        <ul id='tagList'>
+            ${LinkedTags.map(LinkedTag => {
+                return `
+                    <li class='addedTag' id='${LinkedTag.id}' data-existingtagname='${LinkedTag.name}'>
+                        ${LinkedTag.name}
+                        <button class='removeTagbtn'>Remove Tag</button>
+                    </li>
+                `;
+            }).join('')}
+        </ul>
+        <select id='existingTagDDL'>
+            <option disabled selected>---Choose Tags---</option>
+        </select>
+        <button id='btnAddTagFromList'>Add Tag From List</button>
+        <h5>Can't find your tag? Add one here!</h5>
+        <input type='text' id='createdTag' placeholder='Type your tag here!' />
+        <button id='btnAddNewTag'>Add A New Tag</button>
+    </div>
 
-        <button id='btnFinishEditing'>Finished Editing</button>
-        `;
+    <button id='btnFinishEditing'>Finished Editing</button>
+        `
 }
 
 function SetupEditRecipeEventListeners() {
@@ -206,7 +218,6 @@ function SubmitEditedRecipe() {
             Description: document.getElementById('recipeDescription').value,
             Ingredients: joinedIngredients,
             Instructions: document.getElementById('recipeInstructions').value,
-            Tags: TagsToAddToRecipe
         }
 
         api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
