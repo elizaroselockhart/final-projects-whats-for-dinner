@@ -1,5 +1,6 @@
 import login from "../components/login";
 import navbarTabs from "../components/navbar";
+import register from "../components/register";
 
 const navbar = document.getElementById("navbar");
 
@@ -13,6 +14,7 @@ function setupMain() {
     navbarTabs.setupPantry(); 
     navbarTabs.setupHome();
     login.setupLogin();
+    register.setupRegisterLink();
     navbarTabs.hideNavSearchBarDisplayRecipes();
 }
 

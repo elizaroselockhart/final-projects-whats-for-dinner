@@ -12,7 +12,7 @@ export default {
 
 const UserUrl = "https://localhost:44387/api/user" + "?username={0}&password={1}&name={2}";
 
-export function setupRegisterLink() {
+function setupRegisterLink() {
     const registerLink = document.getElementById("registerLinkBtn");
     registerLink.addEventListener("click", function(){
         console.log("Register display link hooked up!");
@@ -20,7 +20,7 @@ export function setupRegisterLink() {
     });
 }
 
-export function setupRegisterDisplay() {
+function setupRegisterDisplay() {
     CONSTANTS.tabTitle.innerText="Register";
     CONSTANTS.title.innerText="What's For Dinner";
     CONSTANTS.content.innerHTML =
