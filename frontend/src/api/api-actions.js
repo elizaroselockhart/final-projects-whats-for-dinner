@@ -1,5 +1,6 @@
 export default {
     getRequest,
+    // getUserListRequest,
     postRequest,
     deleteRequest,
     putRequest
@@ -14,6 +15,15 @@ function getRequest(location, callback){
     })
     .catch(err => console.log(err));
 }
+
+// function getUserListRequest(location, useThisFunction, callback) {
+//     fetch(location)
+//     .then(response => response.json())
+//     .then(data => {
+//         callback(data);
+//     })
+//     .catch(err => console.log(err));
+// }
 
 function postRequest(location, requestBody, callback){
     console.log(location);

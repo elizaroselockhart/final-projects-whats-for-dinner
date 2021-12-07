@@ -14,7 +14,6 @@ function setupMain() {
     navbarTabs.setupPantry(); 
     navbarTabs.setupHome();
     login.setupLogin();
-    register.setupRegisterLink();
     navbarTabs.hideNavSearchBarDisplayRecipes();
 }
 

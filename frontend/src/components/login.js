@@ -2,6 +2,7 @@ import cookies from "../components/cookies";
 import * as CONSTANTS from "../components/constants";
 import navbarTabs from "../components/navbar";
 import api from "../api/api-actions";
+import register from "../components/register"
 
 
 const UserUrl = "https://localhost:44387/api/user" + "?username={0}&password={1}";
@@ -20,6 +21,7 @@ export function setupLogin() {
         console.log("Login btn display hooked up!");
         setupLoginDisplay();
         login();
+        register.setupRegisterLink();
     });
 }
 
@@ -54,6 +56,7 @@ export function login(){
         api.getRequest(url,user => {
             console.log(user)
             cookies.setCookie("userId",user.id,7)
+            cookies.setCookie("username", user.username, 7)
             console.log(cookies.getCookie("userId"));
             navbarTabs.setupHome();
             logout();

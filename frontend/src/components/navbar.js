@@ -38,20 +38,23 @@ export function setupNavBar(){
     // let hidePantry = document.getElementById("navPantry"); 
     let userId = cookies.getCookie("userId");
     let loginUser;
+    let pantry;
     console.log("UserId");
     console.log(userId);
     if(userId === "undefined" || userId === null)
     {
+        pantry = ``;
         loginUser = `<li id="navLogin">Login</li>`
         // hidePantry.style.display = "none";
     } else {
         console.log("Logout displays in nav");
+        pantry = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30px"><br>@Home <br> Welcome ${username}</li>`
         loginUser = `<li id="navLogout">Logout</li>`
         // hidePantry.style.display = "initial";
     }
     return `
     <ul id="navbarLi">
-        <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30px"><br>@Home <br> Welcome ${username}</li>
+        ${pantry}
         <li id="navSearch">
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
@@ -64,6 +67,10 @@ export function setupNavBar(){
 
 export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
+    let userId = cookies.getCookie("userId");
+    if(userId === "undefined" || userId === null){
+        return;
+    }
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
         openNav();
