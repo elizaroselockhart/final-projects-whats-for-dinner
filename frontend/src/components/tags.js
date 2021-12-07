@@ -26,7 +26,7 @@ function DisplayAllTags(tags) {
 }
 
 function SetupTagDeleteBtn(){
-    let btnDeleteTags = document.querySelectorAll('btnDeleteTag');
+    let btnDeleteTags = document.querySelectorAll('.btnDeleteTag');
 
     btnDeleteTags.forEach(btnDeleteTag => {
         btnDeleteTag.addEventListener('click', function(evt) {
@@ -34,7 +34,7 @@ function SetupTagDeleteBtn(){
             let tagId = evt.target.value;
 
             api.deleteRequest(CONSTANTS.TagsAPIURL, tagId, tags => {
-                DisplayAllTags(tags);
+                CONSTANTS.content.innerHTML = DisplayAllTags(tags);
                 SetupTagDeleteBtn();
             });
         });

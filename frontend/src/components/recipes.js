@@ -296,8 +296,6 @@ function PopulateTagsDDL(){
 
 function CheckRecipeTags() {
     let ListofTags = document.getElementById('tagList');
-    let TagsToCheck = ListofTags.getElementsByTagName('li');
-    let FormattedTags = [];
     let recipe_id = document.getElementById('recipe_id').value;
     let btnFinishAddingTags = document.getElementById('btnFinishRecipe');
 
@@ -308,9 +306,11 @@ function CheckRecipeTags() {
 
     let tag_id = 0;
     let tag_name = "if_you_see_this_something_has_gone_wrong";
-    let exists = false;
+    let recipetag_tagid = 0;
 
-    btnFinishAddingTags.addEventListener('click', function() {
+    btnFinishAddingTags.addEventListener('click', async function() {
+        let TagsToCheck = ListofTags.getElementsByTagName('li');
+        let FormattedTags = [];
         for (const tagtocheck of TagsToCheck) {
             if (tagtocheck.classList.contains('newTag')) {
                 tag_id = 0;
@@ -327,42 +327,40 @@ function CheckRecipeTags() {
     
             FormattedTags.push(Tag);
         }
+
+        console.log(FormattedTags);
     
         let ListofTagIds = [];
         let SentTag = {
             Name: "if_you_see_this_something_has_gone_wrong"
         }
     
-        api.getRequest(CONSTANTS.TagsAPIURL, tags => {
-            FormattedTags.forEach(FormattedTag => {
-                exists = false;
+        let tags = await api.SyncGetRequest(CONSTANTS.TagsAPIURL);
+
+        console.log("Tags from synced get request:");
+        console.log(tags);
+
+        FormattedTags.forEach(async function(FormattedTag) {
+            recipetag_tagid = FormattedTag.Id;
+            if (FormattedTag.Id == 0){
+                let exists = false;
                 tags.forEach(tag => {
                     if (FormattedTag.Name.toLowerCase() == tag.name.toLowerCase()) {
+                        recipetag_tagid = tag.id;
                         exists = true;
-                        tag_id = tag.id;
                     }
                 });
-
                 if (exists == false) {
-                    SentTag = {
-                        Name: FormattedTag.Name
-                    }
-                    api.postRequest(CONSTANTS.TagsAPIURL, SentTag, NewTag => {
-                        tag_id = NewTag.id;
-                        console.log("New tag created!")
-                    });
+                    SentTag.Name = FormattedTag.Name.toLowerCase();
+                    let NewTag = await api.SyncPostRequest(CONSTANTS.TagsAPIURL, SentTag);
+                    recipetag_tagid = NewTag.id;
                 }
-                ListofTagIds.push(tag_id);
-            });
+            }
+            ListofTagIds.push(recipetag_tagid);
         });
     
         let AssociatedRecipeTags = [];
-        
-        let RecipeTag = {
-            RecipeId: "if_you_see_this_something_has_gone_wrong",
-            TagId: "if_you_see_this_something_has_gone_wrong"
-        }
-
+    
         console.log("List of tagIds");
         console.log(ListofTagIds);
 
@@ -373,7 +371,8 @@ function CheckRecipeTags() {
         ListofTagIds.forEach(aatagId => {
             console.log(aatagId);
 
-            RecipeTag = {
+            let RecipeTag = {
+                Id: 0,
                 RecipeId: recipe_id,
                 TagId: aatagId
             }
@@ -387,27 +386,6 @@ function CheckRecipeTags() {
 
         console.log("AssociatedRecipeTags:")
         console.log(AssociatedRecipeTags);
-    
-        let editedRecipe = {
-            Id: recipe_id,
-            Name: document.getElementById('recipe_name').value,
-            Description: document.getElementById('recipe_description').value,
-            Ingredients: document.getElementById('recipe_ingredients').value,
-            Instructions: document.getElementById('recipe_instructions').value,
-            Tags: AssociatedRecipeTags
-        }    
-
-        console.log("Edited Recipe before sending!");
-        console.log(editedRecipe);
-    
-        api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
-            console.log("New Recipe:");
-            console.log(recipe);
-            CONSTANTS.title.innerText = "Recipe Details";
-            CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
-            setupSearchBar();
-            recipeDetails.SetupEditRecipeEventListeners();
-        });
     });
 }
 
