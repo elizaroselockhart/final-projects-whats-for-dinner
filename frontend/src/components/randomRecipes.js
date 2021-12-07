@@ -11,11 +11,8 @@ export default {
 }
 
 
-export function getRandomRecipe(min, max) {
-    let step1 = max - min + 1;
-    let step2 = Math.random() * step1;
-    let result = Math.floor(step2) + min;
-
+export function getRandomRecipe(num) {
+    let result = Math.floor(Math.random()*num);
     return result;
 }
 
@@ -24,11 +21,11 @@ export function setupRandomBtn() {
     let btnRandom = document.getElementById("clickMe");
     btnRandom.addEventListener('click', function() {
         console.log("random btn clicked!");
-        let index = getRandomRecipe(1, recipe.length-1);
+        let index = getRandomRecipe(recipe.length);
        // CONSTANTS.content.innerText = recipe[index];
         api.getRequest(CONSTANTS.RecipesAPIURL + recipe[index], data => {
             console.log(data);
-             CONSTANTS.title.innerText= "RecipeDetails"
+             CONSTANTS.title.innerText= "What's For Dinner"
              CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data); 
             // recipes.setupSearchBar();                     
         });
