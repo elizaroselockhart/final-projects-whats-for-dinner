@@ -7,7 +7,8 @@ let recipe =[1, 2, 3]
 
 export default {
     getRandomRecipe,
-    setupRandomBtn
+    setupRandomBtn,
+    smallRandomBtn
 }
 
 
@@ -32,66 +33,19 @@ export function setupRandomBtn() {
     });
 }
 
+function smallRandomBtn() {
+    let showRandom = document.getElementById("navRandom");
+    showRandom.addEventListener('click', function () {
+        console.log("small random clicked");
+        let index = getRandomRecipe(1, recipe.length - 1);
+        showRandom.style.display = "block";
+        api.getRequest(CONSTANTS.RecipesAPIURL + recipe[index], data => {
+            console.log(data);
+            CONSTANTS.title.innerText = "RecipeDetails"
+            CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);
+        });
+    });
+}
 
 
 
-
-
-
-
-
-
-
-// import recipes from "../components/recipes";
-// import navbar from "./navbar";
-// import * as CONSTANTS from "../components/constants";
-// import api from "../api/api-actions";
-// import recipeDetails from "./recipeDetails";
-
-// export default {
-//     setupRandomBtn,
-//     randomRecipeList
-// }
-
-
-// Array.prototype.sample = function(){
-//     return this[Math.floor(Math.random()*this.length)];
-// }
-
-// export function setupRandomBtn() {
-//     const randomRecBtn = document.getElementById('clickMe');
-//     randomRecBtn.addEventListener("click", function(){
-//         console.log("random btn clicked!");
-//         randomRecipeList();
-//     });
-// }
-
-// export function displayRandomRecipe(recipe) {
-//     return`
-//     <div id="randomRecipe">
-//     <ol>
-//         ${recipe => {
-//             return`
-//             <li class="recipe">
-//                 <h4>
-//                 <span class="recipeDetails">
-//                     ${recipe.name} 
-//                 </span>
-//                 <input type="hidden" value='${recipe.id}'/>
-//                 <div display="none" class="tagString" id='tagString-${recipe.id}'>
-//                     ${recipe.tags.map(tag => {           
-//                     return tag.tag.name               
-//                     })        
-//             </li>
-//             `;
-
-    
-// }
-
-// function getRandom(recipes){
-//     const allRecipes = document.getElementById('recipeList');
-//     let min = 0;
-//     let max = allRecipes.length;
-//     let getRandomRec = (Math.floor(Math.random() * (max - min + 1)) + min);
-    
-//     return getRandomRec

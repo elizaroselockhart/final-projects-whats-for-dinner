@@ -17,10 +17,12 @@ export default {
 }
 
 export function hideNavSearchBarDisplayRecipes() {
+    const showRandom= document.getElementById("navRandom")
     const hideSearch = document.getElementById("searchRecipes");
     hideSearch.addEventListener("click", function(){
         console.log("Hide nav search, display recipes");
             hideSearch.style.display = "none";
+            showRandom.style.display="block";
             api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
                 CONSTANTS.title.innerText = "";
                 CONSTANTS.tabTitle.innerText = "All Recipes";
@@ -39,6 +41,7 @@ export function setupNavBar(){
     return `
     <ul>
         <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>
+        <li id="navRandom"><img src="../img/shuffle.png" id="smRandom" alt="random icon" width="40" height="35" margin="30pz"><br>Random Recipe</li>
         <li id="navSearch">
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>

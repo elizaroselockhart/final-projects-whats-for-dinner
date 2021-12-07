@@ -16,6 +16,11 @@
     background-image: url(../img/pantry.png);
   }
 
+#navRandom {
+
+    display: none;
+}
+
   ul {
     display: flex;
     justify-content: space-between; 
