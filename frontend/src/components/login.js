@@ -29,7 +29,6 @@ export function setupLoginDisplay(){
     CONSTANTS.tabTitle.innerText="Login";
     CONSTANTS.title.innerText="What's For Dinner";
     CONSTANTS.content.innerHTML =
-    //call random recipe button here to display in the corner of the page
     `
         <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30px">
         <form id="login">
@@ -68,10 +67,10 @@ export function logout(){
     const logoutBtn = document.getElementById("navLogout");
     logoutBtn.addEventListener("click", function(){
         console.log("Logout btn clicked!");
-        //this one line should be your entire logout button
         cookies.deleteCookie("userId");
         CONSTANTS.navbar.innerHTML = navbarTabs.setupHome();
-        setupLogin();
+        navbarTabs.setupHome();
+        login();
     })
 }
 

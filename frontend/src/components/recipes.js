@@ -1,8 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
-import tags from "./tags";
-import randomRecipes from "./randomRecipes";
+import randomRecipes from "../components/randomRecipes";
 
 export default {
     displayRecipes,
@@ -17,7 +16,6 @@ export default {
     PopulateTagsDDL,
     setupSearchByTagCheckbox,
     setupCheckboxFilter,
-    hideRecipeList
 }
 
 let currentTags = [];
@@ -30,7 +28,7 @@ function displayRecipes(recipes, tags) {
        </form>
 
        <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
-       <label for="searchByTagsCheckBox">View Tag List</label>
+       <label for="searchByTagsCheckBox">Search By Tags</label>
     </div>
     
     <button id='btnNewRecipe'>Add a Recipe!</button>
@@ -77,16 +75,9 @@ function displayRecipes(recipes, tags) {
     `;
 }
 
-//TAGS DISPLAY HTML:
-/* <div display="none" class="tagString" id='tagString-${recipe.id}'>
-        ${recipe.tags.map(tag => {           
-            return tag.name               
-        }).join('')}
-    </div> */
-
 function setupRecipeLinks() {
     let recipeLinks = document.querySelectorAll(".recipeDetails");
-
+    const showRandom= document.getElementById("navRandom")
     showRandom.style.display = "block";
     recipeLinks.forEach(recipeLink => {
 
@@ -131,10 +122,8 @@ export function setupSearchBar() {
     searchbar.addEventListener('keyup', function(e){
         let word = e.target.value.toLowerCase()
         if(searchByTagCheckbox.checked){
-            //console.log("Searching for tags!");
             filterList(word, Array.from(document.getElementsByClassName("tag")));
         } else {
-            //console.log("Searching!");
             filterList(word, returnFilteredRecipesByTags());
         }
     });
@@ -165,13 +154,12 @@ export function setupSearchByTagCheckbox() {
                 tags.forEach(tag => {
                     tag.style.display = "block";
                 })
-                //CONSTANTS.pageTabs.innerHTML = displayTags(data);
             } else {
                 searchbar.placeholder = "Search recipes..."
                 filterList(searchbar.value, tags)
                 tags.forEach(tag => {
                     console.log(tag);
-                    if(tag.firstElementChild.firstElementChild.checked) // might be a better way to grab the input element from our tag
+                    if(tag.firstElementChild.firstElementChild.checked)
                         tag.style.display = "block";
                     else {
                         tag.style.display = "none"; 
@@ -477,7 +465,6 @@ function CheckRecipeTags() {
     });
 }
 
-//Hide All Recipes Function
 export function hideRecipeList() {
     let list = document.getElementById("recipeList");
     const hideBox = document.getElementById("hide");
