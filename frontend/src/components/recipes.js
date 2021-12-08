@@ -1,6 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
+import tags from "./tags";
 
 export default {
     displayRecipes,
@@ -12,32 +13,66 @@ export default {
     SetupAddIngredient,
     SetupAddTags,
     SetupDynamicTagsList,
-    PopulateTagsDDL
+    PopulateTagsDDL,
+    setupSearchByTagCheckbox,
+    setupCheckboxFilter,
+    hideRecipeList
 }
 
-function displayRecipes(recipes) {
+let currentTags = [];
+
+function displayRecipes(recipes, tags) {
     return `
+    
     <button id='btnNewRecipe'>Add a Recipe!</button>
-    <form id="search-recipes">
-    <input type="text" placeholder="Search recipes..."/>
-    </form>
+
     <div id="recipeList">
     <ol>
         ${recipes.map(recipe => {
             return`
-            <li>
+            <li class="recipe">
                 <h4>
                 <span class="recipeDetails">
                     ${recipe.name} 
                 </span>
                 <input type="hidden" value='${recipe.id}'/>
-                <button id="${recipe.id}" class="recipeDelete">Delete</button>
+                <div display="none" class="tagString" id='tagString-${recipe.id}'>
+                    ${recipe.tags.map(tag => {           
+                    return tag.tag.name               
+                    }).join('')}
+                </div>
+                <button id="${recipe.id}" class="recipeDelete">Delete</button>                
                 </h4>          
             </li>
             `;
         }).join('')}
     </ol>
     </div>
+
+    <form id="search-recipes">
+    <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
+    </form>
+
+    <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
+    <label for="searchByTagsCheckBox">View Tag List</label>
+    
+    <div id="tagList">
+    <ul>
+        
+        ${tags.map(tag => {
+            return`
+            <li class="tag" style="display:none">
+                <span class="tagDetails">
+                    <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
+                    ${tag.name} 
+                </span>
+            </li>
+            
+            `;
+        }).join('')}
+    </ul>
+    </div>
+ 
     <input type="checkbox" id="hide"/>
     <label for="hide">Hide all recipes</label>
     `;
@@ -82,23 +117,118 @@ function setupRecipeDeleteButton() {
 }
 
 export function setupSearchBar() {
-    let list = document.getElementById('recipeList');
-    const searchbar = document.querySelector('input');
-    searchbar.addEventListener('keyup', function (e) {
-        console.log("Typing in search bar!");
-        const term = e.target.value.toLowerCase();
-        const recipes = list.querySelectorAll('li');
-        Array.from(recipes).forEach(function (recipe) {
-            const name = recipe.firstElementChild.textContent;
-            if (name.toLowerCase().indexOf(term) != -1) {
-                recipe.style.display = "block";
+    let searchbar = document.getElementById('contentSearchBar');
+    let searchByTagCheckbox = document.getElementById("searchByTags");
+    searchbar.addEventListener('keyup', function(e){
+        let word = e.target.value.toLowerCase()
+        if(searchByTagCheckbox.checked){
+            //console.log("Searching for tags!");
+            filterList(word, Array.from(document.getElementsByClassName("tag")));
+        } else {
+            //console.log("Searching!");
+            filterList(word, returnFilteredRecipesByTags());
+        }
+    });
+}
+
+function filterList(str, targets){
+    Array.from(targets).forEach(function(element){
+        const name = element.querySelectorAll("span")[0].textContent;
+        if(name.toLowerCase().indexOf(str) != -1){
+            element.style.display = "block";
+        }else {
+            element.style.display = "none";
+        }
+    });
+}
+
+//Error: addEventListener not a function
+export function setupSearchByTagCheckbox() {
+    const searchByTagCheckbox = document.getElementById("searchByTags");
+    const searchbar = document.getElementById('contentSearchBar');
+    let tags = Array.from(document.getElementsByClassName("tag"));
+    let recipes = Array.from(document.getElementsByClassName("recipe"));
+    searchByTagCheckbox.addEventListener('click', function(e){
+            console.log("search by tags");
+            searchbar.value = "";
+            if(searchByTagCheckbox.checked){
+                searchbar.placeholder = "Search tags..."
+                filterList(searchbar.value, recipes)
+                tags.forEach(tag => {
+                    tag.style.display = "block";
+                })
+                //CONSTANTS.pageTabs.innerHTML = displayTags(data);
             } else {
-                recipe.style.display = "none";
+                searchbar.placeholder = "Search recipes..."
+                filterList(searchbar.value, tags)
+                tags.forEach(tag => {
+                    console.log(tag);
+                    if(tag.firstElementChild.firstElementChild.checked) // might be a better way to grab the input element from our tag
+                        tag.style.display = "block";
+                    else {
+                        tag.style.display = "none"; 
+                    }
+                })
+                //CONSTANTS.pageTabs.innerHTML = ''
+                    //currentTags = [];
+                    //toggleTags();
+                // add the old event listener here
             }
+    });
+}
+
+export function setupCheckboxFilter() {
+    const checkBoxes = Array.from(document.getElementsByClassName("tagCheckbox"));
+    checkBoxes.forEach(element => {
+        element.addEventListener('change', function(e){
+            console.log("tags checked");
+            handleCheck(e.target);
+            toggleTags();        
         });
     });
 }
 
+function handleCheck(tag){
+    if(currentTags.includes(tag.id)){
+        let indx = currentTags.indexOf(tag.id)
+        console.log("splice");
+        currentTags.splice(indx, 1);
+    } else {
+        currentTags.push(tag.id);
+    }
+    console.log(currentTags);
+}
+
+function toggleTags(){
+    const recipes = Array.from(document.getElementsByClassName("recipe"));
+    recipes.forEach(recipe => {
+        let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
+        console.log(recipeTagString);
+        let hidden = false;
+        currentTags.forEach(tag => {
+            if(!recipeTagString.includes(tag)){
+                recipe.style.display = "none";
+                hidden = true;
+            }
+        });
+        if(!hidden){recipe.style.display = "block"}
+    });
+}
+
+function returnFilteredRecipesByTags(){
+    const recipes = Array.from(document.getElementsByClassName("recipe"));
+    return recipes.filter(recipe => {
+        let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
+        console.log(recipeTagString);
+        let hidden = false;
+        currentTags.forEach(tag => {
+            if(!recipeTagString.includes(tag)){
+                hidden = true;
+            }
+        });
+        return !hidden;
+    });
+}
 
 function SetupAddRecipeEventListeners() {
     let btnNewRecipe = document.getElementById('btnNewRecipe');
@@ -108,22 +238,6 @@ function SetupAddRecipeEventListeners() {
         SetupAddTags();
     });
 }
-
-//To Add Recipe:
-//1. Setup HTML for addrecipe.
-//2. Setup HTML for addingredient button.
-//3. Setup event listener for add recipe button and call API.
-//4. Create a function that calls those three buttons.
-//NOTE: Create another constructor for Recipe.
-
-//Function Names:
-//SetupAddRecipeForm
-    //->What elements do we need in this form?
-    //--Name: Name Input
-    //Description: Description Input
-    //Ingredients: Dynamically updating function
-    //Instructions: Instructions input
-    //Tags: Dynamically updating function
 
 function SetupAddRecipeForm() {
     CONSTANTS.title.innerText = "Add Recipe";

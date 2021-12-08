@@ -1,6 +1,7 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
 import recipes from "../components/recipes";
+import tags from "./tags";
 
 export default {
     DisplayRecipeDetails,
@@ -8,11 +9,13 @@ export default {
 }
 
 function DisplayRecipeDetails(recipe) {
-    console.log(recipe)
-
+    let searchbar = document.getElementById('searchRecipes');
+    searchbar.style.display = "block";
     let parsedIngredients = [];
-    if (recipe.ingredients != null) {
-        parsedIngredients = recipe.ingredients.split(";")
+    if(recipe.ingredients == null) {
+       recipe.ingredients = "";
+    }else{
+        parsedIngredients = recipe.ingredients.split(";");
     }
 
     //for editing/creating a recipe:
@@ -26,26 +29,42 @@ function DisplayRecipeDetails(recipe) {
 
     // to consider -> using a multicharacter separator (|;|)
 
-    return ` 
+    return `
         <h1>Recipe Details</h1>
         <h2>Recipe Title: ${recipe.name}</h2>     
         <input type="hidden" id='recipe_id' value='${recipe.id}'/> 
         <button id='btnEditRecipe'>Edit Recipe</button>
-   
-    <ul>
-        ${parsedIngredients.map(ingredient => {
-            return `
-                <li>
-                    <h4>
-                        <span class="ingredientName">${ingredient}</span>
-                    </h4>
-                </li>
-                
-            `;
-        }).join('')}
-    </ul>
-    
+        
+        <section> 
+        <h4> Description: </h4> <p>${recipe.description}</p>
+        
+        <h3> Ingredients: </h3>      
+          <ul>
+              ${parsedIngredients.map(ingredient => {
+                  return `
+                      <li>
+                          <h4>
+                              <span class="ingredientName">${ingredient}</span>
+                          </h4>
+                      </li>
+
+                  `;
+              }).join('')}
+          </ul>
+
+     <h3> Instructions: </h3> <p>${recipe.instructions}</p>
+
+     <h5>Tags:</h5>
+       <ul>  
+          ${recipe.tags.map(tag => {
+                return`
+               <li>${tag.tag.name}</li>
+               `;
+           }).join('')}
+       </ul>
+    </section>
     `;
+  
 }
 
 //To Edit Recipe:
