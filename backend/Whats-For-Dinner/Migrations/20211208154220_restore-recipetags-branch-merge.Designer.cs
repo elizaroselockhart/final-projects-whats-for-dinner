@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Whats_For_Dinner;
 
 namespace Whats_For_Dinner.Migrations
 {
     [DbContext(typeof(RecipeCollectionContext))]
-    partial class RecipeCollectionContextModelSnapshot : ModelSnapshot
+    [Migration("20211208154220_restore-recipetags-branch-merge")]
+    partial class restorerecipetagsbranchmerge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,36 +235,6 @@ namespace Whats_For_Dinner.Migrations
                         {
                             Id = 11,
                             Name = "Italian"
-                        });
-                });
-
-            modelBuilder.Entity("Whats_For_Dinner.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Ziyah",
-                            Password = "12345",
-                            Username = "Ziyah123"
                         });
                 });
 

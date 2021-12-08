@@ -9,8 +9,8 @@ using Whats_For_Dinner;
 namespace Whats_For_Dinner.Migrations
 {
     [DbContext(typeof(RecipeCollectionContext))]
-    [Migration("20211129155214_updated recipe model and added constructors")]
-    partial class updatedrecipemodelandaddedconstructors
+    [Migration("20211203191719_user")]
+    partial class user
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,6 +235,36 @@ namespace Whats_For_Dinner.Migrations
                         {
                             Id = 11,
                             Name = "Italian"
+                        });
+                });
+
+            modelBuilder.Entity("Whats_For_Dinner.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Ziyah",
+                            Password = "12345",
+                            Username = "Ziyah123"
                         });
                 });
 

@@ -58,13 +58,13 @@ namespace Whats_For_Dinner.Controllers
 
         /* HTTPDelete method goes here. */
         [HttpDelete("{id}")]
-        public ActionResult<List<Recipe>> Delete(int id)
+        public ActionResult<SearchData> Delete(int id)
         {
             var recipe = _db.Recipes.Find(id);
             _db.Recipes.Remove(recipe);
             _db.SaveChanges();
 
-            return _db.Recipes.ToList();
+            return new SearchData(_db.Recipes.ToList(), _db.Tags.ToList());
         }
     }
 }

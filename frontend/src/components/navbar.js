@@ -3,17 +3,18 @@ import api from "../api/api-actions";
 import recipes from "../components/recipes";
 import recipeDetails from "./recipeDetails";
 import randomRecipes from "../components/randomRecipes";
+import cookies from "../components/cookies";
+import tagList from "../components/tags";
 
 export default {
     setupNavBar,
     setupPantry,
+    SetupTags,
     setupHome,
+    hideNavSearchBarDisplayRecipes,
     setupLogin,
-    setupRegisterBtn,
-    setupRegisterDisplay,
     setupLoginDisplay,
     hideNavSearchBarDisplayRecipes
-
 }
 
 export function hideNavSearchBarDisplayRecipes() {
@@ -28,6 +29,7 @@ export function hideNavSearchBarDisplayRecipes() {
                 CONSTANTS.tabTitle.innerText = "All Recipes";
                 console.log(data);
                 CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
+                recipes.setupRecipeDeleteButton();
                 recipes.setupSearchBar();
                 recipes.setupRecipeLinks();
                 recipes.setupSearchByTagCheckbox();
@@ -39,8 +41,28 @@ export function hideNavSearchBarDisplayRecipes() {
 }
 
 export function setupNavBar(){
+    let username = cookies.getCookie("username");
+    // let hidePantry = document.getElementById("navPantry"); 
+    let userId = cookies.getCookie("userId");
+    let loginUser;
+    let pantry;
+    console.log("UserId");
+    console.log(userId);
+    if(userId === "undefined" || userId === null)
+    {
+        pantry = ``;
+        loginUser = `<li id="navLogin">Login</li>`
+        // hidePantry.style.display = "none";
+    } else {
+        console.log("Logout displays in nav");
+        pantry = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30px"><br>@Home <br> Welcome ${username}</li>`
+        loginUser = `<li id="navLogout">Logout</li>`
+        // hidePantry.style.display = "initial";
+    }
     return `
-    <ul>
+    <ul id="navbarLi">
+        ${pantry}
+        <li id="navTags">Tags</li>
         <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>
         <li id="navRandom"><img src="../img/shuffle.png" id="smRandom" alt="random icon" width="40" height="35" margin="30pz"><br>Random Recipe</li>
         <li id="navSearch">
@@ -48,7 +70,7 @@ export function setupNavBar(){
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
         </form>
         </li>
-        <li id="navLogin">Login</li>       
+       ${loginUser}
     </ul>
     `;
 }
@@ -57,9 +79,30 @@ export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
+        api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
+        CONSTANTS.title.innerText = "All Recipes";
+        CONSTANTS.tabTitle.innerText = "All Recipes";
+        CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
+        recipes.setupRecipeLinks();
+        recipes.setupRecipeDeleteButton();
+        recipes.setupSearchBar();
+        recipes.hideRecipeList();  
+        recipes.SetupAddRecipeEventListeners(); 
+        });
     });
 }
 
+export function SetupTags() {
+    const btnTags = document.getElementById("navTags");
+    btnTags.addEventListener("click", function(){
+        console.log("Tags display link hooked up!");
+        api.getRequest(CONSTANTS.TagsAPIURL, tags => {
+            CONSTANTS.title.innerText = "All Tags";
+            CONSTANTS.content.innerHTML = tagList.DisplayAllTags(tags);
+            tagList.SetupTagDeleteBtn();
+        });
+    });
+}
 
 export function setupLogin() {
     const btnLogin = document.getElementById("navLogin");
@@ -89,38 +132,10 @@ export function setupLoginDisplay(){
     `;
 }
 
-export function setupRegisterBtn() {
-    const registerBtn = document.getElementById("registerBtn");
-    registerBtn.addEventListener("click", function(){
-        console.log("Register display button hooked up!");
-        setupRegisterDisplay();
-    });
-}
-
-export function setupRegisterDisplay() {
-    CONSTANTS.tabTitle.innerText="Register";
-    CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.content.innerHTML =
-    //call random recipe button here to display in the corner of the page
-    `
-        <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30pz">
-        <form id="login">
-        <input type="text" class="username" id="username" placeholder="Username"/>
-        <input type="password" class="password" id="password" placeholder="Password"/>
-        <input type="text" class="email" id="email" placeholder="Email"/>
-        </form>
-        <div id="positionRegisterBtn">
-        <button id='registerBtn'>Register</button>
-        </div>
-        <div id="loginLink">
-        <button id="loginLinkBtn">Login</button>
-        </div>
-    `;
-}
-
 function setupHome() {
     CONSTANTS.tabTitle.innerText="Home";
     CONSTANTS.title.innerText="What's For Dinner";
+    CONSTANTS.navbar.innerHTML =  setupNavBar(); setupPantry();
     CONSTANTS.content.innerHTML = 
     //call random recipe button here the image is just a placeholder
     `
@@ -129,4 +144,5 @@ function setupHome() {
     `;
 }
 
-{/* <input type="hidden" value='${recipe.id}' id="hiddenRandomRecipe"/> */}
+/* <input type="hidden" value='${recipe.id}' id="hiddenRandomRecipe"/> */
+
