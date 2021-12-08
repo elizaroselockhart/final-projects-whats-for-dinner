@@ -16,7 +16,7 @@ namespace Whats_For_Dinner
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            var ConnectionString = "Server=(localdb)\\mssqllocaldb; Database=RecipeCollectionDB; Trusted_Connection=True";
+            var ConnectionString = "Server=(localdb)\\mssqllocaldb; Database=based_database_420; Trusted_Connection=True";
 
             builder.UseSqlServer(ConnectionString).UseLazyLoadingProxies();
             base.OnConfiguring(builder);
@@ -72,7 +72,7 @@ namespace Whats_For_Dinner
             builder.Entity<RecipeTag>().HasData(
                 //new RecipeTag() { Id = , RecipeId = , TagId = }
                 new RecipeTag() { Id = 1, RecipeId = 1, TagId = 1 },
-                new RecipeTag() { Id = 2, RecipeId = 1, TagId = 2 }, 
+                new RecipeTag() { Id = 2, RecipeId = 1, TagId = 2 },
                 new RecipeTag() { Id = 3, RecipeId = 1, TagId = 3 },
                 new RecipeTag() { Id = 4, RecipeId = 1, TagId = 4 },
                 new RecipeTag() { Id = 5, RecipeId = 2, TagId = 5 },

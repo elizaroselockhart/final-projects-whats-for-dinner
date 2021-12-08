@@ -38,7 +38,8 @@ namespace Whats_For_Dinner
             services.AddControllers().AddNewtonsoftJson(o =>
             {
                 o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                o.SerializerSettings.NullValueHandling
+                o.SerializerSettings.
+                NullValueHandling
                             = Newtonsoft.Json.NullValueHandling.Ignore;
             });
             services.AddDbContext<RecipeCollectionContext>();

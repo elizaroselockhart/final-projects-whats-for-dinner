@@ -1,18 +1,18 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
-import recipeDetails from "./recipeDetails";
 import recipes from "../components/recipes";
+import tagList from "../components/tags";
 
 export default {
     setupNavBar,
     setupPantry,
+    SetupTags,
     setupHome,
     setupLogin,
     setupRegisterBtn,
     setupRegisterDisplay,
     setupLoginDisplay,
     hideNavSearchBarDisplayRecipes
-
 }
 
 export function hideNavSearchBarDisplayRecipes() {
@@ -37,6 +37,7 @@ export function hideNavSearchBarDisplayRecipes() {
 export function setupNavBar(){
     return `
     <ul>
+        <li id="navTags">Tags</li>
         <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>
         <li id="navSearch">
         <form id="search-recipes">
@@ -52,9 +53,30 @@ export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
+        api.getRequest(CONSTANTS.RecipesAPIURL, data => {
+            CONSTANTS.title.innerText = "All Recipes";
+            CONSTANTS.tabTitle.innerText = "All Recipes";
+            CONSTANTS.content.innerHTML = recipes.displayRecipes(data);
+            recipes.setupRecipeLinks();
+            recipes.setupRecipeDeleteButton();
+            recipes.setupSearchBar();
+            recipes.hideRecipeList();  
+            recipes.SetupAddRecipeEventListeners(); 
+        });
     });
 }
 
+export function SetupTags() {
+    const btnTags = document.getElementById("navTags");
+    btnTags.addEventListener("click", function(){
+        console.log("Tags display link hooked up!");
+        api.getRequest(CONSTANTS.TagsAPIURL, tags => {
+            CONSTANTS.title.innerText = "All Tags";
+            CONSTANTS.content.innerHTML = tagList.DisplayAllTags(tags);
+            tagList.SetupTagDeleteBtn();
+        });
+    });
+}
 
 export function setupLogin() {
     const btnLogin = document.getElementById("navLogin");

@@ -17,23 +17,24 @@ namespace Whats_For_Dinner.Controllers
         {
             _db = db;
         }
+
         [HttpPost]
         public ActionResult<RecipeTag> Post([FromBody] RecipeTag recipetag, int recipeId, int tagId)
         {
             _db.RecipeTags.Add(recipetag);
-            recipetag.Recipe = _db.Recipes.Find(recipeId);
-            recipetag.Tag = _db.Tags.Find(tagId);
+            //recipetag.Recipe = _db.Recipes.Find(recipeId);
+            //recipetag.Tag = _db.Tags.Find(tagId);
             _db.SaveChanges();
 
             return recipetag;
         }
 
 
-        [HttpGet]
-        public ActionResult<IEnumerable<RecipeTag>> Get()
-        {
-            return _db.RecipeTags.ToList();
-        }
+        //[HttpGet]
+        //public ActionResult<IEnumerable<RecipeTag>> Get()
+        //{
+        //    return _db.RecipeTags.ToList();
+        //}
 
     }
 }

@@ -14,9 +14,5 @@ function setupNavbar() {
     navbarTabs.setupPantry(); navbarTabs.setupHome();
     navbarTabs.setupLogin();
     navbarTabs.hideNavSearchBarDisplayRecipes();
+    navbarTabs.SetupTags();
 }
-
-
-
-
-
