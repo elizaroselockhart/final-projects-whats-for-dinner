@@ -87,8 +87,9 @@ namespace Whats_For_Dinner
                 new RecipeTag() { Id = 12, RecipeId = 3, TagId = 11 }
                 );
 
+
             builder.Entity<User>().HasData(
-                new User() { Id = 1, Name = "Ziyah", Username = "Ziyah123", Password = "12345" }               
+                new User( 1, "Ziyah", "Ziyah123", "12345")               
                 );
 
 

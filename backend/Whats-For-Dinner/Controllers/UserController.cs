@@ -12,7 +12,7 @@ namespace Whats_For_Dinner.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        
+
         private readonly RecipeCollectionContext _db;
         public UserController(RecipeCollectionContext db)
         {
@@ -52,6 +52,13 @@ namespace Whats_For_Dinner.Controllers
             return user;
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public ActionResult<IEnumerable<User>> GetAll(string id)
+        {
+            return _db.Users.ToList();
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
@@ -80,6 +87,14 @@ namespace Whats_For_Dinner.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPost]
+        public User Post([FromBody] User user)
+        {
+            _db.Users.Add(user);
+            _db.SaveChanges();
+            return user;
         }
     }
 }
