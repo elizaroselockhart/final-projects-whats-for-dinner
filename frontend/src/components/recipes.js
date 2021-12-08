@@ -27,26 +27,21 @@ function displayRecipes(recipes, tags) {
     <button id='btnNewRecipe'>Add a Recipe!</button>
 
     <div id="recipeList">
-    <ol>
-        ${recipes.map(recipe => {
-            return`
-            <li class="recipe">
-                <h4>
-                <span class="recipeDetails">
-                    ${recipe.name} 
-                </span>
-                <input type="hidden" value='${recipe.id}'/>
-                <div display="none" class="tagString" id='tagString-${recipe.id}'>
-                    ${recipe.tags.map(tag => {           
-                    return tag.tag.name               
-                    }).join('')}
-                </div>
-                <button id="${recipe.id}" class="recipeDelete">Delete</button>                
-                </h4>          
-            </li>
-            `;
-        }).join('')}
-    </ol>
+        <ol>
+            ${recipes.map(recipe => {
+                return `
+                <li class="recipe">
+                    <h4>
+                    <span class="recipeDetails">
+                        ${recipe.name} 
+                    </span>
+                    <input type="hidden" value='${recipe.id}'/>
+                    <button id="${recipe.id}" class="recipeDelete">Delete</button>                
+                    </h4>          
+                </li>
+                `;
+            }).join('')}
+        </ol>
     </div>
 
     <form id="search-recipes">
@@ -57,26 +52,32 @@ function displayRecipes(recipes, tags) {
     <label for="searchByTagsCheckBox">View Tag List</label>
     
     <div id="tagList">
-    <ul>
-        
-        ${tags.map(tag => {
-            return`
-            <li class="tag" style="display:none">
-                <span class="tagDetails">
-                    <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
-                    ${tag.name} 
-                </span>
-            </li>
-            
-            `;
-        }).join('')}
-    </ul>
+        <ul>
+            ${tags.map(tag => {
+                return`
+                <li class="tag" style="display:none">
+                    <span class="tagDetails">
+                        <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
+                        ${tag.name} 
+                    </span>
+                </li>
+                
+                `;
+            }).join('')}
+        </ul>
     </div>
  
     <input type="checkbox" id="hide"/>
     <label for="hide">Hide all recipes</label>
     `;
 }
+
+//TAGS DISPLAY HTML:
+/* <div display="none" class="tagString" id='tagString-${recipe.id}'>
+        ${recipe.tags.map(tag => {           
+            return tag.name               
+        }).join('')}
+    </div> */
 
 function setupRecipeLinks() {
     let recipeLinks = document.querySelectorAll(".recipeDetails");
@@ -105,7 +106,7 @@ function setupRecipeDeleteButton() {
             let recipeId = event.target.id;
 
             api.deleteRequest(CONSTANTS.RecipesAPIURL, recipeId, data => {
-                CONSTANTS.content.innerHTML = displayRecipes(data);
+                CONSTANTS.content.innerHTML = displayRecipes(data.allRecipes, data.allTags);
                 setupRecipeDeleteButton();
                 setupRecipeLinks();
                 setupSearchBar();

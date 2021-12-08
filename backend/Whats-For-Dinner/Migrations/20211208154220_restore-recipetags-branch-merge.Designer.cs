@@ -9,8 +9,8 @@ using Whats_For_Dinner;
 namespace Whats_For_Dinner.Migrations
 {
     [DbContext(typeof(RecipeCollectionContext))]
-    [Migration("20211207200831_initial")]
-    partial class initial
+    [Migration("20211208154220_restore-recipetags-branch-merge")]
+    partial class restorerecipetagsbranchmerge
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

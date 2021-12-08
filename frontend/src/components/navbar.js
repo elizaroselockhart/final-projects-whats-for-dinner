@@ -25,6 +25,7 @@ export function hideNavSearchBarDisplayRecipes() {
                 CONSTANTS.tabTitle.innerText = "All Recipes";
                 console.log(data);
                 CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
+                recipes.setupRecipeDeleteButton();
                 recipes.setupSearchBar();
                 recipes.setupRecipeLinks();
                 recipes.setupSearchByTagCheckbox();
@@ -53,10 +54,10 @@ export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
-        api.getRequest(CONSTANTS.RecipesAPIURL, data => {
+        api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
             CONSTANTS.title.innerText = "All Recipes";
             CONSTANTS.tabTitle.innerText = "All Recipes";
-            CONSTANTS.content.innerHTML = recipes.displayRecipes(data);
+            CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
             recipes.setupRecipeLinks();
             recipes.setupRecipeDeleteButton();
             recipes.setupSearchBar();
