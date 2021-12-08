@@ -1,6 +1,8 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
+import tags from "./tags";
+import randomRecipes from "./randomRecipes";
 
 export default {
     displayRecipes,
@@ -84,10 +86,12 @@ function displayRecipes(recipes, tags) {
 
 function setupRecipeLinks() {
     let recipeLinks = document.querySelectorAll(".recipeDetails");
+
+    showRandom.style.display = "block";
     recipeLinks.forEach(recipeLink => {
 
         recipeLink.addEventListener("click", function (evt) {
-
+            randomRecipes.smallRandomBtn();
             let recipeId = this.nextElementSibling.value;
 
             //API Call
@@ -97,6 +101,7 @@ function setupRecipeLinks() {
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
+        
     });
 }
 
@@ -235,6 +240,7 @@ function SetupAddRecipeEventListeners() {
         SetupAddRecipeForm();
         SetupAddIngredient();
         SetupAddTags();
+
     });
 }
 

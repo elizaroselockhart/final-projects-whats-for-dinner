@@ -12,55 +12,63 @@
     border: none;  
   }
 
-  ul {
-    display: flex;
-    justify-content: space-between; 
-    font-size: 25px;
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    list-style: none;
-    font-family: 'Oswald', sans-serif;
-    cursor: pointer;
+#navPantry {
+    background-image: url(../img/pantry.png);
   }
 
-  li {
-      list-style: none;
-  }
+#navRandom {
+    display: none;
+}
+
+ul {
+  display: flex;
+  justify-content: space-between; 
+  font-size: 25px;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  list-style: none;
+  font-family: 'Oswald', sans-serif;
+  cursor: pointer;
+}
+
+li {
+    list-style: none;
+}
 
 .searchBar {
-    border-radius: 10px;
-    width: 175px;
-    height: 24px;
-    padding: 2px;
-    background-image: url(../img/magnifying-glass.png);
-    background-repeat: no-repeat;
-    background-size: 15px 15px;
-    background-position: 95%;
-    border: none;
-    box-shadow: 1px 2px #888888; 
-    cursor: pointer; 
-  }
+  border-radius: 10px;
+  width: 175px;
+  height: 24px;
+  padding: 2px;
+  background-image: url(../img/magnifying-glass.png);
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position: 95%;
+  border: none;
+  box-shadow: 1px 2px #888888; 
+  cursor: pointer; 
+}
 
 input:focus {
       outline: none;
-  }
+}
 
 #contentSearchBar {
       margin-top: 10px;
       margin-bottom: 10px;
-  }
+}
 
 #pageContent {
       text-align: center;
       padding: 48px;
-  }
+}
 
 #pageTitle {
     text-align: center;
     padding-top: 100px; 
-  }
+}
 
 #pageTitle {
     font-size: 90px;
@@ -578,12 +586,4 @@ a:hover {
       top: 15px;
       right: 35px;
     }
-  }
-
-
-
-
-
- 
-
-  
+  } 

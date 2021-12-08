@@ -1,6 +1,8 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipes from "../components/recipes";
+import recipeDetails from "./recipeDetails";
+import randomRecipes from "../components/randomRecipes";
 import cookies from "../components/cookies";
 import tagList from "../components/tags";
 
@@ -16,10 +18,12 @@ export default {
 }
 
 export function hideNavSearchBarDisplayRecipes() {
+    const showRandom= document.getElementById("navRandom")
     const hideSearch = document.getElementById("searchRecipes");
     hideSearch.addEventListener("click", function(){
         console.log("Hide nav search, display recipes");
             hideSearch.style.display = "none";
+            showRandom.style.display="block";
             api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
                 CONSTANTS.title.innerText = "";
                 CONSTANTS.tabTitle.innerText = "All Recipes";
@@ -31,6 +35,7 @@ export function hideNavSearchBarDisplayRecipes() {
                 recipes.setupSearchByTagCheckbox();
                 recipes.setupCheckboxFilter();
                 recipes.hideRecipeList();   
+                randomRecipes.smallRandomBtn();
         });
     });
 }
@@ -59,6 +64,7 @@ export function setupNavBar(){
         ${pantry}
         <li id="navTags">Tags</li>
         <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>
+        <li id="navRandom"><img src="../img/shuffle.png" id="smRandom" alt="random icon" width="40" height="35" margin="30pz"><br>Random Recipe</li>
         <li id="navSearch">
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
@@ -130,10 +136,13 @@ function setupHome() {
     CONSTANTS.tabTitle.innerText="Home";
     CONSTANTS.title.innerText="What's For Dinner";
     CONSTANTS.navbar.innerHTML =  setupNavBar(); setupPantry();
-    CONSTANTS.content.innerHTML =
+    CONSTANTS.content.innerHTML = 
     //call random recipe button here the image is just a placeholder
     `
-        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="shuffleBtn" width="400" height="400" style = "padding-bottom: 16px;">
-        <p>Click for random recipe</p>
-    `;   
+        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="400" height="400" style = "padding-bottom: 16px;">
+        <p>Click for random recipe</p>      
+    `;
 }
+
+/* <input type="hidden" value='${recipe.id}' id="hiddenRandomRecipe"/> */
+
