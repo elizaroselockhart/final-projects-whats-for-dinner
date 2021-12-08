@@ -1,6 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipes from "../components/recipes";
+import cookies from "../components/cookies";
 import tagList from "../components/tags";
 
 export default {
@@ -8,6 +9,10 @@ export default {
     setupPantry,
     SetupTags,
     setupHome,
+    hideNavSearchBarDisplayRecipes,
+    pantryOverlayDisplay,
+    openNav,
+    closeNav,
     setupLogin,
     setupRegisterBtn,
     setupRegisterDisplay,
@@ -36,8 +41,27 @@ export function hideNavSearchBarDisplayRecipes() {
 }
 
 export function setupNavBar(){
+    let username = cookies.getCookie("username");
+    // let hidePantry = document.getElementById("navPantry"); 
+    let userId = cookies.getCookie("userId");
+    let loginUser;
+    let pantry;
+    console.log("UserId");
+    console.log(userId);
+    if(userId === "undefined" || userId === null)
+    {
+        pantry = ``;
+        loginUser = `<li id="navLogin">Login</li>`
+        // hidePantry.style.display = "none";
+    } else {
+        console.log("Logout displays in nav");
+        pantry = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30px"><br>@Home <br> Welcome ${username}</li>`
+        loginUser = `<li id="navLogout">Logout</li>`
+        // hidePantry.style.display = "initial";
+    }
     return `
-    <ul>
+    <ul id="navbarLi">
+        ${pantry}
         <li id="navTags">Tags</li>
         <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>
         <li id="navSearch">
@@ -45,24 +69,28 @@ export function setupNavBar(){
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
         </form>
         </li>
-        <li id="navLogin">Login</li>       
+       ${loginUser}
     </ul>
     `;
 }
 
 export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
+    let userId = cookies.getCookie("userId");
+    if(userId === "undefined" || userId === null){
+        return;
+    }
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
         api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
-            CONSTANTS.title.innerText = "All Recipes";
-            CONSTANTS.tabTitle.innerText = "All Recipes";
-            CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
-            recipes.setupRecipeLinks();
-            recipes.setupRecipeDeleteButton();
-            recipes.setupSearchBar();
-            recipes.hideRecipeList();  
-            recipes.SetupAddRecipeEventListeners(); 
+        CONSTANTS.title.innerText = "All Recipes";
+        CONSTANTS.tabTitle.innerText = "All Recipes";
+        CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
+        recipes.setupRecipeLinks();
+        recipes.setupRecipeDeleteButton();
+        recipes.setupSearchBar();
+        recipes.hideRecipeList();  
+        recipes.SetupAddRecipeEventListeners(); 
         });
     });
 }
@@ -107,43 +135,16 @@ export function setupLoginDisplay(){
     `;
 }
 
-export function setupRegisterBtn() {
-    const registerBtn = document.getElementById("registerBtn");
-    registerBtn.addEventListener("click", function(){
-        console.log("Register display button hooked up!");
-        setupRegisterDisplay();
-    });
-}
-
-export function setupRegisterDisplay() {
-    CONSTANTS.tabTitle.innerText="Register";
-    CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.content.innerHTML =
-    //call random recipe button here to display in the corner of the page
-    `
-        <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30pz">
-        <form id="login">
-        <input type="text" class="username" id="username" placeholder="Username"/>
-        <input type="password" class="password" id="password" placeholder="Password"/>
-        <input type="text" class="email" id="email" placeholder="Email"/>
-        </form>
-        <div id="positionRegisterBtn">
-        <button id='registerBtn'>Register</button>
-        </div>
-        <div id="loginLink">
-        <button id="loginLinkBtn">Login</button>
-        </div>
-    `;
-}
-
 function setupHome() {
     CONSTANTS.tabTitle.innerText="Home";
     CONSTANTS.title.innerText="What's For Dinner";
+    CONSTANTS.navbar.innerHTML =  setupNavBar(); setupPantry();
     CONSTANTS.content.innerHTML =
     //call random recipe button here the image is just a placeholder
     `
-        <img src="../img/shuffle.png" alt="Shuffle recipes button" width="400" height="400" style = "padding-bottom: 16px;">
+        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="shuffleBtn" width="400" height="400" style = "padding-bottom: 16px;">
         <p>Click for random recipe</p>
     `;
-
+    
 }
+

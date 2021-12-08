@@ -1,7 +1,6 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
-import tags from "./tags";
 
 export default {
     displayRecipes,
@@ -23,6 +22,14 @@ let currentTags = [];
 
 function displayRecipes(recipes, tags) {
     return `
+    <div id='searchRecipeArea'>
+       <form id="search-recipes">
+          <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
+       </form>
+
+       <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
+       <label for="searchByTagsCheckBox">View Tag List</label>
+    </div>
     
     <button id='btnNewRecipe'>Add a Recipe!</button>
 
@@ -36,37 +43,33 @@ function displayRecipes(recipes, tags) {
                         ${recipe.name} 
                     </span>
                     <input type="hidden" value='${recipe.id}'/>
-                    <button id="${recipe.id}" class="recipeDelete">Delete</button>                
+                    <button id="${recipe.id}" class="recipeDelete">Delete</button>
+                    <div display="none" class="tagString" id='tagString-${recipe.id}'>
+                        ${recipe.tags.map(tag => {           
+                        return tag.tag.name               
+                        }).join('')}
+                    </div>
                     </h4>          
                 </li>
                 `;
             }).join('')}
         </ol>
     </div>
-
-    <form id="search-recipes">
-    <input type="text" class="searchBar" id="contentSearchBar" placeholder="Search recipes..."/>
-    </form>
-
-    <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
-    <label for="searchByTagsCheckBox">View Tag List</label>
     
     <div id="tagList">
         <ul>
             ${tags.map(tag => {
-                return`
+                return `
                 <li class="tag" style="display:none">
                     <span class="tagDetails">
                         <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
                         ${tag.name} 
                     </span>
                 </li>
-                
                 `;
             }).join('')}
         </ul>
     </div>
- 
     <input type="checkbox" id="hide"/>
     <label for="hide">Hide all recipes</label>
     `;
@@ -143,7 +146,6 @@ function filterList(str, targets){
     });
 }
 
-//Error: addEventListener not a function
 export function setupSearchByTagCheckbox() {
     const searchByTagCheckbox = document.getElementById("searchByTags");
     const searchbar = document.getElementById('contentSearchBar');
@@ -170,10 +172,6 @@ export function setupSearchByTagCheckbox() {
                         tag.style.display = "none"; 
                     }
                 })
-                //CONSTANTS.pageTabs.innerHTML = ''
-                    //currentTags = [];
-                    //toggleTags();
-                // add the old event listener here
             }
     });
 }
