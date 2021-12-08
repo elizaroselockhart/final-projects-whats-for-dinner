@@ -19,26 +19,33 @@ export function getRandomRecipe(num) {
 
 
 export function setupRandomBtn() {
+    // 
+    
     let btnRandom = document.getElementById("clickMe");
     btnRandom.addEventListener('click', function() {
         console.log("random btn clicked!");
         let index = getRandomRecipe(recipe.length);
+
        // CONSTANTS.content.innerText = recipe[index];
         api.getRequest(CONSTANTS.RecipesAPIURL + recipe[index], data => {
             console.log(data);
              CONSTANTS.title.innerText= "What's For Dinner"
              CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data); 
+
             // recipes.setupSearchBar();                     
         });
+
     });
 }
 
 function smallRandomBtn() {
     let showRandom = document.getElementById("navRandom");
+    showRandom.style.display="none";
     showRandom.addEventListener('click', function () {
         console.log("small random clicked");
-        let index = getRandomRecipe(1, recipe.length - 1);
-        showRandom.style.display = "block";
+        
+
+        let index = getRandomRecipe(recipe.length - 1);        
         api.getRequest(CONSTANTS.RecipesAPIURL + recipe[index], data => {
             console.log(data);
             CONSTANTS.title.innerText = "RecipeDetails"

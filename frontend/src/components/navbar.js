@@ -33,6 +33,7 @@ export function hideNavSearchBarDisplayRecipes() {
                 recipes.setupSearchByTagCheckbox();
                 recipes.setupCheckboxFilter();
                 recipes.hideRecipeList();   
+                randomRecipes.smallRandomBtn();
         });
     });
 }

@@ -1,5 +1,6 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
+import randomRecipes from "./randomRecipes";
 import recipes, {displayRecipes} from "./recipes";
 import tags from "./tags";
 
@@ -10,8 +11,11 @@ export default {
 
 
 function DisplayRecipeDetails(recipe) {
-    let searchbar = document.getElementById('searchRecipes');
+    let searchbar = document.getElementById('searchRecipes');    
+    let showRandom = document.getElementById("navRandom");
     searchbar.style.display = "block";
+    showRandom.style.display="block";
+    
     let parsedIngredients = [];
     if(recipe.ingredients == null) {
        recipe.ingredients = "";
