@@ -43,7 +43,7 @@ function setupRegisterDisplay() {
 export function register(){
     const registerBtn = document.getElementById("registerBtn");
     registerBtn.addEventListener("click", async function(){
-        let url = CONSTANTS.UserAPIURL +"all";
+        let url = CONSTANTS.UserAPIURL +"GetAll";
         let name = document.getElementById("name").value;
         let username = document.getElementById("username").value; 
         let password = document.getElementById("password").value;
@@ -84,7 +84,7 @@ export function register(){
             });
 
                 if (isUnique) {
-                    apiAction.postRequest(url, requestBody, user => {
+                    apiAction.postRequest(CONSTANTS.UserAPIURL, requestBody, user => {
                         cookies.setCookie("userId", user.id, 7);
                         cookies.setCookie("username", user.username, 7);
                         navbarTabs.setupHome();
