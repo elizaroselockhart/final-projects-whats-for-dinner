@@ -10,12 +10,7 @@ export default {
     SetupTags,
     setupHome,
     hideNavSearchBarDisplayRecipes,
-    pantryOverlayDisplay,
-    openNav,
-    closeNav,
     setupLogin,
-    setupRegisterBtn,
-    setupRegisterDisplay,
     setupLoginDisplay,
     hideNavSearchBarDisplayRecipes
 }
@@ -76,10 +71,6 @@ export function setupNavBar(){
 
 export function setupPantry() {
     const btnPantry = document.getElementById("navPantry");
-    let userId = cookies.getCookie("userId");
-    if(userId === "undefined" || userId === null){
-        return;
-    }
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
         api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
@@ -144,7 +135,5 @@ function setupHome() {
     `
         <img src="../img/shuffle.png" alt="Shuffle recipes button" id="shuffleBtn" width="400" height="400" style = "padding-bottom: 16px;">
         <p>Click for random recipe</p>
-    `;
-    
+    `;   
 }
-

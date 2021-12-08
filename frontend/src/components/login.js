@@ -70,8 +70,7 @@ export function logout(){
         console.log("Logout btn clicked!");
         //this one line should be your entire logout button
         cookies.deleteCookie("userId");
-        navbarTabs.setupHome();
-        CONSTANTS.navbar.innerHTML = navbarTabs.setupNavBar();
+        CONSTANTS.navbar.innerHTML = navbarTabs.setupHome();
         setupLogin();
     })
 }

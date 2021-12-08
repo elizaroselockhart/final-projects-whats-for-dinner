@@ -7,7 +7,7 @@ import login from "../components/login";
 export default {
     setupRegisterLink,
     setupRegisterDisplay,
-    register,
+    register
 }
 
 // const UserUrl = "https://localhost:44387/api/user" + "?username={0}&password={1}&name={2}";
@@ -89,7 +89,7 @@ export function register(){
                         cookies.setCookie("username", user.username, 7);
                         navbarTabs.setupHome();
                         CONSTANTS.navbar.innerHTML = navbarTabs.setupNavBar();
-                        logout();
+                        login.logout();
                     });
                 }
                 else {
