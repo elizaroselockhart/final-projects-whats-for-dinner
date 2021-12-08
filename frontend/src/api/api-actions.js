@@ -1,13 +1,13 @@
 export default {
     getRequest,
-    // getUserListRequest,
+    SyncGetRequest,
     postRequest,
+    SyncPostRequest,
     deleteRequest,
     putRequest
 }
 
 function getRequest(location, callback){
-    console.log(location);
     fetch(location)
     .then(response => response.json())
     .then(data => {
@@ -16,17 +16,13 @@ function getRequest(location, callback){
     .catch(err => console.log(err));
 }
 
-// function getUserListRequest(location, useThisFunction, callback) {
-//     fetch(location)
-//     .then(response => response.json())
-//     .then(data => {
-//         callback(data);
-//     })
-//     .catch(err => console.log(err));
-// }
+async function SyncGetRequest(location){
+    return await fetch(location)
+    .then(response => response.json())
+    .catch(err => console.log(err))
+}
 
 function postRequest(location, requestBody, callback){
-    console.log(location);
     fetch(`${location}`, {
         method: "POST", 
         headers: {
@@ -39,6 +35,18 @@ function postRequest(location, requestBody, callback){
         callback(data);
     })
     .catch(err => console.log(err));
+}
+
+async function SyncPostRequest(location, requestBody) {
+    return await fetch(`${location}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => response.json())
+    .catch(err => console.log(err))
 }
 
 function deleteRequest(location, id, callback){

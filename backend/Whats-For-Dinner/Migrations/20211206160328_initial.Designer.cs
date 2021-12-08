@@ -9,8 +9,8 @@ using Whats_For_Dinner;
 namespace Whats_For_Dinner.Migrations
 {
     [DbContext(typeof(RecipeCollectionContext))]
-    [Migration("20211129155214_updated recipe model and added constructors")]
-    partial class updatedrecipemodelandaddedconstructors
+    [Migration("20211206160328_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

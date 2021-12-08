@@ -12,10 +12,9 @@ namespace Whats_For_Dinner.Models
 
         }
 
-        public Tag(string name, List<RecipeTag> recipes)
+        public Tag(string name)
         {
             this.Name = name;
-            this.Recipes = recipes;
 
         }
 

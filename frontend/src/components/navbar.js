@@ -2,16 +2,22 @@ import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipes from "../components/recipes";
 import cookies from "../components/cookies";
+import tagList from "../components/tags";
 
 export default {
     setupNavBar,
     setupPantry,
+    SetupTags,
     setupHome,
     hideNavSearchBarDisplayRecipes,
     pantryOverlayDisplay,
     openNav,
-    closeNav
-
+    closeNav,
+    setupLogin,
+    setupRegisterBtn,
+    setupRegisterDisplay,
+    setupLoginDisplay,
+    hideNavSearchBarDisplayRecipes
 }
 
 export function hideNavSearchBarDisplayRecipes() {
@@ -24,6 +30,7 @@ export function hideNavSearchBarDisplayRecipes() {
                 CONSTANTS.tabTitle.innerText = "All Recipes";
                 console.log(data);
                 CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
+                recipes.setupRecipeDeleteButton();
                 recipes.setupSearchBar();
                 recipes.setupRecipeLinks();
                 recipes.setupSearchByTagCheckbox();
@@ -55,6 +62,8 @@ export function setupNavBar(){
     return `
     <ul id="navbarLi">
         ${pantry}
+        <li id="navTags">Tags</li>
+        <li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30pz"><br>Pantry</li>
         <li id="navSearch">
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
@@ -73,30 +82,57 @@ export function setupPantry() {
     }
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
-        openNav();
-        pantryOverlayDisplay();
+        api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
+        CONSTANTS.title.innerText = "All Recipes";
+        CONSTANTS.tabTitle.innerText = "All Recipes";
+        CONSTANTS.content.innerHTML = recipes.displayRecipes(data.allRecipes, data.allTags);
+        recipes.setupRecipeLinks();
+        recipes.setupRecipeDeleteButton();
+        recipes.setupSearchBar();
+        recipes.hideRecipeList();  
+        recipes.SetupAddRecipeEventListeners(); 
+        });
     });
 }
 
-export function pantryOverlayDisplay() { 
-        return`
-        <div id="myNav" class="overlay">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> 
-            <div class="overlay-content">
-              <div class="container"><h1>Saved</h1></div>
-              <div class="container"><h2>Categories</h2></div>
-            </div>
-        </div>  
-        `;
+export function SetupTags() {
+    const btnTags = document.getElementById("navTags");
+    btnTags.addEventListener("click", function(){
+        console.log("Tags display link hooked up!");
+        api.getRequest(CONSTANTS.TagsAPIURL, tags => {
+            CONSTANTS.title.innerText = "All Tags";
+            CONSTANTS.content.innerHTML = tagList.DisplayAllTags(tags);
+            tagList.SetupTagDeleteBtn();
+        });
+    });
 }
 
-function openNav() {
-    document.getElementById("myNav").style.height = "100%";
+export function setupLogin() {
+    const btnLogin = document.getElementById("navLogin");
+    btnLogin.addEventListener("click", function(){
+        console.log("Login display hooked up!");
+        setupLoginDisplay();
+    });
 }
-  
-  /* Close when someone clicks on the "x" symbol inside the overlay */
-function closeNav() {
-    document.getElementById("myNav").style.height = "0%";
+
+export function setupLoginDisplay(){
+    CONSTANTS.tabTitle.innerText="Login";
+    CONSTANTS.title.innerText="What's For Dinner";
+    CONSTANTS.content.innerHTML =
+    //call random recipe button here to display in the corner of the page
+    `
+        <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30px">
+        <form id="login">
+        <input type="text" class="username" id="username" placeholder="Username"/>
+        <input type="password" class="password" id="password" placeholder="Password"/>
+        </form>
+        <div id="positionLoginBtn">
+        <button id='loginBtn'>Login</button>
+        </div>
+        <div id="registerLink">
+        <button id="registerBtn">Register</button>
+        </div>
+    `;
 }
 
 function setupHome() {

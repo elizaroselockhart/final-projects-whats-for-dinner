@@ -2,7 +2,8 @@ import api from "../api/api-actions";
 import * as CONSTANTS from "./constants";
 
 export default {
-
+    DisplayAllTags,
+    SetupTagDeleteBtn
 }
 
 function DisplayAllTags(tags) {
@@ -10,11 +11,11 @@ function DisplayAllTags(tags) {
         <ol> 
             ${tags.map(tag => {
                 return `
-                    <li>
+                    <li class='addedTags'>
                         <h5>
                             <span>
                                 ${tag.name}
-                                <button id='${tag.id}' class='btnDeleteTag'>Delete</button>
+                                <button value='${tag.id}' class='btnDeleteTag'>Delete</button>
                             </span>
                         </h5>
                     </li>
@@ -24,13 +25,18 @@ function DisplayAllTags(tags) {
     `;
 }
 
-function SetupTagDeleteBtn() {
-    let btnDeleteTags = document.querySelectorAll('btnDeleteTag');
+function SetupTagDeleteBtn(){
+    let btnDeleteTags = document.querySelectorAll('.btnDeleteTag');
+
     btnDeleteTags.forEach(btnDeleteTag => {
         btnDeleteTag.addEventListener('click', function(evt) {
             console.log("Delete tag button clicked!");
-            let tagId = evt.target.id;
-            api.deleteRequest(CONSTANTS.TagsAPIURL, tagId, )
-        })
-    })
+            let tagId = evt.target.value;
+
+            api.deleteRequest(CONSTANTS.TagsAPIURL, tagId, tags => {
+                CONSTANTS.content.innerHTML = DisplayAllTags(tags);
+                SetupTagDeleteBtn();
+            });
+        });
+    });
 }

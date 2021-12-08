@@ -2,7 +2,7 @@
 
 namespace Whats_For_Dinner.Migrations
 {
-    public partial class updatedrecipemodelandaddedconstructors : Migration
+    public partial class restorerecipetagsbranchmerge : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
