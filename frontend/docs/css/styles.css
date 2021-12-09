@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-  }
+}
 
 nav {
     margin: 5px;
@@ -9,7 +9,7 @@ nav {
     width: 100%;
     position: fixed;
     text-align: center;
-    border: none;  
+    border: none; 
 }
 
 #navRandom {
@@ -34,19 +34,25 @@ nav {
 }
 
 ul {
-  display: flex;
-  justify-content: space-between; 
-  font-size: 25px;
-  padding-top: 10px;
-  padding-right: 20px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  list-style: none;
-  font-family: 'Oswald', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    font-size: 25px;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    list-style: none;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
 }
 
 li {
     list-style: none;
+}
+
+
+div.tagString {
+    display: none;
 }
 
 #clickMe {
@@ -54,21 +60,42 @@ li {
 }
 
 .searchBar {
-  border-radius: 10px;
-  width: 175px;
-  height: 24px;
-  padding: 2px;
-  background-image: url(../img/magnifying-glass.png);
-  background-repeat: no-repeat;
-  background-size: 15px 15px;
-  background-position: 95%;
-  border: none;
-  box-shadow: 1px 2px #888888; 
-  cursor: pointer; 
+    border-radius: 10px;
+    width: 175px;
+    height: 24px;
+    padding: 2px;
+    background-image: url(../img/magnifying-glass.png);
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888;
+    cursor: pointer;
+}
+
+.tooltip .tooltipText {
+    visibility: hidden;
+    width: auto;
+    background-color: rgba(29, 28, 28, 0.685);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltipText {
+    visibility: visible;
+    font-size: small;
+    font-weight: normal;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 input:focus {
-      outline: none;
+    outline: none;
 }
 
 #contentSearchBar {
@@ -78,13 +105,13 @@ input:focus {
 }
 
 #pageContent {
-      text-align: center;
-      padding: 48px;
+    text-align: center;
+    padding: 48px;
 }
 
 #pageTitle {
     text-align: center;
-    padding-top: 100px; 
+    padding-top: 100px;
 }
 
 #pageTitle {
@@ -103,7 +130,7 @@ p {
 
 #login {
     padding-left: 575px;
-} 
+}
 
 #positionLoginBtn {
     padding-left: 640px;
@@ -122,11 +149,11 @@ p {
     background-size: 15px 15px;
     background-position: 95%;
     border: none;
-    box-shadow: 1px 2px #888888; 
+    box-shadow: 1px 2px #888888;
     background-color: black;
     color: white;
     font-size: 15px;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 #positionRegisterBtn {
@@ -215,7 +242,7 @@ p {
     background-size: 15px 15px;
     background-position: 95%;
     border: none;
-    box-shadow: 1px 2px #888888; 
+    box-shadow: 1px 2px #888888;
     cursor: pointer;
     text-align: center;
 }
@@ -252,7 +279,7 @@ p {
     background-size: 15px 15px;
     background-position: 95%;
     border: none;
-    box-shadow: 1px 2px #888888; 
+    box-shadow: 1px 2px #888888;
     cursor: pointer;
     text-align: center;
 }
@@ -261,10 +288,9 @@ p {
     display: block;
     box-sizing: border-box;
     cursor: pointer;
- 
 }
 
-#registerLinkBtn{
+#registerLinkBtn {
     background: none;
     border: none;
     padding-right: 5px;
@@ -272,7 +298,7 @@ p {
     cursor: pointer;
 }
 
-#registerLinkBtn:hover{
+#registerLinkBtn:hover {
     color: rgb(51, 164, 230);
 }
 
@@ -282,6 +308,6 @@ a {
 }
 
 a:hover {
-    text-decoration: underline; 
+    text-decoration: underline;
     color: rgb(51, 164, 230);
 }

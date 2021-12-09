@@ -1,6 +1,7 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
 import recipes from "../components/recipes";
+import randomRecipes from "./randomRecipes";
 import navbar from "./navbar";
 
 export default {
@@ -10,16 +11,11 @@ export default {
 
 async function DisplayRecipeDetails(recipe) {
     CONSTANTS.title.innerText = "Recipe Details";
-    // For editing/creating a recipe:
-    // 1. Remove any existing semicolon's from the user's input.
-    // 2. Append semi colon to the end of each ingredient.
-    // 3. Append all ingredients together.
-
-    // For the reverse:
-    // 1. Split by semicolon (in a separate variable).
-    // 2. Treat like array
-
-    // To consider -> using a multicharacter separator (|;|)
+  
+    let searchbar = document.getElementById('searchRecipes');
+    let showRandom = document.getElementById("navRandom");
+    searchbar.style.display = "block";
+    showRandom.style.display = "block";
 
 
     let parsedIngredients = [];
@@ -70,23 +66,8 @@ async function DisplayRecipeDetails(recipe) {
        </ul>
     </section>
     `;
-  
+
 }
-
-//To Edit Recipe:
-//NOTE: Create another constructor for Recipe.
-
-//1. Setup HTML for editing recipe.
-//2. Setup HTML for adding ingredients (including button).
-//3. Pull ingredients into an array.
-//3. Add event listener for ingredient button that pushes the new ingredient input into that array.
-//4. Setup save button event listener.
-    //4a. Once in an array, we can feed the array of ingredient strings into the post method.
-//5. Call the above two functions.
-
-//To display tags associated with the recipe:
-//Get tagid from recipetag.
-//Display the tag with the given id.
 
 function SetupEditRecipeEventListeners() {
     let btnEditRecipe = document.getElementById('btnEditRecipe');
@@ -158,6 +139,21 @@ async function EditRecipeForm(recipe) {
         `
 }
 
+function SetupEditRecipeEventListeners() {
+    let btnEditRecipe = document.getElementById('btnEditRecipe');
+    let recipe_id = document.getElementById('recipe_id').value;
+    btnEditRecipe.addEventListener('click', function () {
+        api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
+            EditRecipeForm(recipe);
+            recipes.SetupAddIngredient();
+            recipes.SetupDynamicTagsList();
+            recipes.PopulateTagsDDL();
+            SetupExistingItemDeleteBtns();
+            SubmitEditedRecipe();
+        });
+    });
+}
+
 function SetupExistingItemDeleteBtns() {
     let removeIngredientbtns = document.querySelectorAll('.removeIngredientbtn');
     let ingredientList = document.getElementById('recipeIngredients');
@@ -165,14 +161,14 @@ function SetupExistingItemDeleteBtns() {
     let tagList = document.getElementById('tagList');
 
     removeIngredientbtns.forEach(removeIngredientbtn => {
-        removeIngredientbtn.addEventListener('click', function() {
+        removeIngredientbtn.addEventListener('click', function () {
             let toRemove = this.parentElement;
             ingredientList.removeChild(toRemove);
         });
     });
 
     removeTagbtns.forEach(removeTagbtn => {
-        removeTagbtn.addEventListener('click', function() {
+        removeTagbtn.addEventListener('click', function () {
             console.log("Remove tag btn clicked!");
             let toRemove = this.parentElement;
             tagList.removeChild(toRemove);
@@ -180,26 +176,50 @@ function SetupExistingItemDeleteBtns() {
     });
 }
 
-// How to edit tags associated with recipe:
-// When SubmitEditedRecipe button is clicked...
-// 1. Delete all recipetags associated with the recipe.
-// 2. Create new recipetags. (Double-check CheckTags Function to see if it can be reused.)
-
 function SubmitEditedRecipe() {
     let recipe_id = document.getElementById('recipe_id').value;
     let btnFinishEditing = document.getElementById('btnFinishEditing');
 
     btnFinishEditing.addEventListener('click', function() {
-
         let ListofIngredients = document.getElementById('recipeIngredients');
         let indivIngredients = ListofIngredients.getElementsByTagName('li');
         let joinedIngredients = "";
-        
+
         for (let i = 0; i < (indivIngredients.length - 1); i++) {
             joinedIngredients = joinedIngredients + indivIngredients[i].id + "|;|"
         }
 
         joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
+
+        let Tag = {
+            Id: 0,
+            Name: 0
+        }
+
+        let tag_id = 0;
+        let tag_name = "ifYouSeeThisSomethingHasGoneWrong";
+
+        for (const tag of AddedTags) {
+
+            if (tag.classList.contains('newTag')) {
+                tag_id = 0;
+                tag_name = tag.id;
+            } else {
+                tag_id = tag.id;
+                tag_name = tag.getAttribute('data-existingtagname');
+                console.log("Before tag object created, tag_id; tag_name; tag HTML object");
+                console.log(tag_id + tag_name);
+                console.log(tag);
+            }
+
+            Tag = {
+                Id: tag_id,
+                Name: tag_name
+            }
+            console.log("Tag object:");
+            console.log(Tag);
+            TagsToAddToRecipe.push(Tag);
+        }
 
         let editedRecipe = {
             Id: document.getElementById('recipe_id').value,

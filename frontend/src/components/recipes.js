@@ -43,7 +43,7 @@ function displayRecipes(recipes, tags) {
                     <span class="recipeDetails" value="${recipe.id}">
                         ${recipe.name} 
                     </span>
-                    <input type="hidden" value='${recipe.id}'/>
+                    <input type="hidden" id="recdet" value='${recipe.id}'/>
                     <button id="${recipe.id}" class="recipeDelete">Delete</button>
                     <div display="none" class="tagString" id='tagString-${recipe.id}'>
                         ${recipe.tags.map(tag => {           
@@ -78,22 +78,22 @@ function displayRecipes(recipes, tags) {
 
 function setupRecipeLinks() {
     let recipeLinks = document.querySelectorAll(".recipeDetails");
-    const showRandom= document.getElementById("navRandom")
+    const showRandom = document.getElementById("navRandom")
     showRandom.style.display = "block";
     recipeLinks.forEach(recipeLink => {
 
         recipeLink.addEventListener("click", function (evt) {
-            randomRecipes.smallRandomBtn();
+            //randomRecipes.smallRandomBtn();
+            //let recipeId = this.nextElementSibling.value;  <-- this wasn't working so I changed it to -recdet and now it works.
+            
             let recipeId = recipeLink.getAttribute("value");
-
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
                 CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
                 navbar.hideNavSearchBarDisplayRecipes();
-                //setupSearchBar();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
-        
+
     });
 }
 
@@ -110,8 +110,8 @@ function setupRecipeDeleteButton() {
                 setupRecipeDeleteButton();
                 setupRecipeLinks();
                 setupSearchBar();
-                hideRecipeList();  
-                SetupAddRecipeEventListeners(); 
+                hideRecipeList();
+                SetupAddRecipeEventListeners();
             });
         });
     });
@@ -120,9 +120,9 @@ function setupRecipeDeleteButton() {
 export function setupSearchBar() {
     let searchbar = document.getElementById('contentSearchBar');
     let searchByTagCheckbox = document.getElementById("searchByTags");
-    searchbar.addEventListener('keyup', function(e){
+    searchbar.addEventListener('keyup', function (e) {
         let word = e.target.value.toLowerCase()
-        if(searchByTagCheckbox.checked){
+        if (searchByTagCheckbox.checked) {
             filterList(word, Array.from(document.getElementsByClassName("tag")));
         } else {
             filterList(word, returnFilteredRecipesByTags());
@@ -130,12 +130,12 @@ export function setupSearchBar() {
     });
 }
 
-function filterList(str, targets){
-    Array.from(targets).forEach(function(element){
+function filterList(str, targets) {
+    Array.from(targets).forEach(function (element) {
         const name = element.querySelectorAll("span")[0].textContent;
-        if(name.toLowerCase().indexOf(str) != -1){
+        if (name.toLowerCase().indexOf(str) != -1) {
             element.style.display = "block";
-        }else {
+        } else {
             element.style.display = "none";
         }
     });
@@ -146,43 +146,43 @@ export function setupSearchByTagCheckbox() {
     const searchbar = document.getElementById('contentSearchBar');
     let tags = Array.from(document.getElementsByClassName("tag"));
     let recipes = Array.from(document.getElementsByClassName("recipe"));
-    searchByTagCheckbox.addEventListener('click', function(e){
-            console.log("search by tags");
-            searchbar.value = "";
-            if(searchByTagCheckbox.checked){
-                searchbar.placeholder = "Search tags..."
-                filterList(searchbar.value, recipes)
-                tags.forEach(tag => {
+    searchByTagCheckbox.addEventListener('click', function (e) {
+        console.log("search by tags");
+        searchbar.value = "";
+        if (searchByTagCheckbox.checked) {
+            searchbar.placeholder = "Search tags..."
+            filterList(searchbar.value, recipes)
+            tags.forEach(tag => {
+                tag.style.display = "block";
+            })
+        } else {
+            searchbar.placeholder = "Search recipes..."
+            filterList(searchbar.value, tags)
+            tags.forEach(tag => {
+                console.log(tag);
+                if (tag.firstElementChild.firstElementChild.checked)
                     tag.style.display = "block";
-                })
-            } else {
-                searchbar.placeholder = "Search recipes..."
-                filterList(searchbar.value, tags)
-                tags.forEach(tag => {
-                    console.log(tag);
-                    if(tag.firstElementChild.firstElementChild.checked)
-                        tag.style.display = "block";
-                    else {
-                        tag.style.display = "none"; 
-                    }
-                })
-            }
+                else {
+                    tag.style.display = "none";
+                }
+            })
+        }
     });
 }
 
 export function setupCheckboxFilter() {
     const checkBoxes = Array.from(document.getElementsByClassName("tagCheckbox"));
     checkBoxes.forEach(element => {
-        element.addEventListener('change', function(e){
+        element.addEventListener('change', function (e) {
             console.log("tags checked");
             handleCheck(e.target);
-            toggleTags();        
+            toggleTags();
         });
     });
 }
 
-function handleCheck(tag){
-    if(currentTags.includes(tag.id)){
+function handleCheck(tag) {
+    if (currentTags.includes(tag.id)) {
         let indx = currentTags.indexOf(tag.id)
         console.log("splice");
         currentTags.splice(indx, 1);
@@ -192,30 +192,32 @@ function handleCheck(tag){
     console.log(currentTags);
 }
 
-function toggleTags(){
+function toggleTags() {
     const recipes = Array.from(document.getElementsByClassName("recipe"));
     recipes.forEach(recipe => {
-        let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
+        let recipeTagString = document.getElementById("tagString-" + recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
         console.log(recipeTagString);
         let hidden = false;
         currentTags.forEach(tag => {
-            if(!recipeTagString.includes(tag)){
+            if (!recipeTagString.includes(tag)) {
                 recipe.style.display = "none";
                 hidden = true;
             }
         });
-        if(!hidden){recipe.style.display = "block"}
+        if (!hidden) {
+            recipe.style.display = "block"
+        }
     });
 }
 
-function returnFilteredRecipesByTags(){
+function returnFilteredRecipesByTags() {
     const recipes = Array.from(document.getElementsByClassName("recipe"));
     return recipes.filter(recipe => {
-        let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
+        let recipeTagString = document.getElementById("tagString-" + recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
         console.log(recipeTagString);
         let hidden = false;
         currentTags.forEach(tag => {
-            if(!recipeTagString.includes(tag)){
+            if (!recipeTagString.includes(tag)) {
                 hidden = true;
             }
         });
@@ -225,7 +227,7 @@ function returnFilteredRecipesByTags(){
 
 function SetupAddRecipeEventListeners() {
     let btnNewRecipe = document.getElementById('btnNewRecipe');
-    btnNewRecipe.addEventListener('click', function() {
+    btnNewRecipe.addEventListener('click', function () {
         SetupAddRecipeForm();
         SetupAddIngredient();
         SetupAddTags();
@@ -254,14 +256,14 @@ function SetupAddIngredient() {
     let btnAddIngredient = document.getElementById('btnAddIngredient');
     let ingredientInput = document.getElementById('ingredientInput');
 
-    btnAddIngredient.addEventListener('click', function() {
+    btnAddIngredient.addEventListener('click', function () {
         console.log("Add Ingredients Button Clicked!");
         let IngredientList = document.getElementById('recipeIngredients');
-        
+
         let NewIngredient = document.createElement('li');
         NewIngredient.setAttribute('id', ingredientInput.value)
         NewIngredient.classList.add('addedIngredients');
-        
+
         NewIngredient.appendChild(document.createTextNode(ingredientInput.value));
 
         let removebtn = document.createElement('button');
@@ -271,7 +273,7 @@ function SetupAddIngredient() {
         NewIngredient.appendChild(removebtn);
         IngredientList.appendChild(NewIngredient);
 
-        removebtn.addEventListener('click', function() {
+        removebtn.addEventListener('click', function () {
             let toRemove = this.parentNode;
             IngredientList.removeChild(toRemove);
         });
@@ -286,7 +288,7 @@ function SetupAddTags() {
     let indivIngredients = ListofIngredients.getElementsByTagName('li');
     let joinedIngredients = "";
 
-    btnAddTags.addEventListener('click', function() {
+    btnAddTags.addEventListener('click', function () {
 
         for (let i = 0; i < (indivIngredients.length - 1); i++) {
             joinedIngredients = joinedIngredients + indivIngredients[i].id + "|;|"
@@ -330,8 +332,8 @@ function SetupDynamicTagsList() {
     let selectList = document.getElementById('existingTagDDL');
     let TagList = document.getElementById('tagList');
 
-    btnAddTagFromList.addEventListener('click', function(){
-       
+    btnAddTagFromList.addEventListener('click', function () {
+
         let AddedTag = document.createElement('li');
         AddedTag.setAttribute('id', selectList.children[selectList.selectedIndex].value);
         AddedTag.classList.add('addedTag');
@@ -343,7 +345,7 @@ function SetupDynamicTagsList() {
         removeTagbtn.setAttribute('id', 'removeTagbtn');
         removeTagbtn.innerText = "Remove Tag";
 
-        removeTagbtn.addEventListener('click', function() {
+        removeTagbtn.addEventListener('click', function () {
             let toRemove = this.parentNode;
             TagList.removeChild(toRemove);
         });
@@ -351,10 +353,10 @@ function SetupDynamicTagsList() {
         AddedTag.appendChild(removeTagbtn);
         TagList.appendChild(AddedTag);
     });
-    
+
     let btnAddNewTag = document.getElementById('btnAddNewTag');
     let createdTag = document.getElementById('createdTag');
-    btnAddNewTag.addEventListener('click', function(){
+    btnAddNewTag.addEventListener('click', function () {
         let NewTag = document.createElement('li');
         NewTag.setAttribute('id', createdTag.value);
         NewTag.classList.add('addedTag');
@@ -363,8 +365,8 @@ function SetupDynamicTagsList() {
 
         let removeTagbtn = document.createElement('button');
         removeTagbtn.innerText = "Remove Tag";
-    
-        removeTagbtn.addEventListener('click', function() {
+
+        removeTagbtn.addEventListener('click', function () {
             let toRemove = this.parentNode;
             TagList.removeChild(toRemove);
         });
@@ -374,7 +376,7 @@ function SetupDynamicTagsList() {
     });
 }
 
-function PopulateTagsDDL(){
+function PopulateTagsDDL() {
     let ddlTagList = document.getElementById('existingTagDDL');
     if (ddlTagList != undefined) {
         api.getRequest(CONSTANTS.TagsAPIURL, tags => {
@@ -402,15 +404,14 @@ async function CheckRecipeTags() {
     let tag_name = "if_you_see_this_something_has_gone_wrong";
     let recipetag_tagid = 0;
 
-    btnFinishAddingTags.addEventListener('click', async function() {
+    btnFinishAddingTags.addEventListener('click', async function () {
         let TagsToCheck = ListofTags.getElementsByTagName('li');
         let FormattedTags = [];
         for (const tagtocheck of TagsToCheck) {
             if (tagtocheck.classList.contains('newTag')) {
                 tag_id = 0;
                 tag_name = tagtocheck.id;
-            }
-            else {
+            } else {
                 tag_id = tagtocheck.id;
                 tag_name = tagtocheck.getAttribute('data-existingtagname');
             }
@@ -418,20 +419,20 @@ async function CheckRecipeTags() {
                 Id: tag_id,
                 Name: tag_name
             }
-    
+
             FormattedTags.push(Tag);
         }
-    
+
         let ListofTagIds = [];
         let SentTag = {
             Name: "if_you_see_this_something_has_gone_wrong"
         }
-    
+
         let tags = await api.SyncGetRequest(CONSTANTS.TagsAPIURL);
 
-        FormattedTags.forEach(async function(FormattedTag) {
+        FormattedTags.forEach(async function (FormattedTag) {
             recipetag_tagid = FormattedTag.Id;
-            if (FormattedTag.Id == 0){
+            if (FormattedTag.Id == 0) {
                 let exists = false;
                 tags.forEach(tag => {
                     if (FormattedTag.Name.toLowerCase() == tag.name.toLowerCase()) {
@@ -447,7 +448,7 @@ async function CheckRecipeTags() {
             }
             ListofTagIds.push(recipetag_tagid);
         });
-    
+
         let AssociatedRecipeTags = [];
 
         ListofTagIds.forEach(aatagId => {
@@ -457,7 +458,7 @@ async function CheckRecipeTags() {
                 RecipeId: recipe_id,
                 TagId: aatagId
             }
-            
+
             api.postRequest(CONSTANTS.RecipeTagsAPIURL, RecipeTag, recipetag => {
                 AssociatedRecipeTags.push(recipetag);
                 console.log("New recipetags created!");

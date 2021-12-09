@@ -13,15 +13,16 @@ export default {
 export function hideNavSearchBarDisplayRecipes() {
     const showRandom = document.getElementById("navRandom");
     const hideSearch = document.getElementById("searchRecipes");
-    hideSearch.addEventListener("click", function(){
+
+    hideSearch.addEventListener("click", function () {
         console.log("Hide nav search, display recipes");
-            hideSearch.style.display = "none";
-             showRandom.style.display="block";
-            api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
-                CONSTANTS.title.innerText = "What's For Dinner";
-                CONSTANTS.tabTitle.innerText = "Search Recipes";
-                console.log(data);
-                CONSTANTS.content.innerHTML = 
+        hideSearch.style.display = "none";
+        showRandom.style.display = "block";
+        api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
+            CONSTANTS.title.innerText = "What's For Dinner";
+            CONSTANTS.tabTitle.innerText = "Search Recipes";
+            console.log(data);
+            CONSTANTS.content.innerHTML =
                 recipes.displayRecipes(data.allRecipes, data.allTags);
                 recipes.setupRecipeDeleteButton();
                 recipes.setupSearchBar();
@@ -32,17 +33,17 @@ export function hideNavSearchBarDisplayRecipes() {
                 recipes.SetupAddRecipeEventListeners();
         });
     });
+
 }
 
-export function setupNavBar(){
-    let username = cookies.getCookie("username"); 
+export function setupNavBar() {
+    let username = cookies.getCookie("username");
     let userId = cookies.getCookie("userId");
     let loginUser;
     let pantry;
     console.log("UserId");
     console.log(userId);
-    if(userId === "undefined" || userId === null)
-    {
+    if (userId === "undefined" || userId === null) {
         pantry = ``;
         loginUser = `<li id="navLogin">Login</li>`
     } else {
@@ -52,14 +53,19 @@ export function setupNavBar(){
     }
     return `
     <ul id="navbarLi">
-        ${pantry}      
-        <li id="navSearch">
+        ${pantry}
+        <li id="navRandom"><img src="../img/shuffle.png" id="smRandom" alt="random icon" width="40" height="35" margin="30pz"><br>Random Recipe</li>
+        <li id="navSearch" class = "tooltip">
+        <span class="tooltipText" id="show">Click here to view a list of all recipes</span>
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
+       
         </form>
         </li>
        ${loginUser}
     </ul>
+
+     
     `;
 }
 
@@ -94,14 +100,12 @@ export function setupNavBar(){
 // }
 
 function setupHome() {
-    CONSTANTS.tabTitle.innerText="Home";
-    CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.navbar.innerHTML =  setupNavBar(); //setupPantry();
-    CONSTANTS.content.innerHTML = 
-    `
+    CONSTANTS.tabTitle.innerText = "Home";
+    CONSTANTS.title.innerText = "What's For Dinner";
+    CONSTANTS.navbar.innerHTML = setupNavBar(); //setupPantry();
+    CONSTANTS.content.innerHTML =
+        `
         <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="400" height="400" style = "padding-bottom: 16px;">
         <p>Click for random recipe</p>      
     `;
 }
-
-
