@@ -1,18 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "../components/recipeDetails";
-import recipes from "../components/recipes";
-
-
-
-export function getAllRecipes() {
-    let recipeIds = [];
-    api.getRequest(CONSTANTS.RecipesAPIURL, data => {
-        recipes.forEach(recipe => {
-            recipeIds.push(recipe.id);
-        });
-    });
-}
+import navbar from "../components/navbar"
 
 export default {
     getRandomRecipe,
@@ -27,27 +16,29 @@ export function getRandomRecipe(num) {
 }
 
 
-export function setupRandomBtn() {
+export async function setupRandomBtn() {
     let btnRandom = document.getElementById("clickMe");
     let recipeIds = [];
-    api.getRequest(CONSTANTS.RecipesAPIURL, recipes => {
-        recipes.forEach(recipe => {
-            recipeIds.push(recipe.id);
-        });
+
+    let recipes = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL);
+    recipes.forEach(recipe => {
+        recipeIds.push(recipe.id);
     });
-    btnRandom.addEventListener('click', function() {
+
+    btnRandom.addEventListener('click', async function() {
         console.log("random btn clicked!");
         let index = getRandomRecipe(recipeIds.length);
         let randomRecipeId = recipeIds[index];
-        api.getRequest(CONSTANTS.RecipesAPIURL + randomRecipeId, data => {
-            console.log(data);
-             CONSTANTS.title.innerText= "What's For Dinner"
-             CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);                   
-        });
+
+        let randomRecipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + randomRecipeId);
+        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
+        navbar.hideNavSearchBarDisplayRecipes();
+        recipeDetails.SetupEditRecipeEventListeners();
     });
 }
 
-function smallRandomBtn() {
+async function smallRandomBtn() {
     let showRandom = document.getElementById("navRandom");
     let recipeIds = [];
     api.getRequest(CONSTANTS.RecipesAPIURL, recipes => {
@@ -56,16 +47,16 @@ function smallRandomBtn() {
         });
     });
     showRandom.style.display="none";
-    showRandom.addEventListener('click', function () {
+    showRandom.addEventListener('click', async function() {
         console.log("small random clicked");
         
         let index = getRandomRecipe(recipeIds.length);  
         let randomRecipeId = recipeIds[index];      
-        api.getRequest(CONSTANTS.RecipesAPIURL + randomRecipeId, data => {
-            console.log(data);
-             CONSTANTS.title.innerText= "What's For Dinner";
-             CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);  
-        });
+        let randomRecipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + randomRecipeId);
+        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
+        navbar.hideNavSearchBarDisplayRecipes();
+        recipeDetails.SetupEditRecipeEventListeners();
     });
 }
 

@@ -1,6 +1,7 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
 import recipes from "../components/recipes";
+import navbar from "./navbar";
 
 export default {
     DisplayRecipeDetails,
@@ -30,6 +31,8 @@ async function DisplayRecipeDetails(recipe) {
 
     let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
+    CONSTANTS.navbar.innerHTML = `<h4 id='searchRecipes'>Return to all recipes</h4>`;
+
     return `
         <h1>Recipe Details</h1>
         <h2>Recipe Title: ${recipe.name}</h2>     
@@ -56,7 +59,7 @@ async function DisplayRecipeDetails(recipe) {
      <h3> Instructions: </h3> <p>${recipe.instructions}</p>
 
      <h5>Tags:</h5>
-       <ul>  
+       <ul id='recipedetailstaglist'>  
           ${LinkedTags.map(LinkedTag => {
                 return`
                <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname = '${LinkedTag.tag.name}'>
@@ -295,6 +298,7 @@ async function UpdateRecipeTags(recipe) {
     recipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + recipe.id);
     
     CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
+    navbar.hideNavSearchBarDisplayRecipes();
     SetupEditRecipeEventListeners();
     CONSTANTS.title.innerText = "Recipe Details";
 }

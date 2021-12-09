@@ -2,6 +2,7 @@ import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
 import randomRecipes from "../components/randomRecipes";
+import navbar from "./navbar";
 
 export default {
     displayRecipes,
@@ -87,6 +88,7 @@ function setupRecipeLinks() {
 
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
                 CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
+                navbar.hideNavSearchBarDisplayRecipes();
                 //setupSearchBar();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
@@ -465,6 +467,7 @@ async function CheckRecipeTags() {
         let recipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + recipe_id);
         CONSTANTS.title.innerText = "Recipe Details";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
+        navbar.hideNavSearchBarDisplayRecipes();
         recipeDetails.SetupEditRecipeEventListeners();
     });
 }
