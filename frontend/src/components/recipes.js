@@ -21,6 +21,7 @@ export default {
 let currentTags = [];
 
 function displayRecipes(recipes, tags) {
+    CONSTANTS.title.innerText = "What's For Dinner";
     return `
     <div id='searchRecipeArea'>
        <form id="search-recipes">

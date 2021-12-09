@@ -74,7 +74,16 @@ input:focus {
 #contentSearchBar {
       margin-top: 10px;
       margin-bottom: 10px;
+      border-radius: 30px;
+      background-size: 30px 30px;
+      box-shadow: 1px 2px #585151; 
+      width: 375px;
+      height: 54px;
+      padding: 10px;
+      font-size: 20px;
+      border: black;
       cursor: pointer;
+      
 }
 
 #pageContent {
