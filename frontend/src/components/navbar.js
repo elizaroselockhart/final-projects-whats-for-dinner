@@ -1,7 +1,6 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipes from "../components/recipes";
-import randomRecipes from "../components/randomRecipes";
 import cookies from "../components/cookies";
 
 export default {

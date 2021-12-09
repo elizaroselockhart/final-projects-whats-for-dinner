@@ -85,7 +85,6 @@ function setupRecipeLinks() {
             randomRecipes.smallRandomBtn();
             let recipeId = this.nextElementSibling.value;
 
-            //API Call
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
                 CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);
                 setupSearchBar();

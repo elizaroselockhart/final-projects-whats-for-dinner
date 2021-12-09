@@ -14,8 +14,6 @@ export function getAllRecipes() {
     });
 }
 
-// let recipe =[1, 2, 3]
-
 export default {
     getRandomRecipe,
     setupRandomBtn,

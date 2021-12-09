@@ -3,6 +3,7 @@ import * as CONSTANTS from "../components/constants";
 import navbarTabs from "../components/navbar";
 import apiAction from "../api/api-actions";
 import login from "../components/login";
+import main from "../js/main";
 
 export default {
     setupRegisterLink,
@@ -77,11 +78,12 @@ export function register(){
                         cookies.setCookie("username", user.username, 7);
                         navbarTabs.setupHome();
                         CONSTANTS.navbar.innerHTML = navbarTabs.setupNavBar();
+                        main();
                         login.logout();
                     });
                 }
                 else {
-                    document.getElementById("already-exists").innerText = "Name, Username, or Password already exists. Try again!"
+                    document.getElementById("already-exists").innerText = "Username already exists. Try again!"
                 }
             });
 

@@ -19,9 +19,4 @@ export function setCookie(name, value, days) {
 
 export function deleteCookie(name) { setCookie(name, '', -1); }
 
-// let username = "davis"
-// setCookie("username", username, 5);
-// getCookie("davis") // return true;
-// deleteCookie("davis") // davis no longer exists
-// getCookie("davis") //returns null
 
