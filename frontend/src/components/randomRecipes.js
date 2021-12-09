@@ -63,7 +63,7 @@ function smallRandomBtn() {
         let randomRecipeId = recipeIds[index];      
         api.getRequest(CONSTANTS.RecipesAPIURL + randomRecipeId, data => {
             console.log(data);
-             CONSTANTS.title.innerText= "What's For Dinner"
+             CONSTANTS.title.innerText= "What's For Dinner";
              CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);  
         });
     });

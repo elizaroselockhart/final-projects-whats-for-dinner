@@ -34,7 +34,7 @@ async function DisplayRecipeDetails(recipe) {
         <h1>Recipe Details</h1>
         <h2>Recipe Title: ${recipe.name}</h2>     
         <input type="hidden" id='recipe_id' value='${recipe.id}'/> 
-        <button id='btnEditRecipe'>Edit Recipe</button>
+        <button id='btnEditRecipe' class="universalBtn">Edit Recipe</button>
         
         <section> 
         <h4> Description: </h4> <p>${recipe.description}</p>

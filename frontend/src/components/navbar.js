@@ -52,8 +52,7 @@ export function setupNavBar(){
     }
     return `
     <ul id="navbarLi">
-        ${pantry}
-        <li id="navRandom"><img src="../img/shuffle.png" id="smRandom" alt="random icon" width="40" height="35" margin="30pz"><br>Random Recipe</li>
+        ${pantry}      
         <li id="navSearch">
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
@@ -63,6 +62,7 @@ export function setupNavBar(){
     </ul>
     `;
 }
+
 
 //Removed (with comments) the setupPantry() function and all references.
 //Team did not have enough time to implement said feature. 

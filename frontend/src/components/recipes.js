@@ -70,7 +70,7 @@ function displayRecipes(recipes, tags) {
             }).join('')}
         </ul>
     </div>
-    <input type="checkbox" id="hide"/>
+    <input type="checkbox" id="hide" class="hideCheckBox"/>
     <label for="hide">Hide all recipes</label>
     `;
 }
