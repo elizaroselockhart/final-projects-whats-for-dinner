@@ -14,9 +14,9 @@ function setupMain() {
     navbarTabs.setupNavBar();
     navbarTabs.setupPantry(); 
     navbarTabs.setupHome();
-    login.setupLogin();
     randomRecipes.getRandomRecipe();
     randomRecipes.setupRandomBtn();
     randomRecipes.smallRandomBtn();
+    login.setupLogin();
     navbarTabs.hideNavSearchBarDisplayRecipes();
 }
