@@ -467,7 +467,7 @@ async function CheckRecipeTags() {
         });
         
         let recipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + recipe_id);
-        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.title.innerText = "What's For Dinner";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
         navbar.hideNavSearchBarDisplayRecipes();
         randomRecipes.smallRandomBtn();

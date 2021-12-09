@@ -31,7 +31,7 @@ export async function setupRandomBtn() {
         let randomRecipeId = recipeIds[index];
 
         let randomRecipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + randomRecipeId);
-        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.title.innerText = "What's For Dinner";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
         navbar.hideNavSearchBarDisplayRecipes();
         recipeDetails.SetupEditRecipeEventListeners();
@@ -54,7 +54,7 @@ async function smallRandomBtn() {
         let index = getRandomRecipe(recipeIds.length);  
         let randomRecipeId = recipeIds[index];      
         let randomRecipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + randomRecipeId);
-        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.title.innerText = "What's For Dinner";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
         navbar.hideNavSearchBarDisplayRecipes();
         recipeDetails.SetupEditRecipeEventListeners();

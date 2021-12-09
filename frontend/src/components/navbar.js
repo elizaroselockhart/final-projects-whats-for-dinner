@@ -54,7 +54,6 @@ export function setupNavBar() {
     return `
     <ul id="navbarLi">
         ${pantry}
-        <li id="navRandom"><img src="../img/shuffle.png" id="smRandom" alt="random icon" width="40" height="35" margin="30pz"><br>Random Recipe</li>
         <li id="navSearch" class = "tooltip">
         <span class="tooltipText" id="show">Click here to view a list of all recipes</span>
         <form id="search-recipes">
