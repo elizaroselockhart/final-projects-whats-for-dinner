@@ -29,7 +29,6 @@ export function setupLoginDisplay(){
     CONSTANTS.tabTitle.innerText="Login";
     CONSTANTS.title.innerText="What's For Dinner";
     CONSTANTS.content.innerHTML =
-    //call random recipe button here to display in the corner of the page
     `
         <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30px">
         <form id="login">

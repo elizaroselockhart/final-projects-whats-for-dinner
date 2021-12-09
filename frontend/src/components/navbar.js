@@ -12,7 +12,7 @@ export default {
 }
 
 export function hideNavSearchBarDisplayRecipes() {
-    const showRandom= document.getElementById("navRandom")
+    const showRandom = document.getElementById("navRandom");
     const hideSearch = document.getElementById("searchRecipes");
     hideSearch.addEventListener("click", function(){
         console.log("Hide nav search, display recipes");
@@ -30,7 +30,6 @@ export function hideNavSearchBarDisplayRecipes() {
                 recipes.setupSearchByTagCheckbox();
                 recipes.setupCheckboxFilter();
                 recipes.hideRecipeList();   
-                randomRecipes.smallRandomBtn();
         });
     });
 }
@@ -85,7 +84,7 @@ export function setupPantry() {
 function setupHome() {
     CONSTANTS.tabTitle.innerText="Home";
     CONSTANTS.title.innerText="What's For Dinner";
-    CONSTANTS.navbar.innerHTML =  setupNavBar();
+    CONSTANTS.navbar.innerHTML =  setupNavBar(); setupPantry();
     CONSTANTS.content.innerHTML = 
     `
         <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="400" height="400" style = "padding-bottom: 16px;">

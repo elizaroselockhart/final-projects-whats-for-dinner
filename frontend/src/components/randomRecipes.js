@@ -39,10 +39,10 @@ function smallRandomBtn() {
         console.log("small random clicked");
         
 
-        let index = getRandomRecipe(recipe.length - 1);        
+        let index = getRandomRecipe(recipe.length);        
         api.getRequest(CONSTANTS.RecipesAPIURL + recipe[index], data => {
             console.log(data);
-            CONSTANTS.title.innerText = "RecipeDetails"
+            CONSTANTS.title.innerText = "What's For Dinner"
             CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);
         });
     });
