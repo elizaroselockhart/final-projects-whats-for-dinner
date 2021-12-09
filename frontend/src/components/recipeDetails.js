@@ -139,21 +139,6 @@ async function EditRecipeForm(recipe) {
         `
 }
 
-function SetupEditRecipeEventListeners() {
-    let btnEditRecipe = document.getElementById('btnEditRecipe');
-    let recipe_id = document.getElementById('recipe_id').value;
-    btnEditRecipe.addEventListener('click', function () {
-        api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
-            EditRecipeForm(recipe);
-            recipes.SetupAddIngredient();
-            recipes.SetupDynamicTagsList();
-            recipes.PopulateTagsDDL();
-            SetupExistingItemDeleteBtns();
-            SubmitEditedRecipe();
-        });
-    });
-}
-
 function SetupExistingItemDeleteBtns() {
     let removeIngredientbtns = document.querySelectorAll('.removeIngredientbtn');
     let ingredientList = document.getElementById('recipeIngredients');
@@ -190,36 +175,6 @@ function SubmitEditedRecipe() {
         }
 
         joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
-
-        let Tag = {
-            Id: 0,
-            Name: 0
-        }
-
-        let tag_id = 0;
-        let tag_name = "ifYouSeeThisSomethingHasGoneWrong";
-
-        for (const tag of AddedTags) {
-
-            if (tag.classList.contains('newTag')) {
-                tag_id = 0;
-                tag_name = tag.id;
-            } else {
-                tag_id = tag.id;
-                tag_name = tag.getAttribute('data-existingtagname');
-                console.log("Before tag object created, tag_id; tag_name; tag HTML object");
-                console.log(tag_id + tag_name);
-                console.log(tag);
-            }
-
-            Tag = {
-                Id: tag_id,
-                Name: tag_name
-            }
-            console.log("Tag object:");
-            console.log(Tag);
-            TagsToAddToRecipe.push(Tag);
-        }
 
         let editedRecipe = {
             Id: document.getElementById('recipe_id').value,
@@ -320,5 +275,6 @@ async function UpdateRecipeTags(recipe) {
     CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
     navbar.hideNavSearchBarDisplayRecipes();
     SetupEditRecipeEventListeners();
+    randomRecipes.smallRandomBtn();
     CONSTANTS.title.innerText = "Recipe Details";
 }

@@ -90,6 +90,7 @@ function setupRecipeLinks() {
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
                 CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
                 navbar.hideNavSearchBarDisplayRecipes();
+                randomRecipes.smallRandomBtn();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -469,6 +470,7 @@ async function CheckRecipeTags() {
         CONSTANTS.title.innerText = "Recipe Details";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
         navbar.hideNavSearchBarDisplayRecipes();
+        randomRecipes.smallRandomBtn();
         recipeDetails.SetupEditRecipeEventListeners();
     });
 }
