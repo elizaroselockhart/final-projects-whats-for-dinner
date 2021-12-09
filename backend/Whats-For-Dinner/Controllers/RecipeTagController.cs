@@ -29,12 +29,29 @@ namespace Whats_For_Dinner.Controllers
             return recipetag;
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<RecipeTag>> Get()
+        {
+            return _db.RecipeTags.ToList();
+        }
 
-        //[HttpGet]
-        //public ActionResult<IEnumerable<RecipeTag>> Get()
-        //{
-        //    return _db.RecipeTags.ToList();
-        //}
+
+        [HttpGet("{recipeid}")]
+        public ActionResult<IEnumerable<RecipeTag>> Get(int recipeid)
+        {
+            List<RecipeTag> AssociatedRecipeTags = new List<RecipeTag>();
+
+            //Purpose of this loop: iterate over all recipetags and return list of recipetags with associated recipeid.
+            foreach (RecipeTag recipetag in _db.RecipeTags) 
+            {
+                if (recipetag.RecipeId == recipeid) 
+                {
+                    AssociatedRecipeTags.Add(recipetag);
+                }
+            }
+
+            return AssociatedRecipeTags;
+        }
 
     }
 }

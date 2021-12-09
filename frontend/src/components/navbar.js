@@ -34,7 +34,8 @@ export function hideNavSearchBarDisplayRecipes() {
                 recipes.setupRecipeLinks();
                 recipes.setupSearchByTagCheckbox();
                 recipes.setupCheckboxFilter();
-                recipes.hideRecipeList();   
+                recipes.hideRecipeList();  
+                recipes.SetupAddRecipeEventListeners(); 
                 randomRecipes.smallRandomBtn();
         });
     });

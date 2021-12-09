@@ -1,37 +1,33 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
-import randomRecipes from "./randomRecipes";
 import recipes from "../components/recipes";
-import tags from "./tags";
 
 export default {
     DisplayRecipeDetails,
     SetupEditRecipeEventListeners
 }
 
-function DisplayRecipeDetails(recipe) {
-    let searchbar = document.getElementById('searchRecipes');    
-    let showRandom = document.getElementById("navRandom");
-    searchbar.style.display = "block";
-    showRandom.style.display="block";
-    
+async function DisplayRecipeDetails(recipe) {
+    //For editing/creating a recipe with ingredients:
+    // 1. Remove any existing semicolon's from the user's input
+    // 2. Append semi colon to the end of each ingredient except the last one.
+    // 3. Append all ingredients together.
+
+    // For the reverse: 
+    // 1. Split by semicolon (in a separate variable).
+    // 2. Treat like array.
+
+    // to consider -> using a multicharacter separator (|;|)
+
     let parsedIngredients = [];
     if(recipe.ingredients == null) {
        recipe.ingredients = "";
-    }else{
+    } else {
         parsedIngredients = recipe.ingredients.split(";");
     }
 
-    //for editing/creating a recipe:
-    // remove any existing semicolon's from the user's input
-    // append semi colon to the end of each ingredient
-    // append all ingredients together
-
-    // for the reverese 
-    // split by semicolon (in a separate variable)
-    // treat like array
-
-    // to consider -> using a multicharacter separator (|;|)
+    //Based on the method we wrote on the back end, we expect that this will feed in a recipeId, and then iterate over all recipetags, pushing the recipetags that have the SAME recipeid into an array, and then return that array, which we have named LinkedTags.
+    let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
     return `
         <h1>Recipe Details</h1>
@@ -59,14 +55,15 @@ function DisplayRecipeDetails(recipe) {
      <h3> Instructions: </h3> <p>${recipe.instructions}</p>
 
      <h5>Tags:</h5>
-       <ul>  
-          ${recipe.tags.map(tag => {
-                return`
-               <li>${tag.tag.name}</li>
-               `;
-           }).join('')}
-       </ul>
-    </section>
+        <ul id='tagList'>
+            ${LinkedTags.map(LinkedTag => {
+                    return `
+                        <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname='${LinkedTag.tag.name}'>
+                            ${LinkedTag.tag.name}
+                        </li>
+                     `;
+                 }).join('')}
+        </ul>
     `;
   
 }
@@ -87,19 +84,13 @@ function DisplayRecipeDetails(recipe) {
 //Display the tag with the given id.
 
 
-function EditRecipeForm(recipe) {
+async function EditRecipeForm(recipe) {
     CONSTANTS.title.innerText = "Edit Recipe";
     let IngredientList = recipe.ingredients.split(";");
 
-    let recipetags = recipe.tags;
-    let LinkedTags = [];
+    let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
-    recipetags.forEach(recipetag => {
-        let LinkedTag = api.SyncGetRequest(CONSTANTS.TagsAPIURL + recipetag.tagId);
-        LinkedTags.push(LinkedTag);
-    });
-
-    CONSTANTS.content.innerHTML = `
+    return `
         <div id='EditRecipeForm'>
             <input type='hidden' id='recipe_id' value=${recipe.id} />
             <h4>Name:</h4> <input type='text' id='recipeName' value='${recipe.name}' placeholder='Enter the recipe name.'/>
@@ -126,8 +117,8 @@ function EditRecipeForm(recipe) {
         <ul id='tagList'>
             ${LinkedTags.map(LinkedTag => {
                 return `
-                    <li class='addedTag' id='${LinkedTag.id}' data-existingtagname='${LinkedTag.name}'>
-                        ${LinkedTag.name}
+                    <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname='${LinkedTag.tag.name}'>
+                        ${LinkedTag.tag.name}
                         <button class='removeTagbtn'>Remove Tag</button>
                     </li>
                 `;
@@ -138,7 +129,7 @@ function EditRecipeForm(recipe) {
         </select>
         <button id='btnAddTagFromList'>Add Tag From List</button>
         <h5>Can't find your tag? Add one here!</h5>
-        <input type='text' id='createdTag' placeholder='Type your tag here!' />
+        <input type='text' id='createdTag' placeholder='Type your ta    g here!' />
         <button id='btnAddNewTag'>Add A New Tag</button>
     </div>
 
@@ -150,8 +141,8 @@ function SetupEditRecipeEventListeners() {
     let btnEditRecipe = document.getElementById('btnEditRecipe');
     let recipe_id = document.getElementById('recipe_id').value;
     btnEditRecipe.addEventListener('click', function() {
-        api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
-            EditRecipeForm(recipe);
+        api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, async function(recipe) {
+            CONSTANTS.content.innerHTML = await EditRecipeForm(recipe);
             recipes.SetupAddIngredient();
             recipes.SetupDynamicTagsList();
             recipes.PopulateTagsDDL();
@@ -176,7 +167,6 @@ function SetupExistingItemDeleteBtns() {
 
     removeTagbtns.forEach(removeTagbtn => {
         removeTagbtn.addEventListener('click', function() {
-            console.log("Remove tag btn clicked!");
             let toRemove = this.parentElement;
             tagList.removeChild(toRemove);
         });
@@ -221,17 +211,12 @@ function SubmitEditedRecipe() {
             else {
                 tag_id = tag.id;
                 tag_name = tag.getAttribute('data-existingtagname');
-                console.log("Before tag object created, tag_id; tag_name; tag HTML object");
-                console.log(tag_id + tag_name);
-                console.log(tag);
             }
 
             Tag = {
                 Id: tag_id,
                 Name: tag_name
             }
-            console.log("Tag object:");
-            console.log(Tag);
             TagsToAddToRecipe.push(Tag);
         }
 
@@ -243,8 +228,8 @@ function SubmitEditedRecipe() {
             Instructions: document.getElementById('recipeInstructions').value,
         }
 
-        api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
-            CONSTANTS.content.innerHTML = DisplayRecipeDetails(recipe);
+        api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, async function(recipe) {
+            CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
             SetupEditRecipeEventListeners();
         });
     });

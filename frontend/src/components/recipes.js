@@ -1,8 +1,7 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
-import tags from "./tags";
-import randomRecipes from "./randomRecipes";
+import navbar from "./navbar";
 
 export default {
     displayRecipes,
@@ -41,10 +40,9 @@ function displayRecipes(recipes, tags) {
                 return `
                 <li class="recipe">
                     <h4>
-                    <span class="recipeDetails">
+                    <span class="recipeDetails" value='${recipe.id}'>
                         ${recipe.name} 
                     </span>
-                    <input type="hidden" value='${recipe.id}'/>
                     <button id="${recipe.id}" class="recipeDelete">Delete</button>
                     <div display="none" class="tagString" id='tagString-${recipe.id}'>
                         ${recipe.tags.map(tag => {           
@@ -87,17 +85,15 @@ function displayRecipes(recipes, tags) {
 function setupRecipeLinks() {
     let recipeLinks = document.querySelectorAll(".recipeDetails");
 
-    showRandom.style.display = "block";
+    //showRandom.style.display = "block";
     recipeLinks.forEach(recipeLink => {
-
-        recipeLink.addEventListener("click", function (evt) {
-            randomRecipes.smallRandomBtn();
-            let recipeId = this.nextElementSibling.value;
+        recipeLink.addEventListener("click", function(event) {
+            //randomRecipes.smallRandomBtn();
+            let recipe_id = recipeLink.getAttribute('value');
 
             //API Call
-            api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
-                CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);
-                setupSearchBar();
+            api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, async function(data) {
+                CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -110,7 +106,6 @@ function setupRecipeDeleteButton() {
 
     recipeDeleteButtons.forEach(recipeDeleteButton => {
         recipeDeleteButton.addEventListener('click', function (event) {
-            console.log("delete button clicked");
             let recipeId = event.target.id;
 
             api.deleteRequest(CONSTANTS.RecipesAPIURL, recipeId, data => {
@@ -131,10 +126,8 @@ export function setupSearchBar() {
     searchbar.addEventListener('keyup', function(e){
         let word = e.target.value.toLowerCase()
         if(searchByTagCheckbox.checked){
-            //console.log("Searching for tags!");
             filterList(word, Array.from(document.getElementsByClassName("tag")));
         } else {
-            //console.log("Searching!");
             filterList(word, returnFilteredRecipesByTags());
         }
     });
@@ -157,7 +150,6 @@ export function setupSearchByTagCheckbox() {
     let tags = Array.from(document.getElementsByClassName("tag"));
     let recipes = Array.from(document.getElementsByClassName("recipe"));
     searchByTagCheckbox.addEventListener('click', function(e){
-            console.log("search by tags");
             searchbar.value = "";
             if(searchByTagCheckbox.checked){
                 searchbar.placeholder = "Search tags..."
@@ -170,7 +162,6 @@ export function setupSearchByTagCheckbox() {
                 searchbar.placeholder = "Search recipes..."
                 filterList(searchbar.value, tags)
                 tags.forEach(tag => {
-                    console.log(tag);
                     if(tag.firstElementChild.firstElementChild.checked) // might be a better way to grab the input element from our tag
                         tag.style.display = "block";
                     else {
@@ -185,7 +176,6 @@ export function setupCheckboxFilter() {
     const checkBoxes = Array.from(document.getElementsByClassName("tagCheckbox"));
     checkBoxes.forEach(element => {
         element.addEventListener('change', function(e){
-            console.log("tags checked");
             handleCheck(e.target);
             toggleTags();        
         });
@@ -195,19 +185,16 @@ export function setupCheckboxFilter() {
 function handleCheck(tag){
     if(currentTags.includes(tag.id)){
         let indx = currentTags.indexOf(tag.id)
-        console.log("splice");
         currentTags.splice(indx, 1);
     } else {
         currentTags.push(tag.id);
     }
-    console.log(currentTags);
 }
 
 function toggleTags(){
     const recipes = Array.from(document.getElementsByClassName("recipe"));
     recipes.forEach(recipe => {
-        let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
-        console.log(recipeTagString);
+        let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write this
         let hidden = false;
         currentTags.forEach(tag => {
             if(!recipeTagString.includes(tag)){
@@ -223,7 +210,6 @@ function returnFilteredRecipesByTags(){
     const recipes = Array.from(document.getElementsByClassName("recipe"));
     return recipes.filter(recipe => {
         let recipeTagString = document.getElementById("tagString-"+recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
-        console.log(recipeTagString);
         let hidden = false;
         currentTags.forEach(tag => {
             if(!recipeTagString.includes(tag)){
@@ -266,7 +252,6 @@ function SetupAddIngredient() {
     let ingredientInput = document.getElementById('ingredientInput');
 
     btnAddIngredient.addEventListener('click', function() {
-        console.log("Add Ingredients Button Clicked!");
         let IngredientList = document.getElementById('recipeIngredients');
         
         let NewIngredient = document.createElement('li');
@@ -471,7 +456,11 @@ function CheckRecipeTags() {
             
             api.postRequest(CONSTANTS.RecipeTagsAPIURL, RecipeTag, recipetag => {
                 AssociatedRecipeTags.push(recipetag);
-                console.log("New recipetags created!");
+                api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
+                    CONSTANTS.title.innerText = "Recipe Details";
+                    CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(recipe);
+                    recipeDetails.SetupEditRecipeEventListeners();
+                });
             });
         });
     });
