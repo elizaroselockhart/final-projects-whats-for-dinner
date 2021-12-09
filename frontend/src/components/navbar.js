@@ -47,7 +47,7 @@ export function setupNavBar(){
         loginUser = `<li id="navLogin">Login</li>`
     } else {
         console.log("Logout displays in nav");
-        pantry = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30px"><br>@Home <br> Welcome ${username}</li>`
+        pantry = `<li id="navPantry"><img src="../img/pantry.png" id="pantryIcon" alt="pantry icon" width="40" height="35" margin="30px"><br>Profile<br> Welcome ${username}</li>`
         loginUser = `<li id="navLogout">Logout</li>`
     }
     return `
@@ -73,10 +73,18 @@ export function setupPantry() {
     btnPantry.addEventListener("click", function(){
         console.log("Pantry display link hooked up!");
         api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
-        CONSTANTS.title.innerText = "Pantry";
-        CONSTANTS.tabTitle.innerText = "Pantry";
+        CONSTANTS.title.innerText = "Profile";
+        CONSTANTS.tabTitle.innerText = "Profile";
         CONSTANTS.content.innerHTML = 
-        "The pantry is where all of our saved recipes and ingredients will go if we can get to it." 
+        `<h4>Next To Do</h4>
+        <ul>
+        <li>Categories for tags
+        </li>
+        <li>Generate a shopping list</li>
+        <li>Randomize based on what’s in your pantry
+        </li>
+        </ul>
+        ` 
         });
     });
 }
