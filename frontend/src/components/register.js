@@ -86,8 +86,8 @@ export function register(){
                     document.getElementById("already-exists").innerText = "Username already exists. Try again!"
                 }
             });
-
         }
-    })
+    });
+    login.setupLogin();
 }
 

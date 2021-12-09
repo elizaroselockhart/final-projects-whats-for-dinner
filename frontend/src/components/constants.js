@@ -4,6 +4,7 @@ export const tabTitle = document.getElementById("tabTitle");
 export const navbar = document.getElementById("navbar");
 export const pageTags = document.getElementById("pageTags");
 export const recipeName = document.getElementById("recipe-name");
+export const positionRandomBtn = document.getElementById("positionRandomBtn");
 
 export const RecipesAPIURL = "https://localhost:44387/api/recipe/";
 export const TagsAPIURL = "https://localhost:44387/api/tag/";

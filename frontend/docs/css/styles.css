@@ -3,17 +3,34 @@
     padding: 0;
   }
 
-  nav {
+nav {
     margin: 5px;
     height: 10%;
     width: 100%;
     position: fixed;
     text-align: center;
     border: none;  
-  }
+}
 
 #navRandom {
     display: none;
+    cursor: pointer;
+}
+
+#navPantry {
+    cursor: auto;
+}
+
+#navSearch {
+    cursor: pointer;
+}
+
+#navLogin {
+    cursor: pointer;
+}
+
+#navLogout {  
+    cursor: pointer;
 }
 
 ul {
@@ -26,11 +43,14 @@ ul {
   padding-left: 10px;
   list-style: none;
   font-family: 'Oswald', sans-serif;
-  cursor: pointer;
 }
 
 li {
     list-style: none;
+}
+
+#clickMe {
+    cursor: pointer;
 }
 
 .searchBar {
@@ -54,6 +74,7 @@ input:focus {
 #contentSearchBar {
       margin-top: 10px;
       margin-bottom: 10px;
+      cursor: pointer;
 }
 
 #pageContent {
@@ -108,6 +129,78 @@ p {
     cursor: pointer; 
 }
 
+#positionRegisterBtn {
+    padding-left: 640px;
+}
+
+#registerBtn {
+    display: block;
+    box-sizing: border-box;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    width: 150px;
+    height: 40px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer; 
+}
+
+.universalBtn {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.recipeDelete {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#btnNewRecipe {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
 #username {
     padding: 12px 20px;
     margin: 40px 0 40px 0;
@@ -118,6 +211,24 @@ p {
     width: 275px;
     height: 44px;
     background-image: url(../img/user.png);
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    cursor: pointer;
+    text-align: center;
+}
+
+#name {
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 275px;
+    height: 44px;
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
@@ -149,6 +260,7 @@ p {
 #registerLink {
     display: block;
     box-sizing: border-box;
+    cursor: pointer;
  
 }
 
@@ -157,6 +269,7 @@ p {
     border: none;
     padding-right: 5px;
     padding-left: 15px;
+    cursor: pointer;
 }
 
 #registerLinkBtn:hover{
@@ -172,414 +285,3 @@ a:hover {
     text-decoration: underline; 
     color: rgb(51, 164, 230);
 }
-
-/* @media(max-width: 700px){
-    nav {
-        margin: 5px;
-        height: 10%;
-        width: 100%;
-        position: fixed;
-        text-align: center;
-        border: none;  
-      }
-}
-    
-@media(max-width: 700px){
-      ul {
-        display: flex;
-        justify-content: space-between; 
-        font-size: 15px;
-        padding-top: 5px;
-        padding-right: 10px;
-        padding-bottom: 5px;
-        padding-left: 5px;
-        list-style: none;
-        font-family: 'Oswald', sans-serif;
-        cursor: pointer;
-      }
-}
-@media(max-width: 700px){
-    .searchBar {
-        border-radius: 10px;
-        width: 175px;
-        height: 24px;
-        padding: 2px;
-        background-image: url(../img/magnifying-glass.png);
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        cursor: pointer; 
-      }
-}
-    
-@media(max-width: 700px){
-    #contentSearchBar {
-          margin-top: 10px;
-          margin-bottom: 10px;
-      }
-}
-    
-@media(max-width: 700px){
-    #pageContent {
-          text-align: center;
-          padding: 48px;
-      }
-}
-    
-@media(max-width: 700px){
-    #pageTitle {
-        text-align: center;
-        padding-top: 100px; 
-        font-size: 50px;
-        font-family: 'Titan One', sans-serif;
-      }
-}
-
-@media(max-width: 700px){
-    #shuffleBtn {
-        width: 250px;
-        height: 250px;
-    }
-}
-
-@media(max-width: 700px){
-    #loginAvatar {
-        padding-left: 19px;
-        width: 125px;
-        height: 125px;
-        margin: 5px;
-    }
-}
-    
-@media(max-width: 700px){
-    #login {
-        padding-left: 172px;
-    } 
-}
-
-@media(max-width: 700px){
-    #positionLoginBtn {
-        padding-left: 260px;
-    }
-}
-
-@media(max-width: 700px){
-    #loginBtn {
-        display: block;
-        box-sizing: border-box;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        border-radius: 10px;
-        width: 100px;
-        height: 40px;
-        padding: 2px;
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        background-color: black;
-        color: white;
-        font-size: 15px;
-        cursor: pointer; 
-    }
-}
-    
-@media(max-width: 700px){
-    #registerLink {
-        display: block;
-        box-sizing: border-box;
-        background: none;
-        padding-right: 5px;
-        padding-left: 19px;
-    }
-}
-    
-@media(max-width: 700px){
-    #username {
-        padding: 12px 20px;
-        margin: 40px 0 40px 0;
-        display: block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        border-radius: 10px;
-        width: 275px;
-        height: 44px;
-        background-image: url(../img/user.png);
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        cursor: pointer;
-        text-align: center;
-    }
-}
-    
-@media(max-width: 700px){
-    #password {
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        border-radius: 10px;
-        width: 275px;
-        height: 44px;
-        background-image: url(../img/hidden.png);
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        cursor: pointer;
-        text-align: center;
-    }
-}  */
-
-
-/* moblie view */
-/* 
-@media(min-width: 375px){
-    nav {
-        margin: 20px;
-        height: 10%;
-        width: 100%;
-        position: fixed;
-        text-align: center;
-        border: none;  
-      }
-}
-     
-@media(min-width: 375px){
-      ul {
-        display: flex;
-        justify-content: space-between; 
-        font-size: 20px;
-        padding-top: 5px;
-        padding-right: 30px;
-        padding-bottom: 5px;
-        padding-left: 5px;
-        list-style: none;
-        font-family: 'Oswald', sans-serif;
-        cursor: pointer;
-      }
-} 
-   
- @media(min-width: 375px){
-    .searchBar {
-        border-radius: 10px;
-        width: 175px;
-        height: 24px;
-        padding: 2px;
-        background-image: url(../img/magnifying-glass.png);
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        cursor: pointer; 
-      }
-}
-   
-@media(min-width: 375px){
-    #search-recipes {
-        padding-right: 12px;
- 
-    }
-}
-    
-    
-@media(min-width: 375px){
-    #contentSearchBar {
-          margin-top: 10px;
-          margin-bottom: 10px;
-      }
-}
-    
-    
-@media(min-width: 375px){
-    #pageContent {
-          text-align: center;
-          padding: 48px;
-      }
-}
-    
-
-@media(min-width: 375px){
-    #pageTitle {
-        text-align: center;
-        padding-top: 140px; 
-        font-size: 50px;
-        font-family: 'Titan One', sans-serif;
-      }
-}
-
-
-@media(min-width: 375px){
-    #shuffleBtn {
-        padding-bottom: 50px;
-        width: 250px;
-        height: 250px;
-    }
-}
-
-
-@media(min-width: 375px){
-    #loginAvatar {
-        padding-left: 19px;
-        width: 125px;
-        height: 125px;
-        margin: 5px;
-    }
-}
-    
-@media(min-width: 375px){
-    #login {
-        padding-top: 6px;
-        padding-right: 13px;
-        padding-left: 10px;
-    } 
-}
-
-
-@media(min-width: 375px){
-    #positionLoginBtn {
-        padding-left: 94px;
-    }
-}
-
-
-@media(min-width: 375px){
-    #loginBtn {
-        display: block;
-        box-sizing: border-box;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        border-radius: 10px;
-        width: 100px;
-        height: 40px;
-        padding: 2px;
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        background-color: black;
-        color: white;
-        font-size: 15px;
-        cursor: pointer; 
-    }
-}
-    
-@media(min-width: 375px){
-    #registerLink {
-        display: block;
-        box-sizing: border-box;
-        background: none;
-        padding-right: 5px;
-        padding-left: 19px;
-    }
-}
-    
-@media(min-width: 375px){
-    #username {
-        padding: 12px 20px;
-        margin: 40px 0 40px 0;
-        display: block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        border-radius: 10px;
-        width: 275px;
-        height: 44px;
-        background-image: url(../img/user.png);
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        cursor: pointer;
-        text-align: center;
-    }
-}
-    
-
-@media(min-width: 375px){
-    #password {
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        border-radius: 10px;
-        width: 275px;
-        height: 44px;
-        background-image: url(../img/hidden.png);
-        background-repeat: no-repeat;
-        background-size: 15px 15px;
-        background-position: 95%;
-        border: none;
-        box-shadow: 1px 2px #888888; 
-        cursor: pointer;
-        text-align: center;
-    }
-}  */
-
-/* The Overlay (background) */
-.overlay {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
-    height: 100%;
-    width: 0;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    background-color: rgb(0,0,0); /* Black fallback color */
-    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
-    overflow-x: hidden; /* Disable horizontal scroll */
-    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
-  }
-  
-  /* Position the content inside the overlay */
-  .overlay-content {
-    position: relative;
-    top: 25%; /* 25% from the top */
-    width: 100%; /* 100% width */
-    text-align: center; /* Centered text/links */
-    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
-  }
-  
-  /* The navigation links inside the overlay */
-  .overlay a {
-    padding: 8px;
-    text-decoration: none;
-    font-size: 36px;
-    color: #818181;
-    display: block; /* Display block instead of inline */
-    transition: 0.3s; /* Transition effects on hover (color) */
-  }
-  
-  /* When you mouse over the navigation links, change their color */
-  .overlay a:hover, .overlay a:focus {
-    color: #f1f1f1;
-  }
-  
-  /* Position the close button (top right corner) */
-  .overlay .closebtn {
-    position: absolute;
-    top: 20px;
-    right: 45px;
-    font-size: 60px;
-  }
-  
-  /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
-  @media screen and (max-height: 450px) {
-    .overlay a {font-size: 20px}
-    .overlay .closebtn {
-      font-size: 40px;
-      top: 15px;
-      right: 35px;
-    }
-  } 
