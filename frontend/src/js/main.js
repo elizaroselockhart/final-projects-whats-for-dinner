@@ -12,7 +12,7 @@ export default() => {
 function setupMain() {
     navbar.innerHTML = 
     navbarTabs.setupNavBar();
-    navbarTabs.setupPantry(); 
+    // navbarTabs.setupPantry(); 
     navbarTabs.setupHome();
     randomRecipes.getRandomRecipe();
     randomRecipes.setupRandomBtn();
