@@ -4,6 +4,7 @@ export default {
     postRequest,
     SyncPostRequest,
     deleteRequest,
+    SyncDeleteRequest,
     putRequest
 }
 
@@ -61,6 +62,17 @@ function deleteRequest(location, id, callback){
         callback(data);
     })
     .catch(err => console.log(err));
+}
+
+async function SyncDeleteRequest(location, id) {
+    return await fetch(`${location} ${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .catch(err => console.log(err))
 }
 
 function putRequest(location, id, requestBody, callback) {
