@@ -1,6 +1,7 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
 import recipes from "../components/recipes";
+import randomRecipes from "./randomRecipes";
 
 export default {
     DisplayRecipeDetails,
@@ -8,15 +9,15 @@ export default {
 }
 
 function DisplayRecipeDetails(recipe) {
-    let searchbar = document.getElementById('searchRecipes');    
+    let searchbar = document.getElementById('searchRecipes');
     let showRandom = document.getElementById("navRandom");
     searchbar.style.display = "block";
-    showRandom.style.display="block";
-    
+    showRandom.style.display = "block";
+
     let parsedIngredients = [];
-    if(recipe.ingredients == null) {
-       recipe.ingredients = "";
-    }else{
+    if (recipe.ingredients == null) {
+        recipe.ingredients = "";
+    } else {
         parsedIngredients = recipe.ingredients.split(";");
     }
 
@@ -66,7 +67,7 @@ function DisplayRecipeDetails(recipe) {
        </ul>
     </section>
     `;
-  
+
 }
 
 //To Edit Recipe:
@@ -77,7 +78,7 @@ function DisplayRecipeDetails(recipe) {
 //3. Pull ingredients into an array.
 //3. Add event listener for ingredient button that pushes the new ingredient input into that array.
 //4. Setup save button event listener.
-    //4a. Once in an array, we can feed the array of ingredient strings into the post method.
+//4a. Once in an array, we can feed the array of ingredient strings into the post method.
 //5. Call the above two functions.
 
 //To display tags associated with the recipe:
@@ -147,7 +148,7 @@ function EditRecipeForm(recipe) {
 function SetupEditRecipeEventListeners() {
     let btnEditRecipe = document.getElementById('btnEditRecipe');
     let recipe_id = document.getElementById('recipe_id').value;
-    btnEditRecipe.addEventListener('click', function() {
+    btnEditRecipe.addEventListener('click', function () {
         api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, recipe => {
             EditRecipeForm(recipe);
             recipes.SetupAddIngredient();
@@ -166,14 +167,14 @@ function SetupExistingItemDeleteBtns() {
     let tagList = document.getElementById('tagList');
 
     removeIngredientbtns.forEach(removeIngredientbtn => {
-        removeIngredientbtn.addEventListener('click', function() {
+        removeIngredientbtn.addEventListener('click', function () {
             let toRemove = this.parentElement;
             ingredientList.removeChild(toRemove);
         });
     });
 
     removeTagbtns.forEach(removeTagbtn => {
-        removeTagbtn.addEventListener('click', function() {
+        removeTagbtn.addEventListener('click', function () {
             console.log("Remove tag btn clicked!");
             let toRemove = this.parentElement;
             tagList.removeChild(toRemove);
@@ -193,8 +194,8 @@ function SubmitEditedRecipe() {
     let TagsToAddToRecipe = [];
 
     let btnFinishEditing = document.getElementById('btnFinishEditing');
-    btnFinishEditing.addEventListener('click', function() {
-        
+    btnFinishEditing.addEventListener('click', function () {
+
         for (let i = 0; i < (indivIngredients.length - 1); i++) {
             joinedIngredients = joinedIngredients + indivIngredients[i].id + ";"
         }
@@ -205,7 +206,7 @@ function SubmitEditedRecipe() {
             Id: 0,
             Name: 0
         }
-    
+
         let tag_id = 0;
         let tag_name = "ifYouSeeThisSomethingHasGoneWrong";
 
@@ -214,9 +215,7 @@ function SubmitEditedRecipe() {
             if (tag.classList.contains('newTag')) {
                 tag_id = 0;
                 tag_name = tag.id;
-            }
-
-            else {
+            } else {
                 tag_id = tag.id;
                 tag_name = tag.getAttribute('data-existingtagname');
                 console.log("Before tag object created, tag_id; tag_name; tag HTML object");
