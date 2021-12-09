@@ -10,8 +10,6 @@ export default {
     register
 }
 
-// const UserUrl = "https://localhost:44387/api/user" + "?username={0}&password={1}&name={2}";
-
 function setupRegisterLink() {
     const registerLink = document.getElementById("registerLinkBtn");
     registerLink.addEventListener("click", function(){
@@ -26,7 +24,6 @@ function setupRegisterDisplay() {
     CONSTANTS.tabTitle.innerText="Register";
     CONSTANTS.title.innerText="What's For Dinner";
     CONSTANTS.content.innerHTML =
-    //call random recipe button here to display in the corner of the page
     `
         <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30pz">
         <form id="login">

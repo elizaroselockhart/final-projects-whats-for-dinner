@@ -68,10 +68,10 @@ export function logout(){
     const logoutBtn = document.getElementById("navLogout");
     logoutBtn.addEventListener("click", function(){
         console.log("Logout btn clicked!");
-        //this one line should be your entire logout button
         cookies.deleteCookie("userId");
         CONSTANTS.navbar.innerHTML = navbarTabs.setupHome();
-        setupLogin();
+        navbarTabs.setupHome();
+        login();
     })
 }
 
