@@ -39,7 +39,7 @@ function displayRecipes(recipes, tags) {
                 return `
                 <li class="recipe">
                     <h4>
-                    <span class="recipeDetails">
+                    <span class="recipeDetails" value="${recipe.id}">
                         ${recipe.name} 
                     </span>
                     <input type="hidden" value='${recipe.id}'/>
@@ -83,11 +83,11 @@ function setupRecipeLinks() {
 
         recipeLink.addEventListener("click", function (evt) {
             randomRecipes.smallRandomBtn();
-            let recipeId = this.nextElementSibling.value;
+            let recipeId = recipeLink.getAttribute("value");
 
-            api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
-                CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);
-                setupSearchBar();
+            api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
+                CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
+                //setupSearchBar();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -287,7 +287,7 @@ function SetupAddTags() {
     btnAddTags.addEventListener('click', function() {
 
         for (let i = 0; i < (indivIngredients.length - 1); i++) {
-            joinedIngredients = joinedIngredients + indivIngredients[i].id + ";"
+            joinedIngredients = joinedIngredients + indivIngredients[i].id + "|;|"
         }
 
         joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
@@ -386,7 +386,7 @@ function PopulateTagsDDL(){
     }
 }
 
-function CheckRecipeTags() {
+async function CheckRecipeTags() {
     let ListofTags = document.getElementById('tagList');
     let recipe_id = document.getElementById('recipe_id').value;
     let btnFinishAddingTags = document.getElementById('btnFinishRecipe');
@@ -461,6 +461,11 @@ function CheckRecipeTags() {
                 console.log("New recipetags created!");
             });
         });
+        
+        let recipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + recipe_id);
+        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
+        recipeDetails.SetupEditRecipeEventListeners();
     });
 }
 
