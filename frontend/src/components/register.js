@@ -26,10 +26,12 @@ function setupRegisterDisplay() {
     CONSTANTS.content.innerHTML =
     `
         <img src="../img/login (1).png" id="loginAvatar" alt="login icon" width="150" height="150" margin="30pz">
+        <div id="error-message"></div>
+        <div id="already-exists"></div>
         <form id="login">
-        <input type="text" class="name" id="name" placeholder="Name"/>
-        <input type="text" class="username" id="username" placeholder="Username"/>
-        <input type="password" class="password" id="password" placeholder="Password"/>
+        <input type="text" class="name" id="name" placeholder="Name" required/>
+        <input type="text" class="username" id="username" placeholder="Username" required/>
+        <input type="password" class="password" id="password" placeholder="Password" required/>
         </form>
         <div id="positionRegisterBtn">
         <button id='registerBtn'>Register</button>
@@ -51,24 +53,13 @@ export function register(){
             Username: username,
             Password: password
         }
-
-        if(name == "" && username == "" && password == "") 
-        {
-            document.getElementById("name").innerText = "This field is required"
-            document.getElementById("username").innerText = "This field is required"
-            document.getElementById("password").innerText = "This field is required"
-        }else if (name == "") {
-            document.getElementById("name").innerText = "This field is required"
-            document.getElementById("username").innerText = ""
-            document.getElementById("password").innerText = ""
+      
+        if (name == "") {
+            document.getElementById("error-message").innerText = "This field is required"
         }else if (username == "") {
-            document.getElementById("name").innerText = ""
-            document.getElementById("username").innerText = "This field is required"
-            document.getElementById("password").innerText = "" 
+            document.getElementById("error-message").innerText = "This field is required" 
         }else if (password == "") {
-            document.getElementById("name").innerText = ""
-            document.getElementById("username").innerText = ""
-            document.getElementById("password").innerText = "This field is required"  
+            document.getElementById("error-message").innerText = "This field is required"  
         }
         else {
             let isUnique = true;
@@ -90,9 +81,7 @@ export function register(){
                     });
                 }
                 else {
-                    document.getElementById("name").innerText = "Name, Username, or Password already exists. Try again!"
-                    document.getElementById("username").innerText = ""
-                    document.getElementById("password").innerText = ""  
+                    document.getElementById("already-exists").innerText = "Name, Username, or Password already exists. Try again!"
                 }
             });
 

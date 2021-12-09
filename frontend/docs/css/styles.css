@@ -12,10 +12,6 @@
     border: none;  
   }
 
-#navPantry {
-    background-image: url(../img/pantry.png);
-  }
-
 #navRandom {
     display: none;
 }
