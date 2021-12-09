@@ -18,5 +18,6 @@ function setupMain() {
     randomRecipes.setupRandomBtn();
     randomRecipes.smallRandomBtn();
     login.setupLogin();
+    login.setupLogout();
     navbarTabs.hideNavSearchBarDisplayRecipes();
 }
