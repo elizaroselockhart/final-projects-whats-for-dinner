@@ -2,41 +2,38 @@ import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
 import recipes from "../components/recipes";
 import randomRecipes from "./randomRecipes";
+import navbar from "./navbar";
 
 export default {
     DisplayRecipeDetails,
     SetupEditRecipeEventListeners
 }
 
-function DisplayRecipeDetails(recipe) {
+async function DisplayRecipeDetails(recipe) {
+    CONSTANTS.title.innerText = "Recipe Details";
+  
     let searchbar = document.getElementById('searchRecipes');
     let showRandom = document.getElementById("navRandom");
     searchbar.style.display = "block";
     showRandom.style.display = "block";
 
+
     let parsedIngredients = [];
-    if (recipe.ingredients == null) {
-        recipe.ingredients = "";
-    } else {
-        parsedIngredients = recipe.ingredients.split(";");
+    if(recipe.ingredients == null) {
+       recipe.ingredients = "";
+    }else{
+        parsedIngredients = recipe.ingredients.split("|;|");
     }
 
-    //for editing/creating a recipe:
-    // remove any existing semicolon's from the user's input
-    // append semi colon to the end of each ingredient
-    // append all ingredients together
+    let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
-    // for the reverese 
-    // split by semicolon (in a separate variable)
-    // treat like array
-
-    // to consider -> using a multicharacter separator (|;|)
+    CONSTANTS.navbar.innerHTML = `<h4 id='searchRecipes'>Return to all recipes</h4>`;
 
     return `
         <h1>Recipe Details</h1>
         <h2>Recipe Title: ${recipe.name}</h2>     
         <input type="hidden" id='recipe_id' value='${recipe.id}'/> 
-        <button id='btnEditRecipe'>Edit Recipe</button>
+        <button id='btnEditRecipe' class="universalBtn">Edit Recipe</button>
         
         <section> 
         <h4> Description: </h4> <p>${recipe.description}</p>
@@ -58,10 +55,12 @@ function DisplayRecipeDetails(recipe) {
      <h3> Instructions: </h3> <p>${recipe.instructions}</p>
 
      <h5>Tags:</h5>
-       <ul>  
-          ${recipe.tags.map(tag => {
+       <ul id='recipedetailstaglist'>  
+          ${LinkedTags.map(LinkedTag => {
                 return`
-               <li>${tag.tag.name}</li>
+               <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname = '${LinkedTag.tag.name}'>
+                    ${LinkedTag.tag.name}
+                </li>
                `;
            }).join('')}
        </ul>
@@ -70,33 +69,28 @@ function DisplayRecipeDetails(recipe) {
 
 }
 
-//To Edit Recipe:
-//NOTE: Create another constructor for Recipe.
-
-//1. Setup HTML for editing recipe.
-//2. Setup HTML for adding ingredients (including button).
-//3. Pull ingredients into an array.
-//3. Add event listener for ingredient button that pushes the new ingredient input into that array.
-//4. Setup save button event listener.
-//4a. Once in an array, we can feed the array of ingredient strings into the post method.
-//5. Call the above two functions.
-
-//To display tags associated with the recipe:
-//Get tagid from recipetag.
-//Display the tag with the given id.
-
-
-function EditRecipeForm(recipe) {
-    CONSTANTS.title.innerText = "Edit Recipe";
-    let IngredientList = recipe.ingredients.split(";");
-
-    let recipetags = recipe.tags;
-    let LinkedTags = [];
-
-    recipetags.forEach(recipetag => {
-        let LinkedTag = api.SyncGetRequest(CONSTANTS.TagsAPIURL + recipetag.tagId);
-        LinkedTags.push(LinkedTag);
+function SetupEditRecipeEventListeners() {
+    let btnEditRecipe = document.getElementById('btnEditRecipe');
+    let recipe_id = document.getElementById('recipe_id').value;
+    btnEditRecipe.addEventListener('click', function() {
+        api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, async function(recipe) {
+            console.log(recipe);
+            await EditRecipeForm(recipe);
+            recipes.SetupAddIngredient();
+            recipes.SetupDynamicTagsList();
+            recipes.PopulateTagsDDL();
+            SetupExistingItemDeleteBtns();
+            SubmitEditedRecipe();
+        });
     });
+}
+
+
+async function EditRecipeForm(recipe) {
+    CONSTANTS.title.innerText = "Edit Recipe";
+    let IngredientList = recipe.ingredients.split("|;|");
+
+    let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
     CONSTANTS.content.innerHTML = `
         <div id='EditRecipeForm'>
@@ -125,8 +119,8 @@ function EditRecipeForm(recipe) {
         <ul id='tagList'>
             ${LinkedTags.map(LinkedTag => {
                 return `
-                    <li class='addedTag' id='${LinkedTag.id}' data-existingtagname='${LinkedTag.name}'>
-                        ${LinkedTag.name}
+                    <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname='${LinkedTag.tag.name}'>
+                        ${LinkedTag.tag.name}
                         <button class='removeTagbtn'>Remove Tag</button>
                     </li>
                 `;
@@ -184,20 +178,15 @@ function SetupExistingItemDeleteBtns() {
 
 function SubmitEditedRecipe() {
     let recipe_id = document.getElementById('recipe_id').value;
-    let ListofIngredients = document.getElementById('recipeIngredients');
-    let indivIngredients = ListofIngredients.getElementsByTagName('li');
-    let joinedIngredients = "";
-
-
-    let ListofAddedTags = document.getElementById('tagList');
-    let AddedTags = ListofAddedTags.getElementsByTagName('li');
-    let TagsToAddToRecipe = [];
-
     let btnFinishEditing = document.getElementById('btnFinishEditing');
-    btnFinishEditing.addEventListener('click', function () {
+
+    btnFinishEditing.addEventListener('click', function() {
+        let ListofIngredients = document.getElementById('recipeIngredients');
+        let indivIngredients = ListofIngredients.getElementsByTagName('li');
+        let joinedIngredients = "";
 
         for (let i = 0; i < (indivIngredients.length - 1); i++) {
-            joinedIngredients = joinedIngredients + indivIngredients[i].id + ";"
+            joinedIngredients = joinedIngredients + indivIngredients[i].id + "|;|"
         }
 
         joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
@@ -241,8 +230,95 @@ function SubmitEditedRecipe() {
         }
 
         api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
-            CONSTANTS.content.innerHTML = DisplayRecipeDetails(recipe);
-            SetupEditRecipeEventListeners();
+            UpdateRecipeTags(recipe);
         });
     });
+}
+
+async function UpdateRecipeTags(recipe) {
+
+    await api.SyncDeleteRequest(CONSTANTS.RecipeTagsAPIURL, recipe.id);
+
+    let Tag = {
+        Id: 0,
+        Name: "if_you_see_this_something_has_gone_wrong"
+    }
+
+    let SentTag = {
+        Name: "if_you_see_this_something_has_gone_wrong"
+    }
+
+    let tag_id = 0;
+    let tag_name = "ifYouSeeThisSomethingHasGoneWrong";
+
+    let ListofAddedTags = document.getElementById('tagList');
+    let AddedTags = ListofAddedTags.getElementsByTagName('li');
+    let TagsToAddToRecipe = [];
+
+    for (const tag of AddedTags) {
+
+        if (tag.classList.contains('newTag')) {
+            tag_id = 0;
+            tag_name = tag.id;
+        }
+
+        else {
+            tag_id = tag.id;
+            tag_name = tag.getAttribute('data-existingtagname');
+        }
+
+        Tag = {
+            Id: tag_id,
+            Name: tag_name
+        }
+
+        TagsToAddToRecipe.push(Tag);
+    }
+
+    let tags = await api.SyncGetRequest(CONSTANTS.TagsAPIURL);
+    let recipetag_tagid;
+    let ListofTagIds = [];
+
+    TagsToAddToRecipe.forEach(async function(TagToAddToRecipe) {
+        recipetag_tagid = TagToAddToRecipe.Id;
+        if (TagToAddToRecipe.Id == 0){
+            let exists = false;
+            tags.forEach(tag => {
+                if (TagToAddToRecipe.Name.toLowerCase() == tag.name.toLowerCase()) {
+                    recipetag_tagid = tag.id;
+                    exists = true;
+                }
+            });
+            if (exists == false) {
+                SentTag.Name = TagToAddToRecipe.Name.toLowerCase();
+                let NewTag = await api.SyncPostRequest(CONSTANTS.TagsAPIURL, SentTag);
+                recipetag_tagid = NewTag.id;
+            }
+        }
+        ListofTagIds.push(recipetag_tagid);
+    });
+
+    let AssociatedRecipeTags = [];
+
+    ListofTagIds.forEach(aatagId => {
+
+        let RecipeTag = {
+            Id: 0,
+            RecipeId: recipe.id,
+            TagId: aatagId
+        }
+        console.log(RecipeTag);
+        
+        api.postRequest(CONSTANTS.RecipeTagsAPIURL, RecipeTag, recipetag => {
+            AssociatedRecipeTags.push(recipetag);
+            console.log("New recipetags created!");
+        });
+    });
+
+    recipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + recipe.id);
+    
+    CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
+    navbar.hideNavSearchBarDisplayRecipes();
+    SetupEditRecipeEventListeners();
+    CONSTANTS.title.innerText = "Recipe Details";
 }

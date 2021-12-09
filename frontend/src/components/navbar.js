@@ -24,12 +24,13 @@ export function hideNavSearchBarDisplayRecipes() {
             console.log(data);
             CONSTANTS.content.innerHTML =
                 recipes.displayRecipes(data.allRecipes, data.allTags);
-            recipes.setupRecipeDeleteButton();
-            recipes.setupSearchBar();
-            recipes.setupRecipeLinks();
-            recipes.setupSearchByTagCheckbox();
-            recipes.setupCheckboxFilter();
-            recipes.hideRecipeList();
+                recipes.setupRecipeDeleteButton();
+                recipes.setupSearchBar();
+                recipes.setupRecipeLinks();
+                recipes.setupSearchByTagCheckbox();
+                recipes.setupCheckboxFilter();
+                recipes.hideRecipeList();   
+                recipes.SetupAddRecipeEventListeners();
         });
     });
 
@@ -67,6 +68,7 @@ export function setupNavBar() {
      
     `;
 }
+
 
 //Removed (with comments) the setupPantry() function and all references.
 //Team did not have enough time to implement said feature. 

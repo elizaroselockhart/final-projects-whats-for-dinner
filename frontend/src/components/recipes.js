@@ -2,6 +2,7 @@ import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
 import randomRecipes from "../components/randomRecipes";
+import navbar from "./navbar";
 
 export default {
     displayRecipes,
@@ -39,7 +40,7 @@ function displayRecipes(recipes, tags) {
                 return `
                 <li class="recipe">
                     <h4>
-                    <span class="recipeDetails">
+                    <span class="recipeDetails" value="${recipe.id}">
                         ${recipe.name} 
                     </span>
                     <input type="hidden" id="recdet" value='${recipe.id}'/>
@@ -70,7 +71,7 @@ function displayRecipes(recipes, tags) {
             }).join('')}
         </ul>
     </div>
-    <input type="checkbox" id="hide"/>
+    <input type="checkbox" id="hide" class="hideCheckBox"/>
     <label for="hide">Hide all recipes</label>
     `;
 }
@@ -84,10 +85,11 @@ function setupRecipeLinks() {
         recipeLink.addEventListener("click", function (evt) {
             //randomRecipes.smallRandomBtn();
             //let recipeId = this.nextElementSibling.value;  <-- this wasn't working so I changed it to -recdet and now it works.
-            let recipeId = document.getElementById('recdet').value;
-            api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, data => {
-                CONSTANTS.content.innerHTML = recipeDetails.DisplayRecipeDetails(data);
-                setupSearchBar();
+            
+            let recipeId = recipeLink.getAttribute("value");
+            api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
+                CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
+                navbar.hideNavSearchBarDisplayRecipes();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -289,7 +291,7 @@ function SetupAddTags() {
     btnAddTags.addEventListener('click', function () {
 
         for (let i = 0; i < (indivIngredients.length - 1); i++) {
-            joinedIngredients = joinedIngredients + indivIngredients[i].id + ";"
+            joinedIngredients = joinedIngredients + indivIngredients[i].id + "|;|"
         }
 
         joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
@@ -388,7 +390,7 @@ function PopulateTagsDDL() {
     }
 }
 
-function CheckRecipeTags() {
+async function CheckRecipeTags() {
     let ListofTags = document.getElementById('tagList');
     let recipe_id = document.getElementById('recipe_id').value;
     let btnFinishAddingTags = document.getElementById('btnFinishRecipe');
@@ -462,6 +464,12 @@ function CheckRecipeTags() {
                 console.log("New recipetags created!");
             });
         });
+        
+        let recipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + recipe_id);
+        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
+        navbar.hideNavSearchBarDisplayRecipes();
+        recipeDetails.SetupEditRecipeEventListeners();
     });
 }
 
