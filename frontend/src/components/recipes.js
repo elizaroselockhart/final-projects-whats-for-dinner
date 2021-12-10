@@ -62,7 +62,7 @@ function displayRecipes(recipes, tags) {
                     <button id="${recipe.id}" class="recipeDelete"><i class="fas fa-trash-alt"></i></button>
                     <div class="tagString" id='tagString-${recipe.id}'>
                         ${recipe.tags.map(tag => {           
-                        return `#${tag.tag.name}`               
+                        return tag.tag.name              
                         }).join('  ')}
                     </div>         
                 </li>
@@ -210,7 +210,7 @@ function toggleTags() {
 function returnFilteredRecipesByTags() {
     const recipes = Array.from(document.getElementsByClassName("recipe"));
     return recipes.filter(recipe => {
-        let recipeTagString = document.getElementById("tagString-" + recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write thiss
+        let recipeTagString = document.getElementById("tagString-" + recipe.firstElementChild.childNodes[3].value).innerText //probably a better way to write this
         console.log(recipeTagString);
         let hidden = false;
         currentTags.forEach(tag => {

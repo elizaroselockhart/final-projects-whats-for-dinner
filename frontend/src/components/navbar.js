@@ -48,7 +48,9 @@ export function setupNavBar() {
         loginUser = `<li id="navLogin">Login</li>`
     } else {
         console.log("Logout displays in nav");
-        pantry = `<li id="navPantry">Welcome ${username}</li>`
+        pantry = `
+            <li id="navPantry">Welcome ${username}</li>
+            `
         loginUser = `<li id="navLogout">Logout</li>`
     }
     return `
@@ -71,8 +73,6 @@ function setupHome() {
     CONSTANTS.tabTitle.innerText = "Home";
     CONSTANTS.title.innerText = "What's For Dinner?";
     CONSTANTS.navbar.innerHTML = setupNavBar(); //setupPantry();
-    CONSTANTS.positionRandomBtn.innerHTML = "";
-
     CONSTANTS.content.innerHTML =
         `
         <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="300" height="300" />
