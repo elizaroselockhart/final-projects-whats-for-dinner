@@ -70,6 +70,7 @@ export function setupNavBar() {
 function setupHome() {
     CONSTANTS.tabTitle.innerText = "Home";
     CONSTANTS.title.innerText = "What's For Dinner";
+    CONSTANTS.positionRandomBtn.innerHTML = "";
     CONSTANTS.navbar.innerHTML = setupNavBar();
     CONSTANTS.content.innerHTML =
         `
