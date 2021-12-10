@@ -2,6 +2,7 @@ import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
 import navbar from "./navbar";
+import login from "../components/login";
 
 export default {
     displayRecipes,
@@ -229,6 +230,7 @@ function SetupAddRecipeEventListeners() {
         SetupAddIngredient();
         SetupAddTags();
         navbar.hideNavSearchBarDisplayRecipes();
+        login.logout();
     });
 }
 
