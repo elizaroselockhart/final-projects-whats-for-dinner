@@ -1,15 +1,52 @@
+:root{
+    --main-color: #09A9C8; /*Light blue*/
+    --main-color-dark: #0B1C48; /*Dark blue*/
+    --accent-dark: #9E3A14; /*Dark orange*/
+    --accent-mid: #E66912; /*orange*/
+    --accent-light: #FBC858; /*Light orange*/
+    --text-color-dark: #140601; /*Super dark brown*/
+    --text-color-light: #e8d2a0; /*Super light orange*/
+    --main-font: 'PT Sans Narrow';
+    --header-font: 'Sofia';
+}
+
 * {
-    margin: 0;
+    margin: auto;
     padding: 0;
+    font-family: var(--main-font), Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 1em;
+    box-sizing: border-box;
+    color: var(--text-color-dark);
+}
+
+html {
+    background-color: var(--accent-light);
+}
+
+main {
+    background-color: white;
+    max-width: 800px;
 }
 
 nav {
-    margin: 5px;
-    height: 10%;
+    margin: 0;
+    height: 3rem;
     width: 100%;
     position: fixed;
-    text-align: center;
-    border: none; 
+    background-color: var(--main-color-dark);
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+nav ul li {
+    font-size: 16px;
+    list-style: none;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
 }
 
 #navRandom {
@@ -21,41 +58,7 @@ nav {
     cursor: auto;
 }
 
-#navSearch {
-    cursor: pointer;
-}
-
-#navLogin {
-    cursor: pointer;
-}
-
-#navLogout {  
-    cursor: pointer;
-}
-
-ul {
-    display: flex;
-    justify-content: space-between;
-    font-size: 25px;
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    list-style: none;
-    font-family: 'Oswald', sans-serif;
-    cursor: pointer;
-}
-
-li {
-    list-style: none;
-}
-
-
-div.tagString {
-    display: none;
-}
-
-#clickMe {
+#navSearch, #navLogin, #navLogout, #clickMe {
     cursor: pointer;
 }
 
@@ -66,7 +69,7 @@ div.tagString {
     padding: 2px;
     background-image: url(../img/magnifying-glass.png);
     background-repeat: no-repeat;
-    background-size: 15px 15px;
+    background-size: 20px 20px;
     background-position: 95%;
     border: none;
     box-shadow: 1px 2px #888888;
@@ -76,22 +79,28 @@ div.tagString {
 .tooltip .tooltipText {
     visibility: hidden;
     width: auto;
-    background-color: rgba(29, 28, 28, 0.685);
-    color: #fff;
+    background-color: var(--text-color-dark);
+    color:var(--text-color-light);
     text-align: center;
-    border-radius: 6px;
+    border-radius: 2px;
     padding: 5px 0;
 
     /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
+    /* position: fixed;
+    top: ;
+    z-index: 1; */
 }
 
 .tooltip:hover .tooltipText {
     visibility: visible;
     font-size: small;
     font-weight: normal;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: var(--main-font);
+}
+
+/*
+div.tagString {
+    display: none;
 }
 
 input:focus {
@@ -310,4 +319,4 @@ a {
 a:hover {
     text-decoration: underline;
     color: rgb(51, 164, 230);
-}
+} */
