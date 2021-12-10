@@ -99,7 +99,7 @@ async function EditRecipeForm(recipe) {
                     return `
                         <li class='addedIngredient' id='${ingredient}'>
                             ${ingredient}
-                            <button class='removeIngredientbtn'>Remove</button>
+                            <button class='removeIngredientbtn'><i class="fas fa-trash-alt"></i></button>
                         </li>
                     `;
                 }).join('')}
@@ -117,7 +117,7 @@ async function EditRecipeForm(recipe) {
                 return `
                     <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname='${LinkedTag.tag.name}'>
                         ${LinkedTag.tag.name}
-                        <button class='removeTagbtn'>Remove Tag</button>
+                        <button class='removeTagbtn'><i class="fas fa-trash-alt"></i></button>
                     </li>
                 `;
             }).join('')}

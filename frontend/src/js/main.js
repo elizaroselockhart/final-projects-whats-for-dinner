@@ -4,7 +4,6 @@ import login from "../components/login";
 
 const navbar = document.getElementById("navbar");
 
-
 export default() => {
     setupMain();
 }
@@ -12,7 +11,6 @@ export default() => {
 function setupMain() {
     navbar.innerHTML = 
     navbarTabs.setupNavBar();
-    // navbarTabs.setupPantry(); 
     navbarTabs.setupHome();
     randomRecipes.getRandomRecipe();
     randomRecipes.setupRandomBtn();
@@ -20,4 +18,5 @@ function setupMain() {
     login.setupLogin();
     login.setupLogout();
     navbarTabs.hideNavSearchBarDisplayRecipes();
+    // navbarTabs.setupPantry(); 
 }

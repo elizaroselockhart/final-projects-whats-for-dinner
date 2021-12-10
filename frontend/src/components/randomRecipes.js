@@ -42,10 +42,9 @@ export async function setupRandomBtn() {
 async function smallRandomBtn() {
     let showRandom = document.getElementById("navRandom");
     let recipeIds = [];
-    api.getRequest(CONSTANTS.RecipesAPIURL, recipes => {
-        recipes.forEach(recipe => {
-            recipeIds.push(recipe.id);
-        });
+    let recipes = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL);
+    recipes.forEach(recipe => {
+        recipeIds.push(recipe.id);
     });
     // showRandom.style.display="none";
     showRandom.addEventListener('click', async function() {

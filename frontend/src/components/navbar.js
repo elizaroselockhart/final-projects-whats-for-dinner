@@ -25,12 +25,12 @@ export function hideNavSearchBarDisplayRecipes() {
             CONSTANTS.content.innerHTML =
                 recipes.displayRecipes(data.allRecipes, data.allTags);
                 recipes.setupRecipeDeleteButton();
+                recipes.SetupAddRecipeEventListeners();
                 recipes.setupSearchBar();
                 recipes.setupRecipeLinks();
                 recipes.setupSearchByTagCheckbox();
                 recipes.setupCheckboxFilter();
-                recipes.hideRecipeList();   
-                recipes.SetupAddRecipeEventListeners();
+                recipes.hideRecipeList();        
         });
     });
 
@@ -55,10 +55,9 @@ export function setupNavBar() {
     <ul id="navbarLi">
         ${pantry}
         <li id="navSearch" class = "tooltip">
-        <span class="tooltipText" id="show">Click here to view a list of all recipes</span>
+        <span class="tooltipText" id="show">Click to view all recipes</span>
         <form id="search-recipes">
         <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
-       
         </form>
         </li>
        ${loginUser}

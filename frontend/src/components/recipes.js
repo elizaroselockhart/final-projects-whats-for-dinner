@@ -45,7 +45,7 @@ function displayRecipes(recipes, tags) {
                         ${recipe.name} 
                     </span>
                     <input type="hidden" id="recdet" value='${recipe.id}'/>
-                    <button id="${recipe.id}" class="recipeDelete">Delete</button>
+                    <button id="${recipe.id}" class="recipeDelete"><i class="fas fa-trash-alt"></i></button>
                     <div display="none" class="tagString" id='tagString-${recipe.id}'>
                         ${recipe.tags.map(tag => {           
                         return tag.tag.name               
@@ -231,7 +231,6 @@ function SetupAddRecipeEventListeners() {
         SetupAddIngredient();
         SetupAddTags();
         navbar.hideNavSearchBarDisplayRecipes();
-
     });
 }
 
@@ -268,7 +267,7 @@ function SetupAddIngredient() {
 
         let removebtn = document.createElement('button');
         removebtn.setAttribute('id', 'removebtn');
-        removebtn.innerText = "Remove Ingredient";
+        removebtn.innerHTML = `<i class="fas fa-trash-alt"></i>`
 
         NewIngredient.appendChild(removebtn);
         IngredientList.appendChild(NewIngredient);
@@ -343,7 +342,7 @@ function SetupDynamicTagsList() {
 
         let removeTagbtn = document.createElement('button');
         removeTagbtn.setAttribute('id', 'removeTagbtn');
-        removeTagbtn.innerText = "Remove Tag";
+        removeTagbtn.innerHTML = `<i class="fas fa-trash-alt"></i>`;
 
         removeTagbtn.addEventListener('click', function () {
             let toRemove = this.parentNode;
@@ -364,7 +363,7 @@ function SetupDynamicTagsList() {
         NewTag.appendChild(document.createTextNode(createdTag.value));
 
         let removeTagbtn = document.createElement('button');
-        removeTagbtn.innerText = "Remove Tag";
+        removeTagbtn.innerHTML = `<i class="fas fa-trash-alt"></i>`;
 
         removeTagbtn.addEventListener('click', function () {
             let toRemove = this.parentNode;

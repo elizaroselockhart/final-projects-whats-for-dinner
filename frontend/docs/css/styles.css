@@ -54,14 +54,14 @@ li {
 div.tagString {
     display: none;
 }
-
+/* 
 #clickMe {
     cursor: pointer;
     animation: updown 4s ease;
     animation-duration: 10s;
 }
 
-/* #smRandom {
+#smRandom {
     cursor: pointer;
     animation: smUpdown 4s ease;
     animation-duration: 10s;
@@ -79,7 +79,7 @@ div.tagString {
     100% {
       transform: translateY(3%);
     }
-} */
+}
 
 
 @keyframes updown {
@@ -94,7 +94,7 @@ div.tagString {
     100% {
       transform: translateY(-20%);
     }
-}
+} */
 
 .searchBar {
     border-radius: 10px;
@@ -242,34 +242,14 @@ p {
     cursor: pointer;
 }
 
-.removeTagbtn {
-    border-radius: 10px; 
-    width: 120px;
-    height: 30px;
-    padding: 2px;
-    background-repeat: no-repeat;
-    background-size: 15px 15px;
-    background-position: 95%;
-    border: none;
-    box-shadow: 1px 2px #888888; 
-    background-color: black;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
-}
-
 .removeIngredientbtn {
-    border-radius: 10px; 
-    width: 120px;
-    height: 30px;
     padding: 2px;
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
     border: none;
-    box-shadow: 1px 2px #888888; 
-    background-color: black;
-    color: white;
+    background-color: rgb(255, 255, 255);
+    color: rgb(7, 7, 7);
     font-size: 15px;
     cursor: pointer;
 }
@@ -323,33 +303,25 @@ p {
 }
 
 #removebtn {
-    border-radius: 10px; 
-    width: 120px;
-    height: 30px;
     padding: 2px;
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
     border: none;
-    box-shadow: 1px 2px #888888; 
-    background-color: black;
-    color: white;
+    background-color: rgb(255, 255, 255);
+    color: rgb(7, 7, 7);
     font-size: 15px;
     cursor: pointer;
 }
 
 #removeTagbtn {
-    border-radius: 10px; 
-    width: 120px;
-    height: 30px;
     padding: 2px;
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
     border: none;
-    box-shadow: 1px 2px #888888; 
-    background-color: black;
-    color: white;
+    background-color: rgb(255, 255, 255);
+    color: rgb(7, 7, 7);
     font-size: 15px;
     cursor: pointer;
 }
@@ -387,17 +359,13 @@ p {
 }
 
 .recipeDelete {
-    border-radius: 10px; 
-    width: 120px;
-    height: 30px;
     padding: 2px;
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
     border: none;
-    box-shadow: 1px 2px #888888; 
-    background-color: black;
-    color: white;
+    background-color: rgb(255, 255, 255);
+    color: rgb(7, 7, 7);
     font-size: 15px;
     cursor: pointer;
 }
