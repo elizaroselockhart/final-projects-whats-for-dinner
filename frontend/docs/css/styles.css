@@ -54,7 +54,7 @@ li {
 div.tagString {
     display: none;
 }
-/* 
+
 #clickMe {
     cursor: pointer;
     animation: updown 4s ease;
@@ -84,17 +84,21 @@ div.tagString {
 
 @keyframes updown {
     0% {
-      transform: translateY(-80%);
+      transform: translateY(-50%);
     }
   
     50% {
-      transform: translateY(2%);
+      transform: translateY(7%);
     }
   
     100% {
       transform: translateY(-20%);
     }
-} */
+
+    100% {
+        transform: translateY(3%);
+      }
+}
 
 .searchBar {
     border-radius: 10px;
@@ -315,6 +319,18 @@ p {
 }
 
 #removeTagbtn {
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    color: rgb(7, 7, 7);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.removeTagbtn {
     padding: 2px;
     background-repeat: no-repeat;
     background-size: 15px 15px;

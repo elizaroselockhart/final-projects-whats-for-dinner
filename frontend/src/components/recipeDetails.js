@@ -26,9 +26,10 @@ async function DisplayRecipeDetails(recipe) {
 
     return `
         <h1>Recipe Details</h1>
-        <h2>Recipe Title: ${recipe.name}</h2>     
+        <h2>${recipe.name}</h2>     
         <input type="hidden" id='recipe_id' value='${recipe.id}'/> 
         <button id='btnEditRecipe' class="universalBtn">Edit Recipe</button>
+        
         
         <section> 
         <h4> Description: </h4> <p>${recipe.description}</p>
@@ -71,6 +72,7 @@ function SetupEditRecipeEventListeners() {
         api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, async function(recipe) {
             console.log(recipe);
             await EditRecipeForm(recipe);
+            recipes.setupRecipeDeleteButton();
             recipes.SetupAddIngredient();
             recipes.SetupDynamicTagsList();
             recipes.PopulateTagsDDL();
