@@ -83,14 +83,12 @@ function setupRecipeLinks() {
     recipeLinks.forEach(recipeLink => {
 
         recipeLink.addEventListener("click", function (evt) {
-            //randomRecipes.smallRandomBtn();
             //let recipeId = this.nextElementSibling.value;  <-- this wasn't working so I changed it to -recdet and now it works.
             
             let recipeId = recipeLink.getAttribute("value");
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
                 CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
                 navbar.hideNavSearchBarDisplayRecipes();
-                randomRecipes.smallRandomBtn();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -470,7 +468,6 @@ async function CheckRecipeTags() {
         CONSTANTS.title.innerText = "Recipe Details";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
         navbar.hideNavSearchBarDisplayRecipes();
-        randomRecipes.smallRandomBtn();
         recipeDetails.SetupEditRecipeEventListeners();
     });
 }

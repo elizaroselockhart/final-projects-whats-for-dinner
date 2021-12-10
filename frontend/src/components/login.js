@@ -84,7 +84,6 @@ export function logout(){
         console.log("Logout btn clicked!");
         cookies.deleteCookie("userId");
         CONSTANTS.navbar.innerHTML = navbarTabs.setupHome();
-        navbarTabs.setupHome();
         setupLoginDisplay();
         login();
         register.setupRegisterLink();

@@ -35,7 +35,6 @@ export async function setupRandomBtn() {
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
         navbar.hideNavSearchBarDisplayRecipes();
         recipeDetails.SetupEditRecipeEventListeners();
-        smallRandomBtn();
     });
 }
 
@@ -58,7 +57,6 @@ async function smallRandomBtn() {
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
         navbar.hideNavSearchBarDisplayRecipes();
         recipeDetails.SetupEditRecipeEventListeners();
-        smallRandomBtn();
     });
 }
 

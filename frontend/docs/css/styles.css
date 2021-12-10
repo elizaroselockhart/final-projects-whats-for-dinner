@@ -98,7 +98,9 @@ nav ul li {
     font-family: var(--main-font);
 }
 
-/*
+
+/*>>>>>>HERE IS WHERE I STARTED COMMENTING THINGS OUT*/
+
 div.tagString {
     display: none;
 }
@@ -319,4 +321,4 @@ a {
 a:hover {
     text-decoration: underline;
     color: rgb(51, 164, 230);
-} */
+} 
