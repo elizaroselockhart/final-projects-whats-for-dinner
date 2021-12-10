@@ -12,7 +12,7 @@
 
 * {
     margin: auto;
-    padding: 0;
+    font-size: 18px;
     font-family: var(--main-font), Verdana, Geneva, Tahoma, sans-serif;
     line-height: 1em;
     box-sizing: border-box;
@@ -23,16 +23,14 @@ html {
     background-color: var(--accent-light);
 }
 
-main {
-    background-color: white;
-    max-width: 800px;
-}
+/*>>>>>>NAVBAR STYLING<<<<<<*/
 
 nav {
     margin: 0;
-    height: 3rem;
     width: 100%;
     position: fixed;
+    top: 0;
+    left: 0;
     background-color: var(--main-color-dark);
 }
 
@@ -43,10 +41,10 @@ nav ul {
 }
 
 nav ul li {
-    font-size: 16px;
     list-style: none;
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--main-font);
     cursor: pointer;
+    padding: 0.5em;
 }
 
 #navRandom {
@@ -62,11 +60,15 @@ nav ul li {
     cursor: pointer;
 }
 
+#search-area {
+    position: relative;
+}
+
 .searchBar {
-    border-radius: 10px;
+    border-radius: 6px;
     width: 175px;
-    height: 24px;
-    padding: 2px;
+    height: 20px;
+    padding: .75em;
     background-image: url(../img/magnifying-glass.png);
     background-repeat: no-repeat;
     background-size: 20px 20px;
@@ -76,32 +78,77 @@ nav ul li {
     cursor: pointer;
 }
 
-.tooltip .tooltipText {
-    visibility: hidden;
+.tooltipText {
+    display: none;
+}
+
+.searchBar:hover + .tooltipText {
     width: auto;
     background-color: var(--text-color-dark);
-    color:var(--text-color-light);
-    text-align: center;
-    border-radius: 2px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    /* position: fixed;
-    top: ;
-    z-index: 1; */
-}
-
-.tooltip:hover .tooltipText {
-    visibility: visible;
-    font-size: small;
-    font-weight: normal;
+    color: var(--text-color-light);
     font-family: var(--main-font);
+    font-size: 16px;
+    text-align: center;
+    border-radius: 4px;
+
+    display: inline;
+
+    /*Position the tooltip*/
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    z-index: 1;
 }
 
+#navLogin {
+    color: var(--text-color-light);
+}
 
-/*>>>>>>HERE IS WHERE I STARTED COMMENTING THINGS OUT*/
+#navLogin:hover {
+    background-color: var(--main-color);
+    color: var(--text-color-dark);
+    border-radius: 6px;
+}
 
-div.tagString {
+/*>>>>>>>MAIN PAGE GENERIC STYLING<<<<<<*/
+#content-area {
+    background-color: white;
+    margin-top: 2.2em;
+    max-width: 800px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/*>>>>>>HOME PAGE STYLING<<<<<<*/
+#pageTitle {
+    text-align: center;
+    padding: 1em;
+    font-size: 2rem;
+    font-family: var(--header-font), cursive;
+    background-color: var(--accent-mid);
+    border-radius: 6px;
+    border-style: solid;
+    border-top: none;
+    border-color: var(--accent-dark);
+}
+
+#clickMe {
+    padding: 1em;
+    margin-top: 1em;
+}
+
+#clickMe:hover {
+    background-color: var(--main-color);
+    border-radius: 150px;
+}
+
+#home-page-text {
+    padding: 1em;
+}
+
+/*>>>>>>HERE IS WHERE I STARTED COMMENTING THINGS OUT<<<<<<*/
+
+/* div.tagString {
     display: none;
 }
 
@@ -115,36 +162,12 @@ input:focus {
       cursor: pointer;
 }
 
-#pageContent {
-    text-align: center;
-    padding: 48px;
-}
-
-#pageTitle {
-    text-align: center;
-    padding-top: 100px;
-}
-
-#pageTitle {
-    font-size: 90px;
-    font-family: 'Titan One', sans-serif;
-}
-
 #loginAvatar {
     padding-left: 19px;
 }
 
-p {
-    font-size: 20px;
-    color: rgb(151, 146, 146);
-}
-
 #login {
     padding-left: 575px;
-}
-
-#positionLoginBtn {
-    padding-left: 640px;
 }
 
 #loginBtn {
@@ -166,6 +189,34 @@ p {
     font-size: 15px;
     cursor: pointer;
 }
+
+#pageContent {
+    text-align: center;
+    padding: 48px;
+}
+
+#pageTitle {
+
+}
+
+#pageTitle {
+    
+}
+
+
+
+p {
+    font-size: 20px;
+    color: rgb(151, 146, 146);
+}
+
+
+
+#positionLoginBtn {
+    padding-left: 640px;
+}
+
+
 
 #positionRegisterBtn {
     padding-left: 640px;
@@ -321,4 +372,4 @@ a {
 a:hover {
     text-decoration: underline;
     color: rgb(51, 164, 230);
-} 
+}  */
