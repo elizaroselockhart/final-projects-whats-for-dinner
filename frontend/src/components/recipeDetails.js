@@ -11,11 +11,10 @@ export default {
 
 async function DisplayRecipeDetails(recipe) {
     CONSTANTS.title.innerText = "What's For Dinner";
-    //CONSTANTS.positionRandomBtn.innerHTML = `<ul><li id="navRandom"><img src="../img/shuffle.png" id="smRandom" alt="random icon" width="160" height="160" margin="30pz"></li></ul>`;
     let searchbar = document.getElementById('searchRecipes');
     let showRandom = document.getElementById("navRandom");
-    searchbar.style.display = "block";
     showRandom.style.display = "block";
+    searchbar.style.display = "block";
 
     let parsedIngredients = [];
     if(recipe.ingredients == null) {
@@ -25,8 +24,6 @@ async function DisplayRecipeDetails(recipe) {
     }
 
     let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
-
-    // CONSTANTS.navbar.innerHTML = `<h4 id='searchRecipes'>Return to all recipes</h4>`;
 
     return `
         <h1>Recipe Details</h1>
@@ -134,7 +131,7 @@ async function EditRecipeForm(recipe) {
         <button id='btnAddNewTag'>Add A New Tag</button>
     </div>
 
-    <button id='btnFinishEditing'>Finished Editing</button>
+    <button id='btnFinishEditing' class="universalBtn">Finished Editing</button>
         `
 }
 

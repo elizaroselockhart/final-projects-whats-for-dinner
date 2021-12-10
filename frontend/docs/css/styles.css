@@ -57,6 +57,43 @@ div.tagString {
 
 #clickMe {
     cursor: pointer;
+    animation: updown 4s ease;
+    animation-duration: 10s;
+}
+
+/* #smRandom {
+    cursor: pointer;
+    animation: smUpdown 4s ease;
+    animation-duration: 10s;
+}
+
+@keyframes smUpdown {
+    0% {
+      transform: translateY(-50%);
+    }
+  
+    50% {
+      transform: translateY(10%);
+    }
+  
+    100% {
+      transform: translateY(3%);
+    }
+} */
+
+
+@keyframes updown {
+    0% {
+      transform: translateY(-80%);
+    }
+  
+    50% {
+      transform: translateY(2%);
+    }
+  
+    100% {
+      transform: translateY(-20%);
+    }
 }
 
 .searchBar {
@@ -190,6 +227,150 @@ p {
 }
 
 .universalBtn {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.removeTagbtn {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.removeIngredientbtn {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#btnAddIngredient {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#btnAddTagFromList {
+    border-radius: 10px; 
+    width: 160px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#btnAddNewTag {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#removebtn {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#removeTagbtn {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#btnFinishRecipe {
+    border-radius: 10px; 
+    width: 120px;
+    height: 30px;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    box-shadow: 1px 2px #888888; 
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#btnNextPage {
     border-radius: 10px; 
     width: 120px;
     height: 30px;

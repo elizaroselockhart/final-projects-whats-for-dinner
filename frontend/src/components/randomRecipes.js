@@ -47,7 +47,7 @@ async function smallRandomBtn() {
             recipeIds.push(recipe.id);
         });
     });
-    showRandom.style.display="none";
+    // showRandom.style.display="none";
     showRandom.addEventListener('click', async function() {
         console.log("small random clicked");
         
