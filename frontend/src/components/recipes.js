@@ -17,6 +17,7 @@ export default {
     PopulateTagsDDL,
     setupSearchByTagCheckbox,
     setupCheckboxFilter,
+    SetupAddInstructions
 }
 
 let currentTags = [];
@@ -229,6 +230,7 @@ function SetupAddRecipeEventListeners() {
     btnNewRecipe.addEventListener('click', function () {
         SetupAddRecipeForm();
         SetupAddIngredient();
+        SetupAddInstructions();
         SetupAddTags();
         navbar.hideNavSearchBarDisplayRecipes();
     });
@@ -244,7 +246,9 @@ function SetupAddRecipeForm() {
             <ul id='recipeIngredients'></ul>
                 <input type='text' id='ingredientInput' placeholder='Add ingredient.' />
                 <button id='btnAddIngredient'>Add Ingredient</button>
-            <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
+            <h4>Instructions:</h4>
+                <textarea id='recipeInstructions' placeholder='Add list of instructions.'></textarea>
+                <button id='btnAddInstructions>Add Instruction</button>
 
             <button id='btnNextPage'>Next</button>
         </div>
@@ -278,6 +282,36 @@ function SetupAddIngredient() {
         });
 
         ingredientInput.setAttribute('value', '');
+    })
+}
+
+function SetupAddInstructions() {
+    let btnAddInstructions = document.getElementById('btnAddInstruction');
+    let instructionInput = document.getElementById('instructionInput');
+
+    btnAddInstructions.addEventListener('click', function () {
+        console.log("Add Instruction Button Clicked!");
+        let InstructionsList = document.getElementById('recipeInstructions');
+
+        let NewInstruction = document.createElement('li');
+        NewInstruction.setAttribute('id', instructionInput.value)
+        NewInstruction.classList.add('addedInstruction');
+
+        NewInstruction.appendChild(document.createTextNode(instructionInput.value));
+
+        let removebtn = document.createElement('button');
+        removebtn.setAttribute('id', 'removebtn');
+        removebtn.innerHTML = `<i class="fas fa-trash-alt"></i>`
+
+        NewInstruction.appendChild(removebtn);
+        InstructionsList.appendChild(NewInstruction);
+
+        removebtn.addEventListener('click', function () {
+            let toRemove = this.parentNode;
+            InstructionsList.removeChild(toRemove);
+        });
+
+        instructionInput.setAttribute('value', '');
     })
 }
 

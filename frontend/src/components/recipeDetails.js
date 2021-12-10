@@ -22,6 +22,13 @@ async function DisplayRecipeDetails(recipe) {
         parsedIngredients = recipe.ingredients.split("|;|");
     }
 
+    let parsedInstructions = [];
+    if (recipe.instructions === null) {
+        recipe.instructions = "";
+    } else {
+        parsedInstructions = recipe.instructions.split("|:|");
+    }
+
     let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
     return `
@@ -47,7 +54,17 @@ async function DisplayRecipeDetails(recipe) {
               }).join('')}
           </ul>
 
-     <h3> Instructions: </h3> <p>${recipe.instructions}</p>
+     <h4>Instructions:</h4>            
+            <ol>
+                  ${parsedInstructions.map(instruction => {
+                    return `
+                      <li>                          
+                        <span class="instruction">${instruction}</span> 
+                      </li>                
+                  `;
+                  }).join('')}
+            </ol>                       
+        </div> 
 
      <h5>Tags:</h5>
        <ul id='recipedetailstaglist'>  
@@ -72,6 +89,7 @@ function SetupEditRecipeEventListeners() {
             console.log(recipe);
             await EditRecipeForm(recipe);
             recipes.SetupAddIngredient();
+            recipes.SetupAddInstructions();
             recipes.SetupDynamicTagsList();
             recipes.PopulateTagsDDL();
             SetupExistingItemDeleteBtns();
@@ -84,6 +102,8 @@ function SetupEditRecipeEventListeners() {
 async function EditRecipeForm(recipe) {
     CONSTANTS.title.innerText = "Edit Recipe";
     let IngredientList = recipe.ingredients.split("|;|");
+    let InstructionsList = recipe.instructions.split("|:|");
+
 
     let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
@@ -105,8 +125,21 @@ async function EditRecipeForm(recipe) {
             </ul>
             <input type='text' id='ingredientInput' placeholder='Add ingredient.' />
             <button id='btnAddIngredient'>Add Ingredient</button>
+
             <h4>Instructions:</h4>
-            <input type='text' id='recipeInstructions' value='${recipe.instructions}' placeholder='Enter the recipe instructions.'/>
+            <ol id = 'recipeInstructions'>
+                ${InstructionsList.map(instructions => {
+                    return `
+                        <li class='addedInstruction' id='${instructions}'>
+                            ${instructions}
+                            <button class='removeInstructionbtn'><i class="fas fa-trash-alt"></i></button>
+                        </li>
+                    `;
+                }).join('')}
+            </ol>
+            <textarea id='recipeInstructions' placeholder='Add list of instructions.'></textarea>
+            <button id = 'btnAddInstructions'> Add Instruction</button>
+
         </div>
 
         <div id='tagSection'>
@@ -160,7 +193,7 @@ function SubmitEditedRecipe() {
     let recipe_id = document.getElementById('recipe_id').value;
     let btnFinishEditing = document.getElementById('btnFinishEditing');
 
-    btnFinishEditing.addEventListener('click', function() {
+    btnFinishEditing.addEventListener('click', function () {
         let ListofIngredients = document.getElementById('recipeIngredients');
         let indivIngredients = ListofIngredients.getElementsByTagName('li');
         let joinedIngredients = "";
@@ -171,12 +204,22 @@ function SubmitEditedRecipe() {
 
         joinedIngredients = joinedIngredients + indivIngredients[indivIngredients.length - 1].id;
 
+        let ListofInstructions = document.getElementById('recipeInstructions');
+        let indivInstructions = ListofIngredients.getElementsByTagName('li');
+        let joinedInstructions = "";
+
+        for (let i = 0; i < (indivInstructions.length - 1); i++) {
+            joinedInstructions = joinedInstructions + indivInstructions[i].id + "|;|"
+        }
+
+        joinedInstructions = joinedInstructions + indivInstructions[indivInstructions.length - 1].id;
+
         let editedRecipe = {
             Id: document.getElementById('recipe_id').value,
             Name: document.getElementById('recipeName').value,
             Description: document.getElementById('recipeDescription').value,
             Ingredients: joinedIngredients,
-            Instructions: document.getElementById('recipeInstructions').value,
+            Instructions: joinedInstructions,
         }
 
         api.putRequest(CONSTANTS.RecipesAPIURL, recipe_id, editedRecipe, recipe => {
