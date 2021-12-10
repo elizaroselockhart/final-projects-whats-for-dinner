@@ -1,8 +1,8 @@
 import * as CONSTANTS from "../components/constants";
 import api from "../api/api-actions";
 import recipeDetails from "./recipeDetails";
-import randomRecipes from "../components/randomRecipes";
 import navbar from "./navbar";
+import login from "../components/login";
 
 export default {
     displayRecipes,
@@ -87,7 +87,6 @@ function setupRecipeLinks() {
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
                 CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
                 navbar.hideNavSearchBarDisplayRecipes();
-                // randomRecipes.smallRandomBtn();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -230,13 +229,13 @@ function SetupAddRecipeEventListeners() {
         SetupAddIngredient();
         SetupAddTags();
         navbar.hideNavSearchBarDisplayRecipes();
+        login.logout();
     });
 }
 
 function SetupAddRecipeForm() {
     CONSTANTS.title.innerText = "Add Recipe";
     CONSTANTS.navbar.innerHTML = navbar.setupNavBar();
-
     CONSTANTS.content.innerHTML = `
         <div id='AddRecipeForm'>
             <h4>Name:</h4><input type='text' id='recipeName' placeholder='Enter the recipe name.'/>
@@ -469,7 +468,6 @@ async function CheckRecipeTags() {
         CONSTANTS.title.innerText = "What's For Dinner";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
         navbar.hideNavSearchBarDisplayRecipes();
-        // randomRecipes.smallRandomBtn();
         recipeDetails.SetupEditRecipeEventListeners();
     });
 }

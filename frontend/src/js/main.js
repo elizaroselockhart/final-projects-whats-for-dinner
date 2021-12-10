@@ -1,6 +1,5 @@
 import navbarTabs from "../components/navbar";
 import randomRecipes from "../components/randomRecipes";
-import recipes from "../components/recipes";
 import login from "../components/login";
 
 const navbar = document.getElementById("navbar");

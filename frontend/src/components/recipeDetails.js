@@ -26,7 +26,7 @@ async function DisplayRecipeDetails(recipe) {
 
     return `
     <div id="recipe-details-area">
-        <h2>Recipe Title: ${recipe.name}</h2>     
+        <h2>${recipe.name}</h2>     
         <input type="hidden" id='recipe_id' value='${recipe.id}'/> 
         <button id='btnEditRecipe' class="universalBtn">Edit Recipe</button>
         
@@ -70,6 +70,7 @@ function SetupEditRecipeEventListeners() {
         api.getRequest(CONSTANTS.RecipesAPIURL + recipe_id, async function(recipe) {
             console.log(recipe);
             await EditRecipeForm(recipe);
+            recipes.setupRecipeDeleteButton();
             recipes.SetupAddIngredient();
             recipes.SetupDynamicTagsList();
             recipes.PopulateTagsDDL();
@@ -91,7 +92,7 @@ async function EditRecipeForm(recipe) {
             <input type='hidden' id='recipe_id' value=${recipe.id} />
             <h4>Name:</h4> <input type='text' id='recipeName' value='${recipe.name}' placeholder='Enter the recipe name.'/>
             <h4>Description:</h4> 
-                <textarea id='recipeDescription' placeholder='Enter the recipe description!'>${recipe.description}</textarea>
+            <textarea id='recipeDescription' placeholder='Enter the recipe description!'>${recipe.description}</textarea>
             <h4>Ingredient List</h4>
             <ul id='recipeIngredients'>
                 ${IngredientList.map(ingredient => {
@@ -270,6 +271,5 @@ async function UpdateRecipeTags(recipe) {
     CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
     navbar.hideNavSearchBarDisplayRecipes();
     SetupEditRecipeEventListeners();
-    // randomRecipes.smallRandomBtn();
     CONSTANTS.title.innerText = "What's For Dinner";
 }

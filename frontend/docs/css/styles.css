@@ -58,6 +58,52 @@ nav ul li {
     position: relative;
 }
 
+/*
+#clickMe {
+    cursor: pointer;
+    animation: updown 4s ease;
+    animation-duration: 10s;
+}
+
+#smRandom {
+    cursor: pointer;
+    animation: smUpdown 4s ease;
+    animation-duration: 10s;
+}
+
+@keyframes smUpdown {
+    0% {
+      transform: translateY(-50%);
+    }
+  
+    50% {
+      transform: translateY(10%);
+    }
+  
+    100% {
+      transform: translateY(3%);
+    }
+}
+
+
+@keyframes updown {
+    0% {
+      transform: translateY(-50%);
+    }
+  
+    50% {
+      transform: translateY(7%);
+    }
+  
+    100% {
+      transform: translateY(-20%);
+    }
+
+    100% {
+        transform: translateY(3%);
+      }
+} */
+
 .searchBar {
     border-radius: 6px;
     width: 175px;
@@ -468,10 +514,22 @@ input {
     cursor: pointer;
 }
 
+.removeTagbtn {
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    color: rgb(7, 7, 7);
+    font-size: 15px;
+    cursor: pointer;
+}
+
 #btnFinishRecipe {
     border-radius: 10px; 
     width: 120px;
-    height: 30px;
+    height: 35px;
     padding: 2px;
     background-repeat: no-repeat;
     background-size: 15px 15px;

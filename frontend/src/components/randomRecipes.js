@@ -35,7 +35,6 @@ export async function setupRandomBtn() {
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
         navbar.hideNavSearchBarDisplayRecipes();
         recipeDetails.SetupEditRecipeEventListeners();
-        // smallRandomBtn();
     });
 }
 
@@ -46,7 +45,7 @@ async function smallRandomBtn() {
     recipes.forEach(recipe => {
         recipeIds.push(recipe.id);
     });
-    // showRandom.style.display="none";
+
     showRandom.addEventListener('click', async function() {
         console.log("small random clicked");
         
@@ -57,7 +56,6 @@ async function smallRandomBtn() {
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(randomRecipe);
         navbar.hideNavSearchBarDisplayRecipes();
         recipeDetails.SetupEditRecipeEventListeners();
-        // smallRandomBtn();
     });
 }
 
