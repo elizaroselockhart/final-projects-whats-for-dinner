@@ -100,9 +100,9 @@ function setupRecipeDeleteButton() {
     let recipeDeleteButtons = document.querySelectorAll(".recipeDelete");
 
     recipeDeleteButtons.forEach(recipeDeleteButton => {
-        recipeDeleteButton.addEventListener('click', function (event) {
+        recipeDeleteButton.addEventListener('click', function () {
             console.log("delete button clicked");
-            let recipeId = event.target.id;
+            let recipeId = recipeDeleteButton.getAttribute("id");
 
             api.deleteRequest(CONSTANTS.RecipesAPIURL, recipeId, data => {
                 CONSTANTS.content.innerHTML = displayRecipes(data.allRecipes, data.allTags);
@@ -236,6 +236,8 @@ function SetupAddRecipeEventListeners() {
 
 function SetupAddRecipeForm() {
     CONSTANTS.title.innerText = "Add Recipe";
+    CONSTANTS.navbar.innerHTML = navbar.setupNavBar();
+
     CONSTANTS.content.innerHTML = `
         <div id='AddRecipeForm'>
             <h4>Name:</h4><input type='text' id='recipeName' placeholder='Enter the recipe name.'/>
