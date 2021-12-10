@@ -1,7 +1,6 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
 import recipes from "../components/recipes";
-import randomRecipes from "./randomRecipes";
 import navbar from "./navbar";
 
 export default {
@@ -10,13 +9,11 @@ export default {
 }
 
 async function DisplayRecipeDetails(recipe) {
-    CONSTANTS.title.innerText = "Recipe Details";
-  
+    CONSTANTS.title.innerText = "What's For Dinner";
     let searchbar = document.getElementById('searchRecipes');
     let showRandom = document.getElementById("navRandom");
-    searchbar.style.display = "block";
     showRandom.style.display = "block";
-
+    searchbar.style.display = "block";
 
     let parsedIngredients = [];
     if(recipe.ingredients == null) {
@@ -26,8 +23,6 @@ async function DisplayRecipeDetails(recipe) {
     }
 
     let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
-
-    CONSTANTS.navbar.innerHTML = `<h4 id='searchRecipes'>Return to all recipes</h4>`;
 
     return `
         <h1>Recipe Details</h1>
@@ -103,7 +98,7 @@ async function EditRecipeForm(recipe) {
                     return `
                         <li class='addedIngredient' id='${ingredient}'>
                             ${ingredient}
-                            <button class='removeIngredientbtn'>Remove</button>
+                            <button class='removeIngredientbtn'><i class="fas fa-trash-alt"></i></button>
                         </li>
                     `;
                 }).join('')}
@@ -121,7 +116,7 @@ async function EditRecipeForm(recipe) {
                 return `
                     <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname='${LinkedTag.tag.name}'>
                         ${LinkedTag.tag.name}
-                        <button class='removeTagbtn'>Remove Tag</button>
+                        <button class='removeTagbtn'><i class="fas fa-trash-alt"></i></button>
                     </li>
                 `;
             }).join('')}
@@ -135,7 +130,7 @@ async function EditRecipeForm(recipe) {
         <button id='btnAddNewTag'>Add A New Tag</button>
     </div>
 
-    <button id='btnFinishEditing'>Finished Editing</button>
+    <button id='btnFinishEditing' class="universalBtn">Finished Editing</button>
         `
 }
 
@@ -275,6 +270,6 @@ async function UpdateRecipeTags(recipe) {
     CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
     navbar.hideNavSearchBarDisplayRecipes();
     SetupEditRecipeEventListeners();
-    randomRecipes.smallRandomBtn();
-    CONSTANTS.title.innerText = "Recipe Details";
+    // randomRecipes.smallRandomBtn();
+    CONSTANTS.title.innerText = "What's For Dinner";
 }

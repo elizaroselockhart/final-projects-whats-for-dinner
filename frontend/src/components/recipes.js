@@ -22,6 +22,7 @@ export default {
 let currentTags = [];
 
 function displayRecipes(recipes, tags) {
+    CONSTANTS.title.innerText = "What's For Dinner";
     return `
     <div id='searchRecipeArea'>
        <form id="search-recipes">
@@ -44,7 +45,7 @@ function displayRecipes(recipes, tags) {
                         ${recipe.name} 
                     </span>
                     <input type="hidden" id="recdet" value='${recipe.id}'/>
-                    <button id="${recipe.id}" class="recipeDelete">Delete</button>
+                    <button id="${recipe.id}" class="recipeDelete"><i class="fas fa-trash-alt"></i></button>
                     <div display="none" class="tagString" id='tagString-${recipe.id}'>
                         ${recipe.tags.map(tag => {           
                         return tag.tag.name               
@@ -83,14 +84,11 @@ function setupRecipeLinks() {
     recipeLinks.forEach(recipeLink => {
 
         recipeLink.addEventListener("click", function (evt) {
-            //randomRecipes.smallRandomBtn();
-            //let recipeId = this.nextElementSibling.value;  <-- this wasn't working so I changed it to -recdet and now it works.
-            
             let recipeId = recipeLink.getAttribute("value");
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
                 CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
                 navbar.hideNavSearchBarDisplayRecipes();
-                randomRecipes.smallRandomBtn();
+                // randomRecipes.smallRandomBtn();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -232,7 +230,7 @@ function SetupAddRecipeEventListeners() {
         SetupAddRecipeForm();
         SetupAddIngredient();
         SetupAddTags();
-
+        navbar.hideNavSearchBarDisplayRecipes();
     });
 }
 
@@ -269,7 +267,7 @@ function SetupAddIngredient() {
 
         let removebtn = document.createElement('button');
         removebtn.setAttribute('id', 'removebtn');
-        removebtn.innerText = "Remove Ingredient";
+        removebtn.innerHTML = `<i class="fas fa-trash-alt"></i>`
 
         NewIngredient.appendChild(removebtn);
         IngredientList.appendChild(NewIngredient);
@@ -344,7 +342,7 @@ function SetupDynamicTagsList() {
 
         let removeTagbtn = document.createElement('button');
         removeTagbtn.setAttribute('id', 'removeTagbtn');
-        removeTagbtn.innerText = "Remove Tag";
+        removeTagbtn.innerHTML = `<i class="fas fa-trash-alt"></i>`;
 
         removeTagbtn.addEventListener('click', function () {
             let toRemove = this.parentNode;
@@ -365,7 +363,7 @@ function SetupDynamicTagsList() {
         NewTag.appendChild(document.createTextNode(createdTag.value));
 
         let removeTagbtn = document.createElement('button');
-        removeTagbtn.innerText = "Remove Tag";
+        removeTagbtn.innerHTML = `<i class="fas fa-trash-alt"></i>`;
 
         removeTagbtn.addEventListener('click', function () {
             let toRemove = this.parentNode;
@@ -467,10 +465,10 @@ async function CheckRecipeTags() {
         });
         
         let recipe = await api.SyncGetRequest(CONSTANTS.RecipesAPIURL + recipe_id);
-        CONSTANTS.title.innerText = "Recipe Details";
+        CONSTANTS.title.innerText = "What's For Dinner";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
         navbar.hideNavSearchBarDisplayRecipes();
-        randomRecipes.smallRandomBtn();
+        // randomRecipes.smallRandomBtn();
         recipeDetails.SetupEditRecipeEventListeners();
     });
 }
