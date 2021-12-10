@@ -19,7 +19,7 @@ export function hideNavSearchBarDisplayRecipes() {
         hideSearch.style.display = "none";
         showRandom.style.display = "block";
         api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
-            CONSTANTS.title.innerText = "What's For Dinner";
+            CONSTANTS.title.innerText = "What's For Dinner?";
             CONSTANTS.tabTitle.innerText = "Search Recipes";
             console.log(data);
             CONSTANTS.content.innerHTML =
@@ -48,17 +48,19 @@ export function setupNavBar() {
         loginUser = `<li id="navLogin">Login</li>`
     } else {
         console.log("Logout displays in nav");
-        pantry = `<li id="navPantry">Welcome ${username}</li>`
+        pantry = `
+            <li id="navPantry">Welcome ${username}</li>
+            `
         loginUser = `<li id="navLogout">Logout</li>`
     }
     return `
     <ul id="navbarLi">
         ${pantry}
-        <li id="navSearch" class = "tooltip">
-        <span class="tooltipText" id="show">Click to view all recipes</span>
-        <form id="search-recipes">
-        <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
-        </form>
+        <li id="search-area">
+            <form id="search-recipes">
+                <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
+                <p class="tooltipText" id="show">Click to view all recipes</p>
+             </form>
         </li>
        ${loginUser}
     </ul>
@@ -67,43 +69,13 @@ export function setupNavBar() {
     `;
 }
 
-
-//Removed (with comments) the setupPantry() function and all references.
-//Team did not have enough time to implement said feature. 
-//Task is in progress on a feature branch called "profilePage".
-
-// export function setupPantry() {
-//     const btnPantry = document.getElementById("navPantry");
-//     let userId = cookies.getCookie("userId");
-//     if(userId === "undefined" || userId === null){
-//         return;
-//     }
-//     btnPantry.addEventListener("click", function(){
-//         console.log("Pantry display link hooked up!");
-//         api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
-//         CONSTANTS.title.innerText = "Profile";
-//         CONSTANTS.tabTitle.innerText = "Profile";
-//         CONSTANTS.content.innerHTML = 
-//         `<h4>Next To Do</h4>
-//         <ul>
-//         <li>Categories for tags
-//         </li>
-//         <li>Generate a shopping list</li>
-//         <li>Randomize based on what’s in your pantry
-//         </li>
-//         </ul>
-//         ` 
-//         });
-//     });
-// }
-
 function setupHome() {
     CONSTANTS.tabTitle.innerText = "Home";
-    CONSTANTS.title.innerText = "What's For Dinner";
+    CONSTANTS.title.innerText = "What's For Dinner?";
     CONSTANTS.navbar.innerHTML = setupNavBar(); //setupPantry();
     CONSTANTS.content.innerHTML =
         `
-        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="400" height="400" style = "padding-bottom: 16px;">
-        <p>Click for random recipe</p>      
+        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="300" height="300" />
+        <p id="home-page-text">Click the image to find out!</p>      
     `;
 }

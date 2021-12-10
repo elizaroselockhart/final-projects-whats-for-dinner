@@ -1,60 +1,64 @@
-* {
-    margin: 0;
-    padding: 0;
+:root{
+    --main-font: 'Oswald';
+    --header-font: 'Titan One';
+    --secondary-font: 'Titan One';
 }
 
+* {
+    margin: auto;
+    padding: 0;
+    font-family: var(--main-font), Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 1em;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+
+main {
+    max-width: 800px;
+}
+
+/*>>>>>NAVBAR STYLING<<<<<*/
 nav {
-    margin: 5px;
-    height: 10%;
+    margin: 0;
     width: 100%;
     position: fixed;
+    top: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+nav ul li {
+    list-style: none;
     text-align: center;
-    border: none; 
+    padding: 0.5em;
+    list-style: none;
+    cursor: pointer;
+}
+
+#navRandom, #navSearch, #navLogin, #navLogout {
+    cursor: pointer;
 }
 
 #navRandom {
     display: none;
-    cursor: pointer;
 }
 
 #navPantry {
     cursor: auto;
 }
 
-#navSearch {
-    cursor: pointer;
+#search-recipes {
+    position: relative;
 }
 
-#navLogin {
-    cursor: pointer;
-}
-
-#navLogout {  
-    cursor: pointer;
-}
-
-ul {
-    display: flex;
-    justify-content: space-between;
-    font-size: 25px;
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    list-style: none;
-    font-family: 'Oswald', sans-serif;
-    cursor: pointer;
-}
-
-li {
-    list-style: none;
-}
-
-
-div.tagString {
-    display: none;
-}
-/* 
+/*
 #clickMe {
     cursor: pointer;
     animation: updown 4s ease;
@@ -84,51 +88,104 @@ div.tagString {
 
 @keyframes updown {
     0% {
-      transform: translateY(-80%);
+      transform: translateY(-50%);
     }
   
     50% {
-      transform: translateY(2%);
+      transform: translateY(7%);
     }
   
     100% {
       transform: translateY(-20%);
     }
+
+    100% {
+        transform: translateY(3%);
+      }
 } */
 
 .searchBar {
-    border-radius: 10px;
+    border-radius: 6px;
     width: 175px;
-    height: 24px;
-    padding: 2px;
+    height: 20px;
+    padding: 0.75em;
     background-image: url(../img/magnifying-glass.png);
     background-repeat: no-repeat;
-    background-size: 15px 15px;
+    background-size: 20px 20px;
     background-position: 95%;
     border: none;
     box-shadow: 1px 2px #888888;
     cursor: pointer;
 }
 
-.tooltip .tooltipText {
-    visibility: hidden;
-    width: auto;
-    background-color: rgba(29, 28, 28, 0.685);
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
+.tooltipText {
+    display: none;
+}
 
-    /* Position the tooltip */
+.searchBar:hover + .tooltipText {
+    width: auto;
+    background-color: darkslategrey;
+    color: white;
+    font-family: var(--main-font);
+    font-size: 16px;
+    text-align: center;
+    border-radius: 4px;
+    padding: 0.75em;
+
+    display: inline;
+
+    /*Postion the tooltip*/
+    /*NOW MY POSITIONING ISN'T WORKING >:(*/
     position: absolute;
+    top: 2.5rem;
+    left: 1em;
     z-index: 1;
 }
 
-.tooltip:hover .tooltipText {
-    visibility: visible;
-    font-size: small;
-    font-weight: normal;
-    font-family: 'Courier New', Courier, monospace;
+#navLogin {
+    transition: color .8s ease-in, background-color .8s ease-in, background-image .8s ease-in, width .8s ease-in, border-radius .8s ease-in;
+}
+
+#navLogin:hover {
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    width: +10%;
+    background-image: url(../img/user.png);
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 95%;   
+}
+
+/* >>>>>>MAIN PAGE GENERIC STYLING<<<<<< */
+main {
+    margin-top: 2.2em;
+    max-width: 800px;
+    border-radius: 8px;
+    text-align: center;
+    padding: 1em;
+}
+
+/*>>>>>HOME PAGE STYLING<<<<<*/
+#pageTitle {
+    text-align: center;
+    padding: 0.75em;
+    font-size: 2rem;
+    font-family: var(--header-font);
+}
+
+#clickMe {
+    padding: 1em;
+    margin-top: 1em;
+    background-color: white;
+    border-radius: 100%;
+    transition: background-color 0.5s ease-in;
+    cursor: pointer;
+}
+
+#clickMe:hover {
+    background-color:rgb(151, 146, 146);
+    border-radius: 100%;
 }
 
 input:focus {
@@ -150,36 +207,171 @@ input:focus {
       
 }
 
-#pageContent {
-    text-align: center;
-    padding: 48px;
+#home-page-text {
+    padding: 1em;
 }
 
-#pageTitle {
-    text-align: center;
-    padding-top: 100px;
+.tagString {
+    margin-left: 2em;
 }
 
-#pageTitle {
-    font-size: 90px;
-    font-family: 'Titan One', sans-serif;
+.tag {
+    width: 100%;
+    text-align: left;
 }
 
-#loginAvatar {
-    padding-left: 19px;
+#tag-list-list-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
-p {
+/* >>>>>>ALL RECIPES PAGE STYLING<<<<<< */
+#searchRecipeArea {
+    padding: 1em;
+}
+
+#contentSearchBar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#recipe-list-styling {
+    list-style: none;
+    text-align: left;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    padding: 1em;
+    cursor: pointer;
+}
+
+.recipe {
+    padding: .25em;
+    border-radius: 6px;
+    transition: background-color 0.5s ease-in-in;
+}
+
+.recipe:hover {
+    background-color: rgb(151, 146, 146);
+}
+
+.recipeDetails {
     font-size: 20px;
-    color: rgb(151, 146, 146);
+    padding-top: 0.25rem;
+    padding-bottom: 1.1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
-#login {
-    padding-left: 575px;
+/* >>>>>>RECIPE DETAILS PAGE STYLING<<<<<< */
+h1 {
+    font-style: var(--header-font);
 }
 
-#positionLoginBtn {
-    padding-left: 640px;
+#recipe-details-area {
+    padding: 1em;
+}
+
+#recipe-details-area h1, #recipe-details-area h2, #recipe-details-area h3, #recipe-details-area h4, #recipe-details-area h5 {
+    padding: 0.5em;
+}
+
+#recipe-details-area h1 {
+    font-size: 24px;
+    font-family: var(--header-font);
+}
+
+#recipe-details-area h2 {
+    font-size: 20px;
+}
+
+#nitty-gritty {
+    text-align: left;
+}
+
+#nitty-gritty p {
+    padding: 1em;
+}
+
+#nitty-gritty ul li {
+    margin-left: 2.5em;
+}
+
+#recipedetailstaglist {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+}
+
+/* >>>>>EDIT AND ADD RECIPE FORM STYLING<<<<< */
+#EditRecipeForm, #AddRecipeForm {
+    text-align: left;
+    padding: 0.5em;
+}
+
+#EditRecipeForm h1, #EditRecipeForm h2, #EditRecipeForm h3, #EditRecipeForm h4, #EditRecipeForm h5, #AddRecipeForm h1, #AddRecipeForm h2, #AddRecipeForm h3, #AddRecipeForm h4, #AddRecipeForm h5 {
+    padding: 0.5em;
+    font-size: 24px;
+}
+
+#EditRecipeForm input, #AddRecipeForm input{
+    padding: 0.5em;
+    margin: 0.5em;
+    border-radius: 4px;
+    width: 100%;
+}
+
+#EditRecipeForm #recipeDescription, #EditRecipeForm #recipeInstructions, #AddRecipeForm #recipeDescription, #AddRecipeForm #recipeInstructions {
+    width: 100%;
+    height: 150px;
+    margin: .5em;
+    padding: 0.5em;
+    resize: none;
+    text-align: left;
+    border-radius: 2px;
+}
+
+#recipeIngredients {
+    padding-left: 2.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+#tagSection h5 {
+    font-size: 24px;
+    padding: 0.5em;
+}
+
+#tagSection #tagList {
+    list-style: none;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+}
+
+#btnFinishEditing {
+    margin-top: 2rem;
+}
+
+#existingTagDDL {
+    font-size: 14px;
+    padding: 0.25em;
+}
+
+option {
+    background-color:rgb(255, 255, 255);
+    color: black;
+    font-size: 14px;
+    padding: 0.25em;
+    font-family: var(--main-font), Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* >>>>>>AVATAR AND BUTTON STYLING<<<<<< */
+
+input {
+
 }
 
 #loginBtn {
@@ -200,10 +392,6 @@ p {
     color: white;
     font-size: 15px;
     cursor: pointer;
-}
-
-#positionRegisterBtn {
-    padding-left: 640px;
 }
 
 #registerBtn {
@@ -326,10 +514,22 @@ p {
     cursor: pointer;
 }
 
+.removeTagbtn {
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 95%;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    color: rgb(7, 7, 7);
+    font-size: 15px;
+    cursor: pointer;
+}
+
 #btnFinishRecipe {
     border-radius: 10px; 
     width: 120px;
-    height: 30px;
+    height: 35px;
     padding: 2px;
     background-repeat: no-repeat;
     background-size: 15px 15px;
@@ -388,28 +588,29 @@ p {
 
 #username {
     padding: 12px 20px;
-    margin: 40px 0 40px 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
     display: block;
-    border: 1px solid #ccc;
     box-sizing: border-box;
     border-radius: 10px;
+    border: solid 2px black;
     width: 275px;
     height: 44px;
     background-image: url(../img/user.png);
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
-    border: none;
-    box-shadow: 1px 2px #888888;
+    /* border: none; */
+    /* box-shadow: 1px 2px #888888; */
     cursor: pointer;
     text-align: center;
 }
 
 #name {
     padding: 12px 20px;
-    margin: 8px 0;
+    margin-top: 1em;
     display: block;
-    border: 1px solid #ccc;
+    border: 2px solid black;
     box-sizing: border-box;
     border-radius: 10px;
     width: 275px;
@@ -417,17 +618,15 @@ p {
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
-    border: none;
-    box-shadow: 1px 2px #888888; 
+    /* box-shadow: 1px 2px #888888;  */
     cursor: pointer;
     text-align: center;
 }
 
 #password {
     padding: 12px 20px;
-    margin: 8px 0;
     display: block;
-    border: 1px solid #ccc;
+    border: 2px solid black;
     box-sizing: border-box;
     border-radius: 10px;
     width: 275px;
@@ -436,8 +635,8 @@ p {
     background-repeat: no-repeat;
     background-size: 15px 15px;
     background-position: 95%;
-    border: none;
-    box-shadow: 1px 2px #888888;
+    /* border: none;
+    box-shadow: 1px 2px #888888; */
     cursor: pointer;
     text-align: center;
 }

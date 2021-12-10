@@ -29,6 +29,7 @@ export function setupLogin() {
 
 export function setupLoginDisplay(){
     CONSTANTS.tabTitle.innerText="Login";
+    CONSTANTS.positionRandomBtn.innerHTML = "";
     CONSTANTS.title.innerText="What's For Dinner";
     CONSTANTS.content.innerHTML =
     `
@@ -88,6 +89,7 @@ export function logout(){
         setupLoginDisplay();
         login();
         register.setupRegisterLink();
+        CONSTANTS.positionRandomBtn.innerHTML = "";
     })
 }
 
