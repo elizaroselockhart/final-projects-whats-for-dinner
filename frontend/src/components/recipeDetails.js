@@ -1,7 +1,6 @@
 import api from "../api/api-actions";
 import * as CONSTANTS from "../components/constants";
 import recipes from "../components/recipes";
-import randomRecipes from "./randomRecipes";
 import navbar from "./navbar";
 
 export default {
@@ -271,6 +270,6 @@ async function UpdateRecipeTags(recipe) {
     CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
     navbar.hideNavSearchBarDisplayRecipes();
     SetupEditRecipeEventListeners();
-    randomRecipes.smallRandomBtn();
+    // randomRecipes.smallRandomBtn();
     CONSTANTS.title.innerText = "What's For Dinner";
 }

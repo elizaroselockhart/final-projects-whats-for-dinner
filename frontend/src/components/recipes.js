@@ -88,7 +88,7 @@ function setupRecipeLinks() {
             api.getRequest(CONSTANTS.RecipesAPIURL + recipeId, async function(data) {
                 CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(data);
                 navbar.hideNavSearchBarDisplayRecipes();
-                randomRecipes.smallRandomBtn();
+                // randomRecipes.smallRandomBtn();
                 recipeDetails.SetupEditRecipeEventListeners();
             });
         });
@@ -468,7 +468,7 @@ async function CheckRecipeTags() {
         CONSTANTS.title.innerText = "What's For Dinner";
         CONSTANTS.content.innerHTML = await recipeDetails.DisplayRecipeDetails(recipe);
         navbar.hideNavSearchBarDisplayRecipes();
-        randomRecipes.smallRandomBtn();
+        // randomRecipes.smallRandomBtn();
         recipeDetails.SetupEditRecipeEventListeners();
     });
 }
