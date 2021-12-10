@@ -30,12 +30,27 @@ function displayRecipes(recipes, tags) {
 
        <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
        <label for="searchByTagsCheckBox">Search By Tags</label>
+       <div id="tagList">
+            <ul id="tag-list-list-items">
+                ${tags.map(tag => {
+                    return `
+                    <li class="tag" style="display:none">
+                        <span class="tagDetails">
+                            <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
+                            ${tag.name} 
+                        </span>
+                    </li>
+                    `;
+                }).join('')}
+            </ul>
+        </div>
+
     </div>
     
     <button id='btnNewRecipe'>Add a Recipe!</button>
 
     <div id="recipeList">
-        <ol>
+        <ol id="recipe-list-styling">
             ${recipes.map(recipe => {
                 return `
                 <li class="recipe">
@@ -47,8 +62,8 @@ function displayRecipes(recipes, tags) {
                     <button id="${recipe.id}" class="recipeDelete">Delete</button>
                     <div display="none" class="tagString" id='tagString-${recipe.id}'>
                         ${recipe.tags.map(tag => {           
-                        return tag.tag.name               
-                        }).join('')}
+                        return `#${tag.tag.name}`               
+                        }).join('  ')}
                     </div>
                     </h4>          
                 </li>
@@ -57,22 +72,10 @@ function displayRecipes(recipes, tags) {
         </ol>
     </div>
     
-    <div id="tagList">
-        <ul>
-            ${tags.map(tag => {
-                return `
-                <li class="tag" style="display:none">
-                    <span class="tagDetails">
-                        <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
-                        ${tag.name} 
-                    </span>
-                </li>
-                `;
-            }).join('')}
-        </ul>
+    <div id="hide-all-recipes-checkbox-area">
+        <input type="checkbox" id="hide" class="hideCheckBox"/>
+        <label for="hide" id="hide-recipes">Hide all recipes</label>
     </div>
-    <input type="checkbox" id="hide" class="hideCheckBox"/>
-    <label for="hide">Hide all recipes</label>
     `;
 }
 
