@@ -25,13 +25,12 @@ async function DisplayRecipeDetails(recipe) {
     let LinkedTags = await api.SyncGetRequest(CONSTANTS.RecipeTagsAPIURL + recipe.id);
 
     return `
-        <h1>Recipe Details</h1>
+    <div id="recipe-details-area">
         <h2>${recipe.name}</h2>     
         <input type="hidden" id='recipe_id' value='${recipe.id}'/> 
         <button id='btnEditRecipe' class="universalBtn">Edit Recipe</button>
         
-        
-        <section> 
+        <section id="nitty-gritty"> 
         <h4> Description: </h4> <p>${recipe.description}</p>
         
         <h3> Ingredients: </h3>      
@@ -39,28 +38,27 @@ async function DisplayRecipeDetails(recipe) {
               ${parsedIngredients.map(ingredient => {
                   return `
                       <li>
-                          <h4>
-                              <span class="ingredientName">${ingredient}</span>
-                          </h4>
+                            <span class="ingredientName">${ingredient}</span>
                       </li>
 
                   `;
               }).join('')}
           </ul>
 
-     <h3> Instructions: </h3> <p>${recipe.instructions}</p>
+        <h3> Instructions: </h3> <p>${recipe.instructions}</p>
 
-     <h5>Tags:</h5>
-       <ul id='recipedetailstaglist'>  
-          ${LinkedTags.map(LinkedTag => {
-                return`
-               <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname = '${LinkedTag.tag.name}'>
-                    ${LinkedTag.tag.name}
-                </li>
-               `;
-           }).join('')}
-       </ul>
-    </section>
+        <h5>Tags:</h5>
+            <ul id='recipedetailstaglist'>  
+                ${LinkedTags.map(LinkedTag => {
+                        return`
+                    <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname = '${LinkedTag.tag.name}'>
+                            #${LinkedTag.tag.name}
+                        </li>
+                    `;
+                }).join(' ')}
+            </ul>
+        </section>
+    </div>
     `;
 
 }
@@ -93,7 +91,8 @@ async function EditRecipeForm(recipe) {
         <div id='EditRecipeForm'>
             <input type='hidden' id='recipe_id' value=${recipe.id} />
             <h4>Name:</h4> <input type='text' id='recipeName' value='${recipe.name}' placeholder='Enter the recipe name.'/>
-            <h4>Description:</h4> <input type='text' id='recipeDescription' value='${recipe.description}' placeholder='Describe your recipe!' />
+            <h4>Description:</h4> 
+            <textarea id='recipeDescription' placeholder='Enter the recipe description!'>${recipe.description}</textarea>
             <h4>Ingredient List</h4>
             <ul id='recipeIngredients'>
                 ${IngredientList.map(ingredient => {
@@ -108,21 +107,21 @@ async function EditRecipeForm(recipe) {
             <input type='text' id='ingredientInput' placeholder='Add ingredient.' />
             <button id='btnAddIngredient'>Add Ingredient</button>
             <h4>Instructions:</h4>
-            <input type='text' id='recipeInstructions' value='${recipe.instructions}' placeholder='Enter the recipe instructions.'/>
+            <textarea id='recipeInstructions' placeholder='Enter the recipe instructions.'>${recipe.instructions}</textarea>
         </div>
 
         <div id='tagSection'>
-        <h5>Tags</h5>
-        <ul id='tagList'>
-            ${LinkedTags.map(LinkedTag => {
-                return `
-                    <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname='${LinkedTag.tag.name}'>
-                        ${LinkedTag.tag.name}
-                        <button class='removeTagbtn'><i class="fas fa-trash-alt"></i></button>
-                    </li>
-                `;
-            }).join('')}
-        </ul>
+            <h5>Tags</h5>
+            <ul id='tagList'>
+                ${LinkedTags.map(LinkedTag => {
+                    return `
+                        <li class='addedTag' id='${LinkedTag.tag.id}' data-existingtagname='${LinkedTag.tag.name}'>
+                            ${LinkedTag.tag.name}
+                            <button class='removeTagbtn'><i class="fas fa-trash-alt"></i></button>
+                        </li>
+                    `;
+                }).join('')}
+            </ul>
         <select id='existingTagDDL'>
             <option disabled selected>---Choose Tags---</option>
         </select>

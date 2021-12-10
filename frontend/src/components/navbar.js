@@ -19,7 +19,7 @@ export function hideNavSearchBarDisplayRecipes() {
         hideSearch.style.display = "none";
         showRandom.style.display = "block";
         api.getRequest(CONSTANTS.SearchDataAPIURL, data => {
-            CONSTANTS.title.innerText = "What's For Dinner";
+            CONSTANTS.title.innerText = "What's For Dinner?";
             CONSTANTS.tabTitle.innerText = "Search Recipes";
             console.log(data);
             CONSTANTS.content.innerHTML =
@@ -54,11 +54,11 @@ export function setupNavBar() {
     return `
     <ul id="navbarLi">
         ${pantry}
-        <li id="navSearch" class = "tooltip">
-        <span class="tooltipText" id="show">Click to view all recipes</span>
-        <form id="search-recipes">
-        <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
-        </form>
+        <li id="search-area">
+            <form id="search-recipes">
+                <input type="text" class="searchBar" id="searchRecipes" placeholder="Search recipes..."/>
+                <p class="tooltipText" id="show">Click to view all recipes</p>
+             </form>
         </li>
        ${loginUser}
     </ul>
@@ -69,12 +69,13 @@ export function setupNavBar() {
 
 function setupHome() {
     CONSTANTS.tabTitle.innerText = "Home";
-    CONSTANTS.title.innerText = "What's For Dinner";
+    CONSTANTS.title.innerText = "What's For Dinner?";
+    CONSTANTS.navbar.innerHTML = setupNavBar(); //setupPantry();
     CONSTANTS.positionRandomBtn.innerHTML = "";
-    CONSTANTS.navbar.innerHTML = setupNavBar();
+
     CONSTANTS.content.innerHTML =
         `
-        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="400" height="400" style = "padding-bottom: 16px;">
-        <p>Click for random recipe</p>      
+        <img src="../img/shuffle.png" alt="Shuffle recipes button" id="clickMe" width="300" height="300" />
+        <p id="home-page-text">Click the image to find out!</p>      
     `;
 }

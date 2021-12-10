@@ -31,47 +31,46 @@ function displayRecipes(recipes, tags) {
 
        <input type="checkbox" id="searchByTags" class="searchByTagsCheckBox"/>
        <label for="searchByTagsCheckBox">Search By Tags</label>
+
+       <div id="tagList">
+            <ul id="tag-list-list-items">
+                ${tags.map(tag => {
+                    return `
+                    <li class="tag" style="display:none">
+                        <span class="tagDetails">
+                            <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
+                            ${tag.name} 
+                        </span>
+                    </li>
+                    `;
+                }).join('')}
+            </ul>
+        </div>
     </div>
     
     <button id='btnNewRecipe'>Add a Recipe!</button>
 
     <div id="recipeList">
-        <ol>
+        <ol id="recipe-list-styling">
             ${recipes.map(recipe => {
                 return `
                 <li class="recipe">
-                    <h4>
                     <span class="recipeDetails" value="${recipe.id}">
                         ${recipe.name} 
                     </span>
                     <input type="hidden" id="recdet" value='${recipe.id}'/>
                     <button id="${recipe.id}" class="recipeDelete"><i class="fas fa-trash-alt"></i></button>
-                    <div display="none" class="tagString" id='tagString-${recipe.id}'>
+                    <div class="tagString" id='tagString-${recipe.id}'>
                         ${recipe.tags.map(tag => {           
-                        return tag.tag.name               
-                        }).join('')}
-                    </div>
-                    </h4>          
+                        return `#${tag.tag.name}`               
+                        }).join('  ')}
+                    </div>         
                 </li>
                 `;
             }).join('')}
         </ol>
     </div>
-    
-    <div id="tagList">
-        <ul>
-            ${tags.map(tag => {
-                return `
-                <li class="tag" style="display:none">
-                    <span class="tagDetails">
-                        <input type="checkbox" id="${tag.name}" class="tagCheckbox"/>
-                        ${tag.name} 
-                    </span>
-                </li>
-                `;
-            }).join('')}
-        </ul>
-    </div>
+
     <input type="checkbox" id="hide" class="hideCheckBox"/>
     <label for="hide">Hide all recipes</label>
     `;
@@ -240,12 +239,12 @@ function SetupAddRecipeForm() {
     CONSTANTS.content.innerHTML = `
         <div id='AddRecipeForm'>
             <h4>Name:</h4><input type='text' id='recipeName' placeholder='Enter the recipe name.'/>
-            <h4>Description:</h4><input type='text' id='recipeDescription' placeholder='Describe your recipe!' />
+            <h4>Description:</h4><textarea id='recipeDescription' placeholder='Describe your recipe!'></textarea>
             <h4>Ingredient List</h4>
             <ul id='recipeIngredients'></ul>
                 <input type='text' id='ingredientInput' placeholder='Add ingredient.' />
                 <button id='btnAddIngredient'>Add Ingredient</button>
-            <h4>Instructions:</h4><input type='text' id='recipeInstructions' placeholder='Enter the recipe instructions.'/>
+            <h4>Instructions:</h4><textarea id='recipeInstructions' placeholder='Enter the recipe instructions.'></textarea>
 
             <button id='btnNextPage'>Next</button>
         </div>
