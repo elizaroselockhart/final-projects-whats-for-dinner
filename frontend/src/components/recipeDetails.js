@@ -272,6 +272,5 @@ async function UpdateRecipeTags(recipe) {
     CONSTANTS.content.innerHTML = await DisplayRecipeDetails(recipe);
     navbar.hideNavSearchBarDisplayRecipes();
     SetupEditRecipeEventListeners();
-    // randomRecipes.smallRandomBtn();
     CONSTANTS.title.innerText = "What's For Dinner";
 }
